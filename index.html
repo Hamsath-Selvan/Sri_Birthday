@@ -795,55 +795,55 @@
     }
 
     /* ── Gift video modal ── */
-.gift-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.35s ease;
-  overflow-y: auto;        /* NEW: allows scroll instead of clipping if content is taller than screen */
-}
+    .gift-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+      overflow-y: auto;
+    }
 
-.gift-modal.open {
-  opacity: 1;
-  pointer-events: auto;
-}
+    .gift-modal.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
 
-.gift-modal-backdrop {
-  position: fixed;         /* CHANGED from absolute: keeps backdrop pinned even if modal scrolls */
-  inset: 0;
-  background: rgba(10,4,4,0.82);
-  backdrop-filter: blur(4px);
-}
+    .gift-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(10,4,4,0.82);
+      backdrop-filter: blur(4px);
+    }
 
-.gift-modal-panel {
-  position: relative;
-  z-index: 2;
-  width: min(94vw, 900px);
-  max-height: calc(100vh - 48px);   /* NEW: never taller than the viewport */
-  margin: auto;                     /* NEW: works with flex centering + overflow scroll */
-  background: var(--dark);
-  border: 1px solid rgba(212,162,76,0.35);
-  border-radius: 12px;
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;          /* NEW: centers video vertically inside panel */
-  transform: translateY(24px) scale(0.97);
-  transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
-}
+    .gift-modal-panel {
+      position: relative;
+      z-index: 2;
+      width: min(94vw, 900px);
+      max-height: calc(100vh - 48px);
+      margin: auto;
+      background: var(--dark);
+      border: 1px solid rgba(212,162,76,0.35);
+      border-radius: 12px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transform: translateY(24px) scale(0.97);
+      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+    }
 
-.gift-modal.open .gift-modal-panel {
-  transform: translateY(0) scale(1);
-}
+    .gift-modal.open .gift-modal-panel {
+      transform: translateY(0) scale(1);
+    }
 
-.gift-modal-close {
+    .gift-modal-close {
       position: absolute;
       top: -14px;
       right: -14px;
@@ -866,16 +866,17 @@
     }
 
     .gift-video {
-  width: 100%;
-  max-width: 860px;
-  max-height: calc(100vh - 140px);
-  margin: 0 auto;
-  aspect-ratio: 16/9;
-  object-fit: contain;
-  border-radius: 8px;
-  background: #000;
-  display: block;
-}
+      width: 100%;
+      max-width: 860px;
+      max-height: calc(100vh - 140px);
+      margin: 0 auto;
+      aspect-ratio: 16/9;
+      object-fit: contain;
+      border-radius: 8px;
+      background: #000;
+      display: block;
+    }
+
     .gift-modal-caption {
       margin-top: 14px;
       text-align: center;
