@@ -81,6 +81,7 @@
     .header-inner {
       position: relative;
       z-index: 2;
+      will-change: transform;
     }
 
     .header-eyebrow {
@@ -164,6 +165,7 @@
       transition: border-color 0.3s, background 0.3s;
       position: relative;
       overflow: hidden;
+      will-change: transform;
     }
 
     .memory-card::before {
@@ -215,6 +217,7 @@
       background: rgba(212,162,76,0.03);
       margin-bottom: 60px;
       position: relative;
+      will-change: transform;
     }
 
     .letter-block::before {
@@ -306,6 +309,7 @@
 
     .timeline-content {
       padding: 4px 0 32px;
+      will-change: transform;
     }
 
     .timeline-title {
@@ -375,19 +379,21 @@
       position: relative;
       width: 100%;
       height: 100%;
+      overflow: hidden;
     }
 
     .video-wrapper iframe {
       position: absolute;
       top: 50%;
       left: 50%;
-      /* wider than viewport to cover letterbox bars */
+      /* wider than viewport to cover letterbox bars, no scrollbars */
       width: 100vw;
       height: 56.25vw;   /* 16:9 ratio */
       min-height: 100vh;
       min-width: 177.78vh; /* 16:9 ratio */
       transform: translate(-50%, -50%);
       border: none;
+      overflow: hidden;
     }
 
     /* ── Jackalope Narrator Section ── */
@@ -521,50 +527,62 @@
       .timeline-item { grid-template-columns: 56px 1px 1fr; }
     }
 
-    /* ── Photo Gallery Section ── */
+    /* ── Photo Gallery Section: pinned, scroll-driven horizontal reel ── */
     .gallery-section {
-      margin-bottom: 60px;
+      margin-bottom: 0;
     }
 
+    /* Tall spacer that creates the scroll distance for the pinned reel.
+       Height is set by JS based on how many cards there are. */
+    .gallery-pin {
+      position: relative;
+      z-index: 5;
+    }
+
+    /* Sticks to the viewport while .gallery-pin scrolls past underneath it */
+    .gallery-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    .gallery-sticky.awake {
+      opacity: 1;
+    }
+
+    /* No native scrollbar — the row is moved entirely by transform,
+       driven by page scroll position via JS. */
     .gallery-track {
       display: flex;
-      gap: 18px;
-      overflow-x: auto;
-      padding: 4px 2px 18px;
-      scroll-snap-type: x proximity;
-      cursor: grab;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(179,18,46,0.4) transparent;
+      align-items: center;
+      gap: 22px;
+      padding: 0 8vw;
+      will-change: transform;
     }
-
-    .gallery-track.dragging { cursor: grabbing; scroll-snap-type: none; }
-    .gallery-track::-webkit-scrollbar { height: 4px; }
-    .gallery-track::-webkit-scrollbar-thumb { background: rgba(179,18,46,0.4); border-radius: 4px; }
 
     .photo-card {
       flex: 0 0 auto;
-      width: min(66vw, 250px);
-      scroll-snap-align: start;
+      width: clamp(150px, 34vw, 220px);
       background: rgba(255,255,255,0.03);
       border: 1px solid rgba(179,18,46,0.2);
       border-radius: 10px;
       overflow: hidden;
-      opacity: 0;
-      transform: translateY(50px);
-      transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1),
-                  transform 0.8s cubic-bezier(0.16,1,0.3,1),
-                  border-color 0.3s ease;
+      transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+                  border-color 0.4s ease,
+                  box-shadow 0.4s ease;
     }
 
-    .photo-card.in-view {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .photo-card:hover {
-      border-color: rgba(212,162,76,0.4);
-      transform: translateY(-6px);
-      transition: transform 0.3s ease, border-color 0.3s ease;
+    /* The leading card in view widens — this is the "resize wider" cue */
+    .photo-card.active {
+      width: clamp(240px, 58vw, 400px);
+      border-color: rgba(212,162,76,0.55);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
     }
 
     .photo-frame {
@@ -579,12 +597,11 @@
       height: 100%;
       object-fit: cover;
       display: block;
-      filter: saturate(0.9) contrast(1.05);
-      transition: transform 0.6s ease, filter 0.6s ease;
+      filter: saturate(0.85) contrast(1.05);
+      transition: filter 0.6s ease;
     }
 
-    .photo-card:hover .photo-frame img {
-      transform: scale(1.06);
+    .photo-card.active .photo-frame img {
       filter: saturate(1) contrast(1.1);
     }
 
@@ -632,38 +649,40 @@
     }
 
     .gallery-hint {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 22px;
+      text-align: center;
       font-size: 0.58rem;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--muted);
-      margin-top: 2px;
+      animation: hintPulse 2.4s ease-in-out infinite;
+      pointer-events: none;
     }
 
-    /* ── Parallax wrapper (JS-driven translateY, separate from
-         the reveal/hover transform on .photo-card itself) ── */
-    .photo-parallax {
-      will-change: transform;
+    @keyframes hintPulse {
+      0%, 100% { opacity: 0.4; }
+      50%      { opacity: 0.9; }
     }
 
     /* ── Gift box: last item in the gallery track ── */
     .gift-card {
       flex: 0 0 auto;
-      width: min(66vw, 250px);
-      scroll-snap-align: start;
+      width: clamp(150px, 34vw, 220px);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 16px;
-      opacity: 0;
-      transform: translateY(50px);
-      transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1),
-                  transform 0.8s cubic-bezier(0.16,1,0.3,1);
+      transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .gift-card.in-view {
-      opacity: 1;
-      transform: translateY(0);
+    /* When the gift box becomes the leading card in the reel, it widens
+       too, same cue as the photo cards, and its contents scale up with it */
+    .gift-card.active {
+      width: clamp(240px, 58vw, 400px);
     }
 
     .gift-box {
@@ -675,6 +694,11 @@
       padding: 0;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
+      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .gift-card.active .gift-box {
+      transform: scale(1.45);
     }
 
     .gift-base {
@@ -771,48 +795,55 @@
     }
 
     /* ── Gift video modal ── */
-    .gift-modal {
-      position: fixed;
-      inset: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.35s ease;
-    }
+.gift-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  overflow-y: auto;        /* NEW: allows scroll instead of clipping if content is taller than screen */
+}
 
-    .gift-modal.open {
-      opacity: 1;
-      pointer-events: auto;
-    }
+.gift-modal.open {
+  opacity: 1;
+  pointer-events: auto;
+}
 
-    .gift-modal-backdrop {
-      position: absolute;
-      inset: 0;
-      background: rgba(10,4,4,0.82);
-      backdrop-filter: blur(4px);
-    }
+.gift-modal-backdrop {
+  position: fixed;         /* CHANGED from absolute: keeps backdrop pinned even if modal scrolls */
+  inset: 0;
+  background: rgba(10,4,4,0.82);
+  backdrop-filter: blur(4px);
+}
 
-    .gift-modal-panel {
-      position: relative;
-      z-index: 2;
-      width: min(92vw, 640px);
-      background: var(--dark);
-      border: 1px solid rgba(212,162,76,0.35);
-      border-radius: 12px;
-      padding: 18px;
-      transform: translateY(24px) scale(0.97);
-      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
-    }
+.gift-modal-panel {
+  position: relative;
+  z-index: 2;
+  width: min(94vw, 900px);
+  max-height: calc(100vh - 48px);   /* NEW: never taller than the viewport */
+  margin: auto;                     /* NEW: works with flex centering + overflow scroll */
+  background: var(--dark);
+  border: 1px solid rgba(212,162,76,0.35);
+  border-radius: 12px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;          /* NEW: centers video vertically inside panel */
+  transform: translateY(24px) scale(0.97);
+  transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+}
 
-    .gift-modal.open .gift-modal-panel {
-      transform: translateY(0) scale(1);
-    }
+.gift-modal.open .gift-modal-panel {
+  transform: translateY(0) scale(1);
+}
 
-    .gift-modal-close {
+.gift-modal-close {
       position: absolute;
       top: -14px;
       right: -14px;
@@ -832,14 +863,6 @@
     .gift-modal-close:hover {
       border-color: var(--gold);
       color: var(--gold);
-    }
-
-    .gift-video {
-      width: 100%;
-      aspect-ratio: 16/9;
-      border-radius: 8px;
-      background: #000;
-      display: block;
     }
 
     .gift-modal-caption {
@@ -865,7 +888,7 @@
     <!-- The animated canvas — sits behind everything -->
     <canvas id="header-canvas"></canvas>
 
-    <div class="header-inner">
+    <div class="header-inner parallax" data-speed="0.06">
       <div class="header-eyebrow">birthday special · 16 july 2009</div>
       <h1 class="header-title">Happy <em>Seventeen,</em><br>Lakshmi Sri</h1>
       <p class="header-sub">.......for kalizz · virat 07 . team captain 2026.......</p>
@@ -898,75 +921,61 @@
     </div>
   </section>
 
-  <!-- Main content -->
-  <main>
-
-    <!-- ── Photo Gallery Section (photos) ── -->
-    <div class="section-label">photo archive · captured</div>
-    <div class="gallery-section">
+  <!-- ── Photo Gallery Section (pinned, scroll-driven reel) ── -->
+  <div class="section-label" style="max-width:860px;margin:0 auto 28px;padding:0 24px;">photo archive · captured</div>
+  <div class="gallery-pin" id="galleryPin">
+    <div class="gallery-sticky" id="gallerySticky">
       <div class="gallery-track" id="galleryTrack">
-        <!-- Repeat the .photo-parallax > .photo-card pair for each photo.
-             data-speed controls the parallax depth (try values between
-             -0.3 and 0.3). Replace the placeholder src with the real
-             photo path, e.g. assets/photo1.jpg -->
-        <div class="photo-parallax" data-speed="0.12">
-          <div class="photo-card">
-            <div class="photo-frame">
-              <img src="assets/photo1.jpg" alt="Memory one">
-              <span class="photo-idx">01</span>
-              <span class="photo-year">2016</span>
-            </div>
-            <div class="photo-caption">
-              <span class="tag">First chapter</span>
-              <h3>The year everything started</h3>
-            </div>
+        <div class="photo-card" data-role="photo">
+          <div class="photo-frame">
+            <img src="assets/photo1.jpg" alt="Memory one">
+            <span class="photo-idx">01</span>
+            <span class="photo-year">2016</span>
+          </div>
+          <div class="photo-caption">
+            <span class="tag">First chapter</span>
+            <h3>The year everything started</h3>
           </div>
         </div>
 
-        <div class="photo-parallax" data-speed="-0.18">
-          <div class="photo-card">
-            <div class="photo-frame">
-              <img src="assets/photo2.jpg" alt="Memory two">
-              <span class="photo-idx">02</span>
-              <span class="photo-year">2019</span>
-            </div>
-            <div class="photo-caption">
-              <span class="tag">Turning point</span>
-              <h3>Loud laughs, longer summers</h3>
-            </div>
+        <div class="photo-card" data-role="photo">
+          <div class="photo-frame">
+            <img src="assets/photo2.jpg" alt="Memory two">
+            <span class="photo-idx">02</span>
+            <span class="photo-year">2019</span>
+          </div>
+          <div class="photo-caption">
+            <span class="tag">Turning point</span>
+            <h3>Loud laughs, longer summers</h3>
           </div>
         </div>
 
-        <div class="photo-parallax" data-speed="0.22">
-          <div class="photo-card">
-            <div class="photo-frame">
-              <img src="assets/photo3.jpg" alt="Memory three">
-              <span class="photo-idx">03</span>
-              <span class="photo-year">2022</span>
-            </div>
-            <div class="photo-caption">
-              <span class="tag">Becoming</span>
-              <h3>Finding out who she is</h3>
-            </div>
+        <div class="photo-card" data-role="photo">
+          <div class="photo-frame">
+            <img src="assets/photo3.jpg" alt="Memory three">
+            <span class="photo-idx">03</span>
+            <span class="photo-year">2022</span>
+          </div>
+          <div class="photo-caption">
+            <span class="tag">Becoming</span>
+            <h3>Finding out who she is</h3>
           </div>
         </div>
 
-        <div class="photo-parallax" data-speed="-0.14">
-          <div class="photo-card">
-            <div class="photo-frame">
-              <img src="assets/photo4.jpg" alt="Memory four">
-              <span class="photo-idx">04</span>
-              <span class="photo-year">2026</span>
-            </div>
-            <div class="photo-caption">
-              <span class="tag">Right now</span>
-              <h3>Seventeen, and just getting started</h3>
-            </div>
+        <div class="photo-card" data-role="photo">
+          <div class="photo-frame">
+            <img src="assets/photo4.jpg" alt="Memory four">
+            <span class="photo-idx">04</span>
+            <span class="photo-year">2026</span>
+          </div>
+          <div class="photo-caption">
+            <span class="tag">Right now</span>
+            <h3>Seventeen, and just getting started</h3>
           </div>
         </div>
 
-        <!-- ── Gift box: the finale of the archive ── -->
-        <div class="gift-card" id="giftCard">
+        <!-- ── Gift box: the finale of the reel ── -->
+        <div class="gift-card" id="giftCard" data-role="gift">
           <button class="gift-box" id="giftBox" aria-label="Open your birthday surprise">
             <span class="gift-bow"></span>
             <span class="gift-lid"></span>
@@ -977,40 +986,44 @@
           <p class="gift-hint">tap for a surprise</p>
         </div>
       </div>
-      <div class="gallery-hint">drag to explore →</div>
-    </div>
 
-    <!-- ── Gift video modal ── -->
-    <div class="gift-modal" id="giftModal" aria-hidden="true">
-      <div class="gift-modal-backdrop" id="giftModalBackdrop"></div>
-      <div class="gift-modal-panel">
-        <button class="gift-modal-close" id="giftModalClose" aria-label="Close">✕</button>
-        <!-- Add a second <source> or swap videos in the VIDEOS array below
-             to play more than one wish back to back. -->
-        <video id="giftVideo" class="gift-video" playsinline controls></video>
-        <p class="gift-modal-caption" id="giftVideoCaption">wish 1 of 2</p>
-      </div>
+      <div class="gallery-hint">keep scrolling ↓</div>
     </div>
+  </div>
+
+  <!-- ── Gift video modal ── -->
+  <div class="gift-modal" id="giftModal" aria-hidden="true">
+    <div class="gift-modal-backdrop" id="giftModalBackdrop"></div>
+    <div class="gift-modal-panel">
+      <button class="gift-modal-close" id="giftModalClose" aria-label="Close">✕</button>
+      <!-- Add a second <source> or swap videos in the VIDEOS array below
+           to play more than one wish back to back. -->
+      <video id="giftVideo" class="gift-video" playsinline controls></video>
+      <p class="gift-modal-caption" id="giftVideoCaption">wish 1 of 2</p>
+    </div>
+  </div>
+  <!-- Main content -->
+  <main>
 
     <!-- Memories section -->
     <div class="section-label">memories · collected</div>
     <div class="memory-grid">
-      <div class="memory-card">
+      <div class="memory-card parallax" data-speed="0.035">
         <div class="card-number">001</div>
         <div class="card-title">The First Thread</div>
         <div class="card-body">Every great story begins with a single knot. This one started on a July afternoon that neither of us knew would matter so much.</div>
       </div>
-      <div class="memory-card">
+      <div class="memory-card parallax" data-speed="-0.045">
         <div class="card-number">002</div>
         <div class="card-title">The Conversations</div>
         <div class="card-body">The ones that stretched past midnight, past reason, past every topic we thought we'd run out of — and still never ran out.</div>
       </div>
-      <div class="memory-card">
+      <div class="memory-card parallax" data-speed="0.05">
         <div class="card-number">003</div>
         <div class="card-title">The Ridiculous Moments</div>
         <div class="card-body">You know exactly which ones. The ones we never let each other forget. The ones that become the shorthand we speak in.</div>
       </div>
-      <div class="memory-card">
+      <div class="memory-card parallax" data-speed="-0.03">
         <div class="card-number">004</div>
         <div class="card-title">Seventeen Now</div>
         <div class="card-body">A whole number older, a whole year wiser — or at least that's what we tell ourselves. Here's to the next thread on the spool.</div>
@@ -1019,7 +1032,7 @@
 
     <!-- Letter section -->
     <div class="section-label">a letter · for you</div>
-    <div class="letter-block">
+    <div class="letter-block parallax" data-speed="0.04">
       <p class="letter-text">
         You found the passcode, which means you already knew the answer — 
         you always do. Seventeen looks good on you, Kalizz. Not because the 
@@ -1042,7 +1055,7 @@
           <div class="timeline-dot"></div>
           <div class="timeline-line"></div>
         </div>
-        <div class="timeline-content">
+        <div class="timeline-content parallax" data-speed="0.03">
           <div class="timeline-title">The beginning.</div>
           <div class="timeline-note">16 July. A thread cast into the world.</div>
         </div>
@@ -1053,7 +1066,7 @@
           <div class="timeline-dot"></div>
           <div class="timeline-line"></div>
         </div>
-        <div class="timeline-content">
+        <div class="timeline-content parallax" data-speed="-0.035">
           <div class="timeline-title">All the years in between.</div>
           <div class="timeline-note">Too many good moments to archive properly. You know them all.</div>
         </div>
@@ -1064,7 +1077,7 @@
           <div class="timeline-dot"></div>
           <div class="timeline-line"></div>
         </div>
-        <div class="timeline-content">
+        <div class="timeline-content parallax" data-speed="0.045">
           <div class="timeline-title">Seventeen. Right now.</div>
           <div class="timeline-note">You unlocked the page. The archive is open. The next chapter is blank — and yours.</div>
         </div>
@@ -1089,59 +1102,12 @@
     });
   </script>
 
-  <!-- ── Photo gallery: draggable scroll ── -->
+  <!-- ── Site-wide parallax: header, memory cards, letter, timeline ──
+       Every element with class="parallax" drifts vertically based on its
+       distance from viewport center, scaled by its data-speed. ── -->
   <script>
   (function() {
-    const track = document.getElementById('galleryTrack');
-    if (!track) return;
-    let isDown = false, startX, scrollLeft;
-
-    track.addEventListener('mousedown', (e) => {
-      isDown = true;
-      track.classList.add('dragging');
-      startX = e.pageX - track.offsetLeft;
-      scrollLeft = track.scrollLeft;
-    });
-    ['mouseleave', 'mouseup'].forEach(evt => {
-      track.addEventListener(evt, () => {
-        isDown = false;
-        track.classList.remove('dragging');
-      });
-    });
-    track.addEventListener('mousemove', (e) => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - track.offsetLeft;
-      track.scrollLeft = scrollLeft - (x - startX) * 1.2;
-    });
-  })();
-  </script>
-
-  <!-- ── Photo gallery: reveal cards + gift box as you scroll down ── -->
-  <script>
-  (function() {
-    const items = Array.from(document.querySelectorAll('.photo-card, .gift-card'));
-    if (!items.length) return;
-
-    const cardObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const idx = items.indexOf(entry.target);
-          // stagger each card's reveal left-to-right, gift box lands last
-          setTimeout(() => entry.target.classList.add('in-view'), idx * 120);
-          cardObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.2, rootMargin: '0px 0px -40px 0px' });
-
-    items.forEach((item) => cardObserver.observe(item));
-  })();
-  </script>
-
-  <!-- ── Photo gallery: parallax drift as the page scrolls ── -->
-  <script>
-  (function() {
-    const layers = Array.from(document.querySelectorAll('.photo-parallax'));
+    const layers = Array.from(document.querySelectorAll('.parallax'));
     if (!layers.length) return;
 
     let ticking = false;
@@ -1174,7 +1140,96 @@
   })();
   </script>
 
-  <!-- ── Gift box: tap to open, plays birthday wish video(s) ── -->
+  <!-- ── Photo gallery: pinned, scroll-driven horizontal reel ──
+       As the page scrolls through the tall .gallery-pin spacer, the
+       sticky reel stays fixed on screen while the track itself is
+       translated horizontally left→right. The card nearest the front
+       of the reel gets the .active class and widens — this now includes
+       the gift box card, which is the final stop in the reel. No native
+       scrollbar, no drag handlers — vertical scroll is the only input. ── -->
+  <script>
+  (function() {
+    const pin      = document.getElementById('galleryPin');
+    const sticky   = document.getElementById('gallerySticky');
+    const track    = document.getElementById('galleryTrack');
+    if (!pin || !sticky || !track) return;
+
+    // Every widening "stop" in the reel, in order — photo cards first,
+    // gift box last, so the gift box gets the same widen treatment.
+    const allCards = Array.from(track.children);
+
+    // How much extra scroll distance to give the reel per card.
+    // Larger = slower, more deliberate horizontal movement.
+    const SCROLL_PER_CARD = 420;
+
+    let maxX = 0;
+    let awake = false;
+
+    function sizePin() {
+      const extra = allCards.length * SCROLL_PER_CARD;
+      pin.style.height = `${window.innerHeight + extra}px`;
+    }
+
+    // Keep the horizontal travel distance in sync with the track's real
+    // width, even as the active card grows wider mid-transition.
+    const ro = new ResizeObserver(() => {
+      maxX = Math.max(0, track.scrollWidth - sticky.clientWidth);
+    });
+    ro.observe(track);
+
+    function update() {
+      const rect = pin.getBoundingClientRect();
+      const scrollable = pin.offsetHeight - window.innerHeight;
+      let progress = scrollable > 0 ? -rect.top / scrollable : 0;
+      progress = Math.min(1, Math.max(0, progress));
+
+      // Wake the reel in (opacity) once it's actually being scrolled through
+      const inView = rect.top < window.innerHeight && rect.bottom > 0;
+      if (inView !== awake) {
+        awake = inView;
+        sticky.classList.toggle('awake', awake);
+      }
+
+      // Which card is "leading" right now — photo cards or the gift box
+      const activeIdx = Math.min(
+        allCards.length - 1,
+        Math.floor(progress * allCards.length)
+      );
+      allCards.forEach((card, i) => {
+        card.classList.toggle('active', i === activeIdx);
+      });
+
+      track.style.transform = `translateX(-${progress * maxX}px)`;
+    }
+
+    let ticking = false;
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(() => { update(); ticking = false; });
+        ticking = true;
+      }
+    }
+
+    function onResize() {
+      sizePin();
+      maxX = Math.max(0, track.scrollWidth - sticky.clientWidth);
+      update();
+    }
+
+    sizePin();
+    // Let layout settle, then take the first width measurement
+    requestAnimationFrame(() => {
+      maxX = Math.max(0, track.scrollWidth - sticky.clientWidth);
+      update();
+    });
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize);
+  })();
+  </script>
+
+  <!-- ── Gift box: tap to open, plays birthday wish video(s) centered
+       in a wide modal over the page ── -->
   <script>
   (function() {
     const giftBox      = document.getElementById('giftBox');
@@ -1185,11 +1240,9 @@
     const caption      = document.getElementById('giftVideoCaption');
     if (!giftBox || !modal || !video) return;
 
-    // Add one or two video paths here — leave the second one out
-    // if you only have a single wish video.
+    // Just one video now — swap/add paths here as needed
     const VIDEOS = [
-      'assets/wish1.mp4',
-      'assets/wish2.mp4'
+      'assets/mosaic.mp4'
     ];
 
     let queue = [];
@@ -1223,7 +1276,6 @@
       giftBox.classList.remove('opened');
     }
 
-    // when one wish video ends, roll straight into the next
     video.addEventListener('ended', () => {
       if (queueIndex < queue.length - 1) {
         playAt(queueIndex + 1);
@@ -1234,7 +1286,7 @@
 
     giftBox.addEventListener('click', () => {
       giftBox.classList.add('opened');
-      setTimeout(openModal, 420); // let the lid animation play first
+      setTimeout(openModal, 420);
     });
 
     closeBtn.addEventListener('click', closeModal);
@@ -1243,8 +1295,7 @@
       if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
     });
   })();
-  </script>
-
+</script>
   <!-- ── Header canvas particle animation ── -->
   <script>
   (function() {
