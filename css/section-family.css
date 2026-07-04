@@ -1,0 +1,214 @@
+/* ══════════════════════════════════════════════════
+   SECTION 4 — SCHOOLS / FAMILY / SIBLINGS
+   New section, not yet filled with final content.
+   Built on the same card / letter / timeline patterns
+   as the rest of the site so it drops in cleanly.
+   Swap the placeholder text in sections when ready.
+   ══════════════════════════════════════════════════ */
+
+.life-section {
+  padding: 100px 40px 120px;
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+/* ── Life cards (schools / family / siblings — one card each) ── */
+.life-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 28px;
+  margin-bottom: 76px;
+}
+
+.life-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(179,18,46,0.2);
+  border-radius: 12px;
+  padding: 34px 32px;
+  transition: border-color 0.3s, background 0.3s;
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+}
+
+/* Optional entrance animation — add class="reveal-on-scroll" to any
+   element (life-card, note-block, timeline-content, etc.) to have it
+   fade + lift in the first time it scrolls into view. */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-on-scroll.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.life-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--crimson), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.life-card:hover {
+  border-color: rgba(212,162,76,0.4);
+  background: rgba(255,255,255,0.05);
+}
+
+.life-card:hover::before { opacity: 1; }
+
+.life-card-tag {
+  font-size: 0.7rem;
+  color: rgba(212,162,76,0.45);
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.life-card-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--cream);
+  margin-bottom: 14px;
+  line-height: 1.3;
+}
+
+.life-card-body {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 1.05rem;
+  color: rgba(255,248,240,0.6);
+  line-height: 1.75;
+  letter-spacing: 0.2px;
+}
+
+/* ── Note / letter block (reused for a family note, dedication, etc.) ── */
+.note-block {
+  border: 1px solid rgba(212,162,76,0.2);
+  border-radius: 12px;
+  padding: 56px 52px;
+  background: rgba(212,162,76,0.03);
+  margin-bottom: 76px;
+  position: relative;
+  will-change: transform;
+}
+
+.note-block::before {
+  content: '"';
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 7rem;
+  color: rgba(179,18,46,0.08);
+  position: absolute;
+  top: -12px;
+  left: 24px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.note-text {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 300;
+  font-style: italic;
+  color: rgba(255,248,240,0.72);
+  line-height: 2;
+  position: relative;
+  z-index: 1;
+}
+
+.note-sig {
+  margin-top: 28px;
+  font-size: 0.78rem;
+  letter-spacing: 2.2px;
+  color: var(--gold);
+  text-align: right;
+}
+
+/* ── Timeline (schools attended / family milestones / sibling years) ── */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 76px;
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 100px 1px 1fr;
+  gap: 0 26px;
+  position: relative;
+}
+
+.timeline-item + .timeline-item .timeline-dot-col::before {
+  content: '';
+  display: block;
+  height: 100%;
+  width: 1px;
+  background: rgba(179,18,46,0.2);
+  position: absolute;
+  top: 0; left: 50%;
+}
+
+.timeline-year {
+  font-size: 0.78rem;
+  color: var(--muted);
+  letter-spacing: 1.2px;
+  padding: 6px 0;
+  text-align: right;
+}
+
+.timeline-dot-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.timeline-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--crimson);
+  flex-shrink: 0;
+  margin-top: 8px;
+  z-index: 1;
+}
+
+.timeline-line {
+  flex: 1;
+  width: 1px;
+  background: rgba(179,18,46,0.2);
+}
+
+.timeline-content {
+  padding: 4px 0 40px;
+  will-change: transform;
+}
+
+.timeline-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 300;
+  color: var(--cream);
+  margin-bottom: 8px;
+}
+
+.timeline-note {
+  font-size: 0.9rem;
+  color: rgba(255,248,240,0.45);
+  line-height: 1.75;
+}
+
+@media (max-width: 480px) {
+  .note-block { padding: 28px 20px; }
+  .timeline-item { grid-template-columns: 56px 1px 1fr; }
+}
