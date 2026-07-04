@@ -62,7 +62,7 @@
       position: relative;
       z-index: 10;
       text-align: center;
-      padding: 64px 24px 40px;
+      padding: 80px 24px 52px;
       border-bottom: 1px solid rgba(179,18,46,0.2);
       overflow: hidden;
     }
@@ -85,20 +85,20 @@
     }
 
     .header-eyebrow {
-      font-size: 0.65rem;
-      letter-spacing: 4px;
+      font-size: 0.78rem;
+      letter-spacing: 4.5px;
       text-transform: uppercase;
       color: var(--crimson);
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
 
     .header-title {
       font-family: 'Fraunces', Georgia, serif;
-      font-size: clamp(2.4rem, 7vw, 4rem);
+      font-size: clamp(2.8rem, 8vw, 5rem);
       font-weight: 300;
       color: var(--cream);
       line-height: 1.05;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .header-title em {
@@ -107,36 +107,36 @@
     }
 
     .header-sub {
-      font-size: 0.68rem;
-      letter-spacing: 3px;
+      font-size: 0.8rem;
+      letter-spacing: 3.2px;
       text-transform: uppercase;
       color: var(--muted);
-      margin-top: 14px;
+      margin-top: 16px;
     }
 
     .header-divider {
-      width: 80px;
+      width: 90px;
       height: 1px;
       background: linear-gradient(to right, transparent, var(--gold), transparent);
-      margin: 28px auto 0;
+      margin: 32px auto 0;
     }
 
     /* ── Main layout ── */
     main {
       position: relative;
       z-index: 10;
-      max-width: 860px;
+      max-width: 1140px;
       margin: 0 auto;
-      padding: 60px 24px 100px;
+      padding: 76px 40px 120px;
     }
 
     /* ── Section label ── */
     .section-label {
-      font-size: 0.6rem;
-      letter-spacing: 3px;
+      font-size: 0.72rem;
+      letter-spacing: 3.5px;
       text-transform: uppercase;
       color: var(--crimson);
-      margin-bottom: 28px;
+      margin-bottom: 34px;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -152,16 +152,16 @@
     /* ── Memory cards ── */
     .memory-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 20px;
-      margin-bottom: 60px;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 28px;
+      margin-bottom: 76px;
     }
 
     .memory-card {
       background: rgba(255,255,255,0.03);
       border: 1px solid rgba(179,18,46,0.2);
-      border-radius: 10px;
-      padding: 24px 22px;
+      border-radius: 12px;
+      padding: 34px 32px;
       transition: border-color 0.3s, background 0.3s;
       position: relative;
       overflow: hidden;
@@ -187,35 +187,38 @@
     .memory-card:hover::before { opacity: 1; }
 
     .card-number {
-      font-size: 0.6rem;
-      color: rgba(212,162,76,0.4);
-      letter-spacing: 2px;
-      margin-bottom: 12px;
+      font-size: 0.7rem;
+      color: rgba(212,162,76,0.45);
+      letter-spacing: 2.4px;
+      margin-bottom: 16px;
     }
 
     .card-title {
       font-family: 'Fraunces', Georgia, serif;
-      font-size: 1.1rem;
+      font-size: 1.5rem;
       font-weight: 300;
       color: var(--cream);
-      margin-bottom: 8px;
+      margin-bottom: 14px;
       line-height: 1.3;
     }
 
     .card-body {
-      font-size: 0.72rem;
-      color: rgba(255,248,240,0.45);
-      line-height: 1.8;
-      letter-spacing: 0.3px;
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 1.05rem;
+      color: rgba(255,248,240,0.6);
+      line-height: 1.75;
+      letter-spacing: 0.2px;
     }
 
     /* ── Letter block ── */
     .letter-block {
       border: 1px solid rgba(212,162,76,0.2);
-      border-radius: 10px;
-      padding: 40px 36px;
+      border-radius: 12px;
+      padding: 56px 52px;
       background: rgba(212,162,76,0.03);
-      margin-bottom: 60px;
+      margin-bottom: 76px;
       position: relative;
       will-change: transform;
     }
@@ -223,30 +226,30 @@
     .letter-block::before {
       content: '"';
       font-family: 'Fraunces', Georgia, serif;
-      font-size: 6rem;
+      font-size: 7rem;
       color: rgba(179,18,46,0.08);
       position: absolute;
-      top: -10px;
-      left: 20px;
+      top: -12px;
+      left: 24px;
       line-height: 1;
       pointer-events: none;
     }
 
     .letter-text {
       font-family: 'Fraunces', Georgia, serif;
-      font-size: 1rem;
+      font-size: 1.3rem;
       font-weight: 300;
       font-style: italic;
-      color: rgba(255,248,240,0.7);
+      color: rgba(255,248,240,0.72);
       line-height: 2;
       position: relative;
       z-index: 1;
     }
 
     .letter-sig {
-      margin-top: 24px;
-      font-size: 0.65rem;
-      letter-spacing: 2px;
+      margin-top: 28px;
+      font-size: 0.78rem;
+      letter-spacing: 2.2px;
       color: var(--gold);
       text-align: right;
     }
@@ -256,13 +259,13 @@
       display: flex;
       flex-direction: column;
       gap: 0;
-      margin-bottom: 60px;
+      margin-bottom: 76px;
     }
 
     .timeline-item {
       display: grid;
-      grid-template-columns: 80px 1px 1fr;
-      gap: 0 20px;
+      grid-template-columns: 100px 1px 1fr;
+      gap: 0 26px;
       position: relative;
     }
 
@@ -277,9 +280,9 @@
     }
 
     .timeline-year {
-      font-size: 0.65rem;
+      font-size: 0.78rem;
       color: var(--muted);
-      letter-spacing: 1px;
+      letter-spacing: 1.2px;
       padding: 6px 0;
       text-align: right;
     }
@@ -292,8 +295,8 @@
     }
 
     .timeline-dot {
-      width: 8px;
-      height: 8px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
       background: var(--crimson);
       flex-shrink: 0;
@@ -308,22 +311,22 @@
     }
 
     .timeline-content {
-      padding: 4px 0 32px;
+      padding: 4px 0 40px;
       will-change: transform;
     }
 
     .timeline-title {
       font-family: 'Fraunces', Georgia, serif;
-      font-size: 0.95rem;
+      font-size: 1.3rem;
       font-weight: 300;
       color: var(--cream);
-      margin-bottom: 4px;
+      margin-bottom: 8px;
     }
 
     .timeline-note {
-      font-size: 0.68rem;
-      color: rgba(255,248,240,0.4);
-      line-height: 1.7;
+      font-size: 0.9rem;
+      color: rgba(255,248,240,0.45);
+      line-height: 1.75;
     }
 
     /* ── Footer ── */
@@ -400,20 +403,20 @@
     .narrator-section {
       position: relative;
       z-index: 10;
-      max-width: 860px;
+      max-width: 1140px;
       margin: 0 auto;
-      padding: 90px 24px 70px;
+      padding: 100px 40px 80px;
       display: flex;
       align-items: flex-end;
       justify-content: center;
-      gap: 22px;
+      gap: 26px;
       flex-wrap: wrap;
     }
 
     .narrator-figure {
       flex-shrink: 0;
-      width: 150px;
-      height: 182px;
+      width: 170px;
+      height: 206px;
       position: relative;
       opacity: 0;
       transform: translateX(-60px) translateY(30px) rotate(-6deg);
@@ -446,11 +449,11 @@
 
     .narrator-bubble {
       position: relative;
-      max-width: 460px;
+      max-width: 520px;
       background: rgba(255,255,255,0.03);
       border: 1px solid rgba(212,162,76,0.3);
-      border-radius: 14px;
-      padding: 22px 24px;
+      border-radius: 16px;
+      padding: 28px 30px;
       opacity: 0;
       transform: translateX(40px) translateY(20px);
       transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
@@ -476,16 +479,16 @@
     }
 
     .narrator-label {
-      font-size: 0.58rem;
+      font-size: 0.68rem;
       letter-spacing: 3px;
       text-transform: uppercase;
       color: var(--crimson);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .narrator-text {
       font-family: 'Fraunces', Georgia, serif;
-      font-size: 1rem;
+      font-size: 1.2rem;
       font-weight: 300;
       font-style: italic;
       color: rgba(255,248,240,0.85);
@@ -826,6 +829,7 @@
       z-index: 2;
       width: min(94vw, 900px);
       max-height: calc(100vh - 48px);
+      overflow: auto;
       margin: auto;
       background: var(--dark);
       border: 1px solid rgba(212,162,76,0.35);
@@ -866,15 +870,14 @@
     }
 
     .gift-video {
-      width: 100%;
-      max-width: 860px;
-      max-height: calc(100vh - 140px);
+      display: block;
+      width: min(860px, 100%);
+      height: min(60vh, calc(100vh - 210px));
       margin: 0 auto;
-      aspect-ratio: 16/9;
       object-fit: contain;
+      object-position: center center;
       border-radius: 8px;
       background: #000;
-      display: block;
     }
 
     .gift-modal-caption {
@@ -884,6 +887,291 @@
       letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--muted);
+    }
+
+    /* ══════════════════════════════════════════════════
+       ── WhatsApp floating action button ──
+       Hidden by default. Revealed once the gift videos
+       finish playing all the way through (see script
+       further down that calls window.__revealWaFab()).
+       ══════════════════════════════════════════════════ */
+    .wa-fab {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #25D366;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 90;
+      opacity: 0;
+      transform: scale(0.4) translateY(20px);
+      pointer-events: none;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+      transition: opacity 0.5s cubic-bezier(0.16,1,0.3,1),
+                  transform 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .wa-fab.show {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      pointer-events: auto;
+      animation: waFabPulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes waFabPulse {
+      0%, 100% { box-shadow: 0 6px 20px rgba(0,0,0,0.45), 0 0 0 0 rgba(37,211,102,0.45); }
+      50%      { box-shadow: 0 6px 20px rgba(0,0,0,0.45), 0 0 0 12px rgba(37,211,102,0); }
+    }
+
+    .wa-fab svg { width: 29px; height: 29px; }
+
+    .wa-fab-badge {
+      position: absolute;
+      top: -3px; right: -3px;
+      width: 17px; height: 17px;
+      background: var(--crimson);
+      border: 2px solid var(--dark);
+      border-radius: 50%;
+      font-size: 0.5rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ══════════════════════════════════════════════════
+       ── Cinematic scroll-driven story section ──
+       One continuous pinned sequence: WhatsApp flash card
+       + volleyball → hero title → two expanding wish cards
+       → volleyball centers → two videos emerge from it.
+       Driven by GSAP ScrollTrigger (scrub) further down.
+       ══════════════════════════════════════════════════ */
+    .story-section {
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Tall spacer — its height is the scroll "runway" for the whole
+       sequence. Increase/decrease to slow down or speed up the story. */
+    .story-pin {
+      position: relative;
+      height: 650vh;
+    }
+
+    .story-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+      background: radial-gradient(ellipse at 50% 30%, #14181d 0%, #0b141a 55%, var(--dark) 100%);
+    }
+
+    /* Every stage layer stacks and centers via flex, so all elements
+       share the same visual center point unless individually offset. */
+    .story-layer {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── Stage 1: flash card + volleyball ── */
+    .story-flash-group {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      opacity: 0;
+      transform: translateY(24px) scale(0.92);
+    }
+
+    .flash-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #202c33;
+      border-radius: 16px;
+      padding: 16px 22px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .flash-icon {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: #25D366;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .flash-icon svg { width: 24px; height: 24px; fill: #fff; }
+
+    .flash-text .flash-title {
+      color: #fff;
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.02rem;
+      font-weight: 600;
+      margin-bottom: 3px;
+      white-space: nowrap;
+    }
+
+    .flash-text .flash-sub {
+      color: #8696a0;
+      font-size: 0.72rem;
+      letter-spacing: 0.5px;
+    }
+
+    /* Volleyball: three nested layers so scroll position, cursor
+       parallax, and idle float can all animate independently without
+       fighting over the same transform. */
+    .volleyball-wrap {
+  width: 76px;
+  height: 76px;
+  position: relative;
+}
+
+.volleyball-cursor {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.volleyball {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.5));
+}
+
+/* Replace the old SVG rule with this */
+.volleyball img,
+.volleyball-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  will-change: transform;
+}
+
+/* ── Stage 2: Hero Title ── */
+.story-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(2.1rem, 6vw, 4rem);
+  text-align: center;
+  color: var(--cream);
+  line-height: 1.15;
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+    .story-title em { color: var(--gold); font-style: italic; }
+
+    /* ── Stage 3: wish cards ── */
+    .story-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+      width: min(560px, 86vw);
+    }
+
+    .story-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      opacity: 0;
+      transform: translateY(16px);
+    }
+
+    .story-dp {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 2px solid rgba(212,162,76,0.35);
+      margin-top: 4px;
+    }
+
+    .story-dp img { width: 100%; height: 100%; object-fit: cover; }
+
+    .story-bubble {
+      position: relative;
+      background: #202c33;
+      border-radius: 14px;
+      padding: 14px 18px;
+      width: 74px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .story-bubble::before {
+      content: '';
+      position: absolute;
+      left: -8px; top: 18px;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-right: 8px solid #202c33;
+    }
+
+    .story-bubble-name {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 600;
+      color: var(--gold);
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+
+    .story-bubble-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: #d1d7db;
+      opacity: 0;
+      margin-top: 6px;
+      white-space: normal;
+    }
+
+    /* ── Stage 4: video reveal ── */
+    .story-videos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 26px;
+    }
+
+    .story-video {
+      width: clamp(150px, 28vw, 320px);
+      height: clamp(210px, 40vw, 440px);
+      object-fit: cover;
+      border-radius: 16px;
+      box-shadow: 0 30px 70px rgba(0,0,0,0.6);
+      opacity: 0;
+      background: #000;
+    }
+
+    .story-video-left  { transform: translateX(-30px) scale(0.35); }
+    .story-video-right { transform: translateX(30px)  scale(0.35); }
+
+    @media (max-width: 560px) {
+      .story-cards { width: 92vw; }
+      .story-videos { flex-direction: column; }
+      .story-video { width: 62vw; height: 44vh; }
     }
   </style>
 </head>
@@ -934,13 +1222,13 @@
   </section>
 
   <!-- ── Photo Gallery Section (pinned, scroll-driven reel) ── -->
-  <div class="section-label" style="max-width:860px;margin:0 auto 28px;padding:0 24px;">photo archive · captured</div>
+  <div class="section-label" style="max-width:1140px;margin:0 auto 28px;padding:0 40px;">photo archive · captured</div>
   <div class="gallery-pin" id="galleryPin">
     <div class="gallery-sticky" id="gallerySticky">
       <div class="gallery-track" id="galleryTrack">
         <div class="photo-card" data-role="photo">
           <div class="photo-frame">
-            <img src="assets/photo1.jpg" alt="Memory one">
+            <img src="assets/childhoo1.jpeg" alt="Memory one">
             <span class="photo-idx">01</span>
             <span class="photo-year">2016</span>
           </div>
@@ -952,7 +1240,7 @@
 
         <div class="photo-card" data-role="photo">
           <div class="photo-frame">
-            <img src="assets/photo2.jpg" alt="Memory two">
+            <img src="assets/childhoo2.jpeg" alt="Memory two">
             <span class="photo-idx">02</span>
             <span class="photo-year">2019</span>
           </div>
@@ -964,7 +1252,7 @@
 
         <div class="photo-card" data-role="photo">
           <div class="photo-frame">
-            <img src="assets/photo3.jpg" alt="Memory three">
+            <img src="assets/childhoo3.jpeg" alt="Memory three">
             <span class="photo-idx">03</span>
             <span class="photo-year">2022</span>
           </div>
@@ -976,7 +1264,7 @@
 
         <div class="photo-card" data-role="photo">
           <div class="photo-frame">
-            <img src="assets/photo4.jpg" alt="Memory four">
+            <img src="assets/childhoo4.jpeg" alt="Memory four">
             <span class="photo-idx">04</span>
             <span class="photo-year">2026</span>
           </div>
@@ -1008,39 +1296,110 @@
     <div class="gift-modal-backdrop" id="giftModalBackdrop"></div>
     <div class="gift-modal-panel">
       <button class="gift-modal-close" id="giftModalClose" aria-label="Close">✕</button>
-      <!-- Add a second <source> or swap videos in the VIDEOS array below
-           to play more than one wish back to back. -->
+      <!-- Two videos play back to back. Swap the paths in the VIDEOS
+           array further down if your filenames are different. -->
       <video id="giftVideo" class="gift-video" playsinline controls></video>
       <p class="gift-modal-caption" id="giftVideoCaption">wish 1 of 2</p>
     </div>
   </div>
-  <!-- Main content -->
+
+  <!-- ── Cinematic scroll-driven story section ──
+       One continuous pinned sequence, driven by GSAP ScrollTrigger
+       further down: flash card + volleyball → hero title → two
+       expanding wish cards → volleyball centers → videos emerge. ── -->
+  <section class="story-section" id="storySection">
+    <div class="story-pin" id="storyPin">
+      <div class="story-sticky" id="storySticky">
+
+        <!-- Stage 1: WhatsApp flash card + volleyball -->
+       <div class="story-layer">
+  <div class="story-flash-group" id="storyFlashGroup">
+    <div class="flash-card" id="flashCard">
+      <div class="flash-icon">
+      <img
+            src="assets/volleyball.avif"
+            alt="Volleyball"
+            class="volleyball-img"
+          />
+          <path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.5c0 2.42.687 4.68 1.878 6.6L3 29l7.086-2.318a12.42 12.42 0 0 0 5.915 1.507h.005c6.893 0 12.499-5.607 12.499-12.5C28.505 8.607 22.898 3 16.001 3zm0 22.79h-.004a10.31 10.31 0 0 1-5.253-1.438l-.377-.224-3.902 1.276 1.293-3.804-.246-.39a10.28 10.28 0 0 1-1.583-5.51c0-5.696 4.637-10.333 10.336-10.333 2.76 0 5.353 1.077 7.305 3.031a10.26 10.26 0 0 1 3.026 7.306c0 5.697-4.637 10.334-10.335 10.334z"/>
+        </svg>
+      </div>
+
+      <div class="flash-text">
+        <div class="flash-title">Wishes From Your Team</div>
+        <div class="flash-sub">2 new messages</div>
+      </div>
+    </div>
+
+    <div class="volleyball-wrap" id="volleyballWrap">
+      <div class="volleyball-cursor" id="volleyballCursor">
+        <div class="volleyball" id="volleyball">
+          <img
+            src="assets/volleyball.avif"
+            alt="Volleyball"
+            class="volleyball-img"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+        <!-- Stage 2: hero title -->
+        <div class="story-layer">
+          <h2 class="story-title" id="storyTitle">Wishes From<br><em>Your Team</em></h2>
+        </div>
+
+        <!-- Stage 3: wish cards -->
+        <div class="story-layer">
+          <div class="story-cards" id="storyCards">
+            <div class="story-card" id="storyCard1">
+              <div class="story-dp"><img src="assets/childhoo2.jpeg" alt="Dhivya Ma'am"></div>
+              <div class="story-bubble" id="storyBubble1">
+                <div class="story-bubble-name">Dhivya Ma'am</div>
+                <div class="story-bubble-text" id="storyText1">Wish you many more happy returns of the day maaa 🎂</div>
+              </div>
+            </div>
+            <div class="story-card" id="storyCard2">
+              <div class="story-dp"><img src="assets/childhoo3.jpeg" alt="Maha Akka"></div>
+              <div class="story-bubble" id="storyBubble2">
+                <div class="story-bubble-name">Maha Akka</div>
+                <div class="story-bubble-text" id="storyText2">Happy birthday kanna! Never stop being this bright and this loud ❤️</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage 4: video reveal — update these two paths -->
+        <div class="story-layer">
+          <div class="story-videos" id="storyVideos">
+            <video class="story-video story-video-left" id="storyVideoLeft" src="assets/team1.mp4" muted playsinline loop></video>
+            <video class="story-video story-video-right" id="storyVideoRight" src="assets/team2.mp4" muted playsinline loop></video>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Main content -->
   <main>
 
     <!-- Memories section -->
     <div class="section-label">memories · collected</div>
     <div class="memory-grid">
       <div class="memory-card parallax" data-speed="0.035">
-        <div class="card-number">001</div>
-        <div class="card-title">The First Thread</div>
+       
+        <div class="card-title">Wishes from Dhivya Ma'am</div>
         <div class="card-body">Every great story begins with a single knot. This one started on a July afternoon that neither of us knew would matter so much.</div>
       </div>
       <div class="memory-card parallax" data-speed="-0.045">
-        <div class="card-number">002</div>
-        <div class="card-title">The Conversations</div>
+        
+        <div class="card-title">Wishes from Maha Akka</div>
         <div class="card-body">The ones that stretched past midnight, past reason, past every topic we thought we'd run out of — and still never ran out.</div>
       </div>
-      <div class="memory-card parallax" data-speed="0.05">
-        <div class="card-number">003</div>
-        <div class="card-title">The Ridiculous Moments</div>
-        <div class="card-body">You know exactly which ones. The ones we never let each other forget. The ones that become the shorthand we speak in.</div>
-      </div>
-      <div class="memory-card parallax" data-speed="-0.03">
-        <div class="card-number">004</div>
-        <div class="card-title">Seventeen Now</div>
-        <div class="card-body">A whole number older, a whole year wiser — or at least that's what we tell ourselves. Here's to the next thread on the spool.</div>
-      </div>
-    </div>
+    
+    </div> 
 
     <!-- Letter section -->
     <div class="section-label">a letter · for you</div>
@@ -1102,6 +1461,19 @@
   <footer>
     <div class="footer-text">made with red thread · <span>kalizz · 2026</span> · seventeen</div>
   </footer>
+
+  <!-- ── WhatsApp floating action button ──
+       Hidden until both gift videos finish playing. ── -->
+  <button class="wa-fab" id="waFab" aria-label="One more surprise waiting" title="One more surprise">
+    <svg viewBox="0 0 32 32" fill="#fff" xmlns="http://www.w3.org/2000/svg">
+      <path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.5c0 2.42.687 4.68 1.878 6.6L3 29l7.086-2.318a12.42 12.42 0 0 0 5.915 1.507h.005c6.893 0 12.499-5.607 12.499-12.5C28.505 8.607 22.898 3 16.001 3zm0 22.79h-.004a10.31 10.31 0 0 1-5.253-1.438l-.377-.224-3.902 1.276 1.293-3.804-.246-.39a10.28 10.28 0 0 1-1.583-5.51c0-5.696 4.637-10.333 10.336-10.333 2.76 0 5.353 1.077 7.305 3.031a10.26 10.26 0 0 1 3.026 7.306c0 5.697-4.637 10.334-10.335 10.334zm5.66-7.74c-.31-.155-1.834-.905-2.118-1.01-.284-.104-.492-.155-.7.156-.207.31-.804 1.01-.985 1.217-.181.207-.362.233-.673.078-.31-.155-1.309-.483-2.494-1.54-.922-.822-1.545-1.838-1.726-2.148-.181-.31-.02-.478.136-.633.14-.14.31-.362.465-.543.155-.181.207-.31.31-.518.104-.207.052-.388-.026-.543-.078-.155-.7-1.687-.959-2.311-.253-.607-.51-.525-.7-.535-.181-.008-.388-.01-.596-.01-.207 0-.543.078-.828.388-.284.31-1.086 1.061-1.086 2.588 0 1.528 1.112 3.004 1.267 3.211.155.207 2.19 3.345 5.306 4.69.742.32 1.32.512 1.771.655.744.237 1.421.204 1.956.124.597-.089 1.834-.75 2.093-1.474.259-.724.259-1.345.181-1.474-.078-.13-.284-.207-.596-.362z"/>
+    </svg>
+    <span class="wa-fab-badge">1</span>
+  </button>
+
+  <!-- GSAP + ScrollTrigger, used for the cinematic story section below -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
   <script>
     // Generate ambient thread lines
@@ -1241,7 +1613,8 @@
   </script>
 
   <!-- ── Gift box: tap to open, plays birthday wish video(s) centered
-       in a wide modal over the page ── -->
+       in a wide modal over the page. Once BOTH videos finish playing
+       naturally (not on manual close), it reveals the WhatsApp fab. ── -->
   <script>
   (function() {
     const giftBox      = document.getElementById('giftBox');
@@ -1252,9 +1625,11 @@
     const caption      = document.getElementById('giftVideoCaption');
     if (!giftBox || !modal || !video) return;
 
-    // Just one video now — swap/add paths here as needed
+    // Two videos, played back to back. Update these paths to match
+    // your actual filenames in /assets.
     const VIDEOS = [
-      'assets/mosaic.mp4'
+      'assets/mosaic.mp4',
+      'assets/mosaic2.mp4'
     ];
 
     let queue = [];
@@ -1288,11 +1663,16 @@
       giftBox.classList.remove('opened');
     }
 
+    // Fires when a video reaches its natural end (not on manual close/skip)
     video.addEventListener('ended', () => {
       if (queueIndex < queue.length - 1) {
         playAt(queueIndex + 1);
       } else {
+        // Both videos have finished playing — surface the WhatsApp fab
         closeModal();
+        if (typeof window.__revealWaFab === 'function') {
+          window.__revealWaFab();
+        }
       }
     });
 
@@ -1308,6 +1688,151 @@
     });
   })();
 </script>
+
+  <!-- ── WhatsApp fab: reveal after gift videos, scroll to the story
+       section, and hide itself once the story section is reached ── -->
+  <script>
+  (function() {
+    const fab    = document.getElementById('waFab');
+    const target = document.getElementById('storySection');
+    if (!fab || !target) return;
+
+    // Exposed globally so the gift-video script can call this once
+    // both wishes have finished playing.
+    window.__revealWaFab = function() {
+      fab.classList.add('show');
+    };
+
+    fab.addEventListener('click', () => {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Keep the fab visible until the visitor actually starts scrolling
+    // into the story section, then fade it out of the way.
+    const hideObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          fab.classList.remove('show');
+        }
+      });
+    }, { threshold: 0.05 });
+    hideObserver.observe(target);
+  })();
+  </script>
+
+  <!-- ══════════════════════════════════════════════════
+       ── Cinematic story sequence (GSAP ScrollTrigger) ──
+       One scrubbed timeline drives every stage: flash card + ball →
+       title → sequential wish-card expansion → ball centers → videos
+       emerge. The volleyball uses three nested layers (idle bounce,
+       cursor parallax, scroll position) so those motions don't fight
+       over the same transform.
+
+       Tuning tip: every stage below is placed on the timeline with an
+       explicit start time (the second argument to .to()). Nudge those
+       numbers to speed up/slow down a stage relative to the others,
+       and adjust `.story-pin { height: 650vh }` in the CSS above to
+       change the overall scroll distance for the whole sequence.
+       ══════════════════════════════════════════════════ -->
+  <script>
+  (function() {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    const pin         = document.getElementById('storyPin');
+    const flashGroup  = document.getElementById('storyFlashGroup');
+    const ballWrap     = document.getElementById('volleyballWrap');
+    const ballCursor   = document.getElementById('volleyballCursor');
+    const ball         = document.getElementById('volleyball');
+    const title        = document.getElementById('storyTitle');
+    const card1        = document.getElementById('storyCard1');
+    const card2        = document.getElementById('storyCard2');
+    const bubble1      = document.getElementById('storyBubble1');
+    const bubble2      = document.getElementById('storyBubble2');
+    const text1        = document.getElementById('storyText1');
+    const text2        = document.getElementById('storyText2');
+    const videoLeft    = document.getElementById('storyVideoLeft');
+    const videoRight   = document.getElementById('storyVideoRight');
+
+    if (!pin || !flashGroup || !ball) return;
+
+    /* ── Idle float: always running, independent of scroll ── */
+    gsap.to(ball, {
+      y: -12,
+      rotate: 10,
+      duration: 2.6,
+      ease: 'sine.inOut',
+      yoyo: true,
+      repeat: -1
+    });
+
+    /* ── Cursor parallax: ball drifts gently toward the pointer,
+         but only while the flash-card stage is on screen, so it
+         doesn't fight the later "move to center" scroll animation ── */
+    const quickX = gsap.quickTo(ballCursor, 'x', { duration: 0.7, ease: 'power3.out' });
+    const quickY = gsap.quickTo(ballCursor, 'y', { duration: 0.7, ease: 'power3.out' });
+    let cursorParallaxActive = true;
+
+    window.addEventListener('mousemove', (e) => {
+      if (!cursorParallaxActive) return;
+      const relX = (e.clientX / window.innerWidth  - 0.5) * 24;
+      const relY = (e.clientY / window.innerHeight - 0.5) * 24;
+      quickX(relX);
+      quickY(relY);
+    }, { passive: true });
+
+    /* ── Master scrubbed timeline ── */
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: pin,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 1,
+        // markers: true, // uncomment while tuning
+        onLeaveBack: () => { cursorParallaxActive = true; },
+      }
+    });
+
+    // Stage 1 — flash card + ball entrance
+    tl.to(flashGroup, { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power2.out' }, 0);
+
+    // Stage 2 — flash card exits, hero title enters and settles higher
+    tl.to(flashGroup, { opacity: 0, y: -30, scale: 0.94, duration: 0.8, ease: 'power2.in' }, 1.6)
+      .to(title, { opacity: 1, y: -60, duration: 1, ease: 'power2.out' }, 1.8)
+      .to(title, { y: -140, duration: 0.6, ease: 'power1.inOut' }, 2.8);
+
+    // Stage 3 — wish card 1 expands first, sequentially, then card 2
+    tl.to(card1, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 3.2)
+      .to(bubble1, { width: 340, duration: 1.1, ease: 'power2.inOut' }, 3.3)
+      .to(text1, { opacity: 1, duration: 0.6, ease: 'power1.out' }, 4.1)
+      .to(card2, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 4.8)
+      .to(bubble2, { width: 340, duration: 1.1, ease: 'power2.inOut' }, 4.9)
+      .to(text2, { opacity: 1, duration: 0.6, ease: 'power1.out' }, 5.7);
+
+    // Stage 4 — cards fade, ball drifts to true center and grows,
+    // cursor parallax switches off so the scroll-driven move wins
+    tl.call(() => { cursorParallaxActive = false; }, null, 6.4)
+      .to([card1, card2, title], { opacity: 0, duration: 0.7, ease: 'power1.in' }, 6.4)
+      .to(ballCursor, { x: 0, y: 0, duration: 0.6, ease: 'power2.inOut' }, 6.4)
+      .to(ballWrap, {
+        x: () => -1 * (flashGroup.querySelector('.flash-card').offsetWidth / 2 + 11),
+        scale: 1.6,
+        duration: 1.2,
+        ease: 'power2.inOut'
+      }, 6.6);
+
+    // Stage 5 — videos emerge outward from the ball, ball fades as it
+    // "becomes" the video experience, both videos start playing
+    tl.to(ballWrap, { opacity: 0, scale: 2.1, duration: 0.7, ease: 'power2.in' }, 7.8)
+      .to(videoLeft,  { opacity: 1, x: 0, scale: 1, duration: 1, ease: 'power3.out' }, 8.0)
+      .to(videoRight, { opacity: 1, x: 0, scale: 1, duration: 1, ease: 'power3.out' }, 8.0)
+      .call(() => {
+        videoLeft.play().catch(() => {});
+        videoRight.play().catch(() => {});
+      }, null, 8.0);
+  })();
+  </script>
+
   <!-- ── Header canvas particle animation ── -->
   <script>
   (function() {
