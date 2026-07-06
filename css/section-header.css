@@ -1,0 +1,193 @@
+/* ══════════════════════════════════════════════
+   SECTION 1 — HEADER + NARRATOR
+   ══════════════════════════════════════════════ */
+
+/* ── Header ── */
+header {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 80px 24px 52px;
+  border-bottom: 1px solid rgba(179,18,46,0.2);
+  overflow: hidden;
+}
+
+/* Canvas sits behind all header text */
+#header-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none; /* so text is still selectable */
+}
+
+/* All header text content sits above canvas */
+.header-inner {
+  position: relative;
+  z-index: 2;
+  will-change: transform;
+}
+
+.header-eyebrow {
+  font-size: 0.78rem;
+  letter-spacing: 4.5px;
+  text-transform: uppercase;
+  color: var(--crimson);
+  margin-bottom: 20px;
+}
+
+.header-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(2.8rem, 8vw, 5rem);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1.05;
+  margin-bottom: 12px;
+}
+
+.header-title em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.header-sub {
+  font-size: 0.8rem;
+  letter-spacing: 3.2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 16px;
+}
+
+.header-divider {
+  width: 90px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  margin: 32px auto 0;
+}
+
+/* ── Jackalope Narrator ── */
+.narrator-section {
+  position: relative;
+  z-index: 10;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 100px 40px 80px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 26px;
+  flex-wrap: wrap;
+}
+
+.narrator-figure {
+  flex-shrink: 0;
+  width: 170px;
+  height: 206px;
+  position: relative;
+  opacity: 0;
+  transform: translateX(-60px) translateY(30px) rotate(-6deg);
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.narrator-section.in-view .narrator-figure {
+  opacity: 1;
+  transform: translateX(0) translateY(0) rotate(0deg);
+}
+
+.narrator-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+  animation: narratorBob 3.4s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+.narrator-section.in-view .narrator-figure img {
+  animation-play-state: running;
+}
+
+@keyframes narratorBob {
+  0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+  50%       { transform: translateY(-8px) rotate(1.5deg); }
+}
+
+.narrator-bubble {
+  position: relative;
+  max-width: 520px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(212,162,76,0.3);
+  border-radius: 16px;
+  padding: 28px 30px;
+  opacity: 0;
+  transform: translateX(40px) translateY(20px);
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+              transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
+}
+
+.narrator-section.in-view .narrator-bubble {
+  opacity: 1;
+  transform: translateX(0) translateY(0);
+}
+
+.narrator-bubble::before {
+  content: '';
+  position: absolute;
+  left: -9px;
+  bottom: 34px;
+  width: 16px;
+  height: 16px;
+  background: var(--dark);
+  border-left: 1px solid rgba(212,162,76,0.3);
+  border-bottom: 1px solid rgba(212,162,76,0.3);
+  transform: rotate(45deg);
+}
+
+.narrator-label {
+  font-size: 0.68rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--crimson);
+  margin-bottom: 12px;
+}
+
+.narrator-text {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 300;
+  font-style: italic;
+  color: rgba(255,248,240,0.85);
+  line-height: 1.8;
+}
+
+@media (max-width: 560px) {
+  .narrator-section {
+    flex-direction: column;
+    align-items: center;
+    padding: 70px 20px 50px;
+  }
+  .narrator-figure {
+    transform: translateY(30px) scale(0.9);
+  }
+  .narrator-section.in-view .narrator-figure {
+    transform: translateY(0) scale(1);
+  }
+  .narrator-bubble {
+    transform: translateY(20px);
+  }
+  .narrator-section.in-view .narrator-bubble {
+    transform: translateY(0);
+  }
+  .narrator-bubble::before {
+    left: 50%;
+    top: -9px;
+    bottom: auto;
+    margin-left: -8px;
+    border-left: 1px solid rgba(212,162,76,0.3);
+    border-bottom: none;
+    border-top: 1px solid rgba(212,162,76,0.3);
+    transform: rotate(45deg);
+  }
+}

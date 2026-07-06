@@ -1,0 +1,417 @@
+/* ══════════════════════════════════════════════
+   SECTION 2 — PHOTO GALLERY (pinned, scroll-driven reel)
+   ══════════════════════════════════════════════ */
+
+.gallery-section {
+  margin-bottom: 0;
+}
+
+/* Tall spacer that creates the scroll distance for the pinned reel.
+   Height is set by JS based on how many cards there are. */
+.gallery-pin {
+  position: relative;
+  z-index: 5;
+}
+
+/* Sticks to the viewport while .gallery-pin scrolls past underneath it */
+.gallery-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.gallery-sticky.awake {
+  opacity: 1;
+}
+
+/* No native scrollbar — the row is moved entirely by transform,
+   driven by page scroll position via JS. */
+.gallery-track {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 0 8vw;
+  will-change: transform;
+}
+
+.photo-card {
+  flex: 0 0 auto;
+  width: clamp(150px, 34vw, 220px);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(179,18,46,0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.4s ease,
+              box-shadow 0.4s ease;
+}
+
+/* The leading card in view widens — this is the "resize wider" cue */
+.photo-card.active {
+  width: clamp(240px, 58vw, 400px);
+  border-color: rgba(212,162,76,0.55);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+}
+
+.photo-frame {
+  position: relative;
+  aspect-ratio: 4/5;
+  overflow: hidden;
+  background: linear-gradient(160deg, rgba(179,18,46,0.25), rgba(26,16,16,0.9));
+}
+
+.photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(0.85) contrast(1.05);
+  transition: filter 0.6s ease;
+}
+
+.photo-card.active .photo-frame img {
+  filter: saturate(1) contrast(1.1);
+}
+
+.photo-idx {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  color: var(--gold);
+  background: rgba(26,16,16,0.55);
+  padding: 3px 7px;
+  border: 1px solid rgba(212,162,76,0.25);
+}
+
+.photo-year {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  font-size: 0.58rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.photo-caption {
+  padding: 16px 16px 20px;
+}
+
+.photo-caption .tag {
+  font-size: 0.58rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.photo-caption h3 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: 1.3;
+  color: var(--cream);
+}
+
+.gallery-hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 22px;
+  text-align: center;
+  font-size: 0.58rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  animation: hintPulse 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes hintPulse {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 0.9; }
+}
+
+/* ── Gift box: last item in the gallery track ── */
+.gift-card {
+  flex: 0 0 auto;
+  width: clamp(150px, 34vw, 220px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* When the gift box becomes the leading card in the reel, it widens
+   too, same cue as the photo cards, and its contents scale up with it */
+.gift-card.active {
+  width: clamp(240px, 58vw, 400px);
+}
+
+.gift-box {
+  position: relative;
+  width: 118px;
+  height: 112px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.gift-card.active .gift-box {
+  transform: scale(1.45);
+}
+
+.gift-base {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 72px;
+  background: linear-gradient(160deg, var(--crimson), #7a0c1f);
+  border: 1px solid rgba(212,162,76,0.4);
+  border-radius: 6px;
+  box-shadow: 0 10px 24px rgba(179,18,46,0.25);
+  transition: transform 0.3s ease;
+}
+
+.gift-lid {
+  position: absolute;
+  left: -6px; right: -6px;
+  top: 26px;
+  height: 22px;
+  background: linear-gradient(160deg, #c8163a, var(--crimson));
+  border: 1px solid rgba(212,162,76,0.5);
+  border-radius: 6px;
+  transform-origin: 50% 100%;
+  transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s ease;
+}
+
+.gift-ribbon-v {
+  position: absolute;
+  left: 50%; top: 26px; bottom: 0;
+  width: 10px;
+  margin-left: -5px;
+  background: var(--gold);
+  opacity: 0.9;
+}
+
+.gift-ribbon-h {
+  position: absolute;
+  left: 0; right: 0; top: 32px;
+  height: 10px;
+  background: var(--gold);
+  opacity: 0.9;
+}
+
+.gift-bow {
+  position: absolute;
+  left: 50%; top: 6px;
+  width: 30px; height: 18px;
+  margin-left: -15px;
+}
+.gift-bow::before,
+.gift-bow::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 15px; height: 15px;
+  background: var(--gold);
+  border-radius: 50% 50% 50% 0;
+}
+.gift-bow::before { left: 0; transform: rotate(-45deg); }
+.gift-bow::after { right: 0; transform: rotate(45deg) scaleX(-1); }
+
+.gift-box:hover .gift-base,
+.gift-box:focus-visible .gift-base { transform: translateY(-3px); }
+
+.gift-box:hover .gift-lid,
+.gift-box:focus-visible .gift-lid { transform: translateY(-4px) rotate(-6deg); }
+
+.gift-box.opened .gift-lid {
+  transform: translateY(-50px) rotate(-38deg);
+  opacity: 0;
+}
+
+.gift-box.opened .gift-base {
+  animation: giftPop 0.5s ease;
+}
+
+@keyframes giftPop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+.gift-hint {
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
+  animation: giftPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes giftPulse {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 1; }
+}
+
+/* ── Gift video modal ── */
+.gift-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  overflow-y: auto;
+}
+
+.gift-modal.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.gift-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,4,4,0.82);
+  backdrop-filter: blur(4px);
+}
+
+.gift-modal-panel {
+  position: relative;
+  z-index: 2;
+  width: min(94vw, 900px);
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  margin: auto;
+  background: var(--dark);
+  border: 1px solid rgba(212,162,76,0.35);
+  border-radius: 12px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(24px) scale(0.97);
+  transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+}
+
+.gift-modal.open .gift-modal-panel {
+  transform: translateY(0) scale(1);
+}
+
+.gift-modal-close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--dark);
+  border: 1px solid rgba(212,162,76,0.4);
+  color: var(--cream);
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.gift-modal-close:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.gift-video {
+  display: block;
+  width: min(860px, 100%);
+  height: min(60vh, calc(100vh - 210px));
+  margin: 0 auto;
+  object-fit: contain;
+  object-position: center center;
+  border-radius: 8px;
+  background: #000;
+}
+
+.gift-modal-caption {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 0.62rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ══════════════════════════════════════════════════
+   ── WhatsApp floating action button ──
+   Hidden by default. Revealed once the gift videos
+   finish playing all the way through.
+   ══════════════════════════════════════════════════ */
+.wa-fab {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #25D366;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 90;
+  opacity: 0;
+  transform: scale(0.4) translateY(20px);
+  pointer-events: none;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+  transition: opacity 0.5s cubic-bezier(0.16,1,0.3,1),
+              transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+
+.wa-fab.show {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: auto;
+  animation: waFabPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes waFabPulse {
+  0%, 100% { box-shadow: 0 6px 20px rgba(0,0,0,0.45), 0 0 0 0 rgba(37,211,102,0.45); }
+  50%      { box-shadow: 0 6px 20px rgba(0,0,0,0.45), 0 0 0 12px rgba(37,211,102,0); }
+}
+
+.wa-fab svg { width: 29px; height: 29px; }
+
+.wa-fab-badge {
+  position: absolute;
+  top: -3px; right: -3px;
+  width: 17px; height: 17px;
+  background: var(--crimson);
+  border: 2px solid var(--dark);
+  border-radius: 50%;
+  font-size: 0.5rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+}

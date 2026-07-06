@@ -1,0 +1,114 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --crimson:  #B3122E;
+  --gold:     #D4A24C;
+  --cream:    #FFF8F0;
+  --dark:     #1a1010;
+  --muted:    #7a5a5a;
+  --sage:     #4F8F6A;
+}
+
+body {
+  background: var(--dark);
+  color: var(--cream);
+  font-family: 'JetBrains Mono', monospace;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Page fade in ── */
+body {
+  animation: pageIn 0.8s ease both;
+}
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Ambient background threads ── */
+.bg-threads {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.thread-line {
+  position: absolute;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(179,18,46,0.15) 40%, rgba(179,18,46,0.08) 70%, transparent);
+  animation: threadPulse 4s ease-in-out infinite;
+}
+
+@keyframes threadPulse {
+  0%, 100% { opacity: 0.2; }
+  50%       { opacity: 0.6; }
+}
+
+/* ── Section label (used inside every section) ── */
+.section-label {
+  font-size: 0.72rem;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: var(--crimson);
+  margin-bottom: 34px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(179,18,46,0.2);
+}
+
+/* ── Full-screen section helper ──
+   Every top-level <section> gets this so each one fills the viewport
+   as you scroll through it. NOT scroll-snap — just sizing, so scroll
+   stays free and continuous. */
+.full-section {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* ── Footer ── */
+footer {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 32px 24px;
+  border-top: 1px solid rgba(179,18,46,0.15);
+}
+
+.footer-text {
+  font-size: 0.62rem;
+  color: rgba(122,90,90,0.4);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.footer-text span {
+  color: rgba(212,162,76,0.35);
+}
+
+/* ── Back link ── */
+.back-link {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 20;
+  font-size: 0.65rem;
+  color: rgba(122,90,90,0.5);
+  text-decoration: none;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+.back-link:hover { color: var(--gold); }

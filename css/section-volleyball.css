@@ -1,0 +1,227 @@
+/* ══════════════════════════════════════════════════
+   SECTION 3 — VOLLEYBALL TEAM (cinematic scroll story)
+   One continuous pinned sequence: WhatsApp flash card
+   + volleyball → hero title → two expanding wish cards
+   → volleyball centers → two videos emerge from it.
+   Driven by GSAP ScrollTrigger (scrub) in js/volleyball-story.js
+   ══════════════════════════════════════════════════ */
+
+.story-section {
+  position: relative;
+  z-index: 10;
+}
+
+/* Tall spacer — its height is the scroll "runway" for the whole
+   sequence. Increase/decrease to slow down or speed up the story. */
+.story-pin {
+  position: relative;
+  height: 650vh;
+}
+
+.story-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 30%, #14181d 0%, #0b141a 55%, var(--dark) 100%);
+}
+
+/* Every stage layer stacks and centers via flex, so all elements
+   share the same visual center point unless individually offset. */
+.story-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Stage 1: flash card + volleyball ── */
+.story-flash-group {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  opacity: 0;
+  transform: translateY(24px) scale(0.92);
+}
+
+.flash-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #202c33;
+  border-radius: 16px;
+  padding: 16px 22px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.flash-icon {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: #25D366;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.flash-icon svg { width: 24px; height: 24px; fill: #fff; }
+
+.flash-text .flash-title {
+  color: #fff;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.02rem;
+  font-weight: 600;
+  margin-bottom: 3px;
+  white-space: nowrap;
+}
+
+.flash-text .flash-sub {
+  color: #8696a0;
+  font-size: 0.72rem;
+  letter-spacing: 0.5px;
+}
+
+/* Volleyball: three nested layers so scroll position, cursor
+   parallax, and idle float can all animate independently without
+   fighting over the same transform. */
+.volleyball-wrap {
+  width: 76px;
+  height: 76px;
+  position: relative;
+}
+
+.volleyball-cursor {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.volleyball {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.5));
+}
+
+.volleyball img,
+.volleyball-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  will-change: transform;
+}
+
+/* ── Stage 2: Hero Title ── */
+.story-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(2.1rem, 6vw, 4rem);
+  text-align: center;
+  color: var(--cream);
+  line-height: 1.15;
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+.story-title em { color: var(--gold); font-style: italic; }
+
+/* ── Stage 3: wish cards ── */
+.story-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  width: min(560px, 86vw);
+}
+
+.story-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.story-dp {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid rgba(212,162,76,0.35);
+  margin-top: 4px;
+}
+
+.story-dp img { width: 100%; height: 100%; object-fit: cover; }
+
+.story-bubble {
+  position: relative;
+  background: #202c33;
+  border-radius: 14px;
+  padding: 14px 18px;
+  width: 74px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.story-bubble::before {
+  content: '';
+  position: absolute;
+  left: -8px; top: 18px;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: 8px solid #202c33;
+}
+
+.story-bubble-name {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  color: var(--gold);
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+.story-bubble-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: #d1d7db;
+  opacity: 0;
+  margin-top: 6px;
+  white-space: normal;
+}
+
+/* ── Stage 4: video reveal ── */
+.story-videos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+}
+
+.story-video {
+  width: clamp(150px, 28vw, 320px);
+  height: clamp(210px, 40vw, 440px);
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.6);
+  opacity: 0;
+  background: #000;
+}
+
+.story-video-left  { transform: translateX(-30px) scale(0.35); }
+.story-video-right { transform: translateX(30px)  scale(0.35); }
+
+@media (max-width: 560px) {
+  .story-cards { width: 92vw; }
+  .story-videos { flex-direction: column; }
+  .story-video { width: 62vw; height: 44vh; }
+}
