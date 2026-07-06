@@ -962,7 +962,7 @@
        sequence. Increase/decrease to slow down or speed up the story. */
     .story-pin {
       position: relative;
-      height: 650vh;
+      height: 780vh;
     }
 
     .story-sticky {
@@ -1033,7 +1033,10 @@
 
     /* Volleyball: three nested layers so scroll position, cursor
        parallax, and idle float can all animate independently without
-       fighting over the same transform. */
+       fighting over the same transform. The <img> itself gets a
+       fourth, separate transform just for the cursor-driven roll
+       rotation, so it never conflicts with the idle wobble on
+       .volleyball or the position tween on .volleyball-cursor. */
     .volleyball-wrap {
   width: 76px;
   height: 76px;
@@ -1069,26 +1072,108 @@
   will-change: transform;
 }
 
-/* ── Stage 2: Hero Title ── */
-.story-title {
-  font-family: 'Fraunces', Georgia, serif;
-  font-weight: 300;
-  font-size: clamp(2.1rem, 6vw, 4rem);
-  text-align: center;
-  color: var(--cream);
-  line-height: 1.15;
+/* ── Stage 2 + 3: WhatsApp-style chat screen ──
+   A single "phone screen" that fades in as one unit: a real chat
+   header bar (back arrow, group avatar, group name, subtitle) on
+   top, and the wish bubbles arriving one at a time underneath it,
+   the way messages actually land in a WhatsApp thread. */
+.wa-chat-screen {
+  width: min(560px, 90vw);
+  max-height: min(72vh, 640px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #0b141a;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.55);
   opacity: 0;
-  transform: translateY(50px);
+  transform: translateY(30px) scale(0.96);
 }
 
-    .story-title em { color: var(--gold); font-style: italic; }
+.wa-chat-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #202c33;
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+}
 
-    /* ── Stage 3: wish cards ── */
+.wa-chat-back {
+  color: #8696a0;
+  font-size: 1.3rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.wa-chat-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: linear-gradient(160deg, var(--crimson), #7a0c1f);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wa-chat-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 7px;
+}
+
+.wa-chat-titles {
+  flex: 1;
+  min-width: 0;
+}
+
+.wa-chat-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wa-chat-sub {
+  font-size: 0.7rem;
+  color: #8696a0;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wa-chat-icons {
+  display: flex;
+  gap: 18px;
+  flex-shrink: 0;
+}
+
+.wa-chat-icons svg { width: 19px; height: 19px; fill: #8696a0; }
+
+.wa-chat-body {
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  background:
+    linear-gradient(rgba(11,20,26,0.95), rgba(11,20,26,0.95)),
+    repeating-linear-gradient(135deg, rgba(255,255,255,0.012) 0 2px, transparent 2px 42px);
+  overflow: hidden;
+}
+
+    /* ── Stage 3: wish cards, arriving one at a time inside the chat ── */
     .story-cards {
       display: flex;
       flex-direction: column;
       gap: 26px;
-      width: min(560px, 86vw);
     }
 
     .story-card {
@@ -1147,31 +1232,152 @@
       white-space: normal;
     }
 
-    /* ── Stage 4: video reveal ── */
+    /* ── Stage 4: video reveal ──
+       Both videos are stacked in the same centered spot (instead of
+       side by side) so only one is ever visible at a time — the JS
+       below crossfades between them instead of playing both at once. */
     .story-videos {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 26px;
+      position: relative;
+      width: clamp(150px, 28vw, 320px);
+      height: clamp(210px, 40vw, 440px);
     }
 
     .story-video {
-      width: clamp(150px, 28vw, 320px);
-      height: clamp(210px, 40vw, 440px);
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       border-radius: 16px;
       box-shadow: 0 30px 70px rgba(0,0,0,0.6);
       opacity: 0;
       background: #000;
+      transform: scale(0.35);
     }
 
-    .story-video-left  { transform: translateX(-30px) scale(0.35); }
-    .story-video-right { transform: translateX(30px)  scale(0.35); }
-
     @media (max-width: 560px) {
-      .story-cards { width: 92vw; }
-      .story-videos { flex-direction: column; }
-      .story-video { width: 62vw; height: 44vh; }
+      .wa-chat-screen { width: 94vw; }
+      .story-videos { width: 62vw; height: 44vh; }
+    }
+
+    /* ── Siblings to Friends: pinned vertical scroll section ── */
+    .siblings-section { position: relative; z-index: 10; }
+
+    .siblings-pin { position: relative; height: 480vh; }
+
+    .siblings-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+      background: radial-gradient(ellipse at 50% 40%, #201313 0%, var(--dark) 70%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .siblings-title-wrap {
+      position: absolute;
+      top: 56px;
+      left: 0;
+      right: 0;
+      z-index: 3;
+      text-align: center;
+      padding: 0 24px;
+    }
+
+    .siblings-title {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 300;
+      font-size: clamp(2.1rem, 6vw, 3.6rem);
+      color: var(--cream);
+      line-height: 1.1;
+    }
+
+    .siblings-title em { font-style: italic; color: var(--gold); }
+
+    .siblings-subtitle {
+      margin-top: 12px;
+      font-size: 0.72rem;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: var(--crimson);
+      opacity: 0.85;
+      transition: opacity 0.3s;
+    }
+
+    .siblings-columns {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 20px;
+  width: min(1000px, 92vw);
+  height: 76vh;
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, transparent, black 14%, black 88%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 14%, black 88%, transparent);
+}
+
+.sib-col { flex: 1; display: flex; flex-direction: column; gap: 20px; will-change: transform; }
+.sib-col-mid { margin-top: -130px; } /* stagger the middle column */
+    .sib-photo {
+      flex-shrink: 0;
+      width: 100%;
+      aspect-ratio: 3/4;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(179,18,46,0.25);
+      background: linear-gradient(160deg, rgba(179,18,46,0.2), rgba(26,16,16,0.9));
+    }
+
+    .sib-photo img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.85) contrast(1.05); }
+
+    .siblings-video-stage {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .siblings-video-title {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 300;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      color: var(--cream);
+      text-align: center;
+    }
+
+    .siblings-video-title em { font-style: italic; color: var(--gold); }
+
+    .siblings-video {
+      width: min(820px, 94vw);
+      max-height: 78vh;
+      border-radius: 16px;
+      box-shadow: 0 30px 70px rgba(0,0,0,0.6);
+      border: 1px solid rgba(212,162,76,0.3);
+      background: #000;
+      cursor: pointer;
+    }
+
+    .siblings-video-hint {
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    @media (max-width: 640px) {
+  .siblings-columns { gap: 12px; height: 66vh; width: 94vw; }
+  .sib-col { gap: 12px; }
+  .sib-col-mid { margin-top: -75px; }
+  .siblings-title-wrap { top: 36px; }
     }
   </style>
 </head>
@@ -1316,14 +1522,10 @@
   <div class="story-flash-group" id="storyFlashGroup">
     <div class="flash-card" id="flashCard">
       <div class="flash-icon">
-      <img
-            src="assets/volleyball.avif"
-            alt="Volleyball"
-            class="volleyball-img"
-          />
-          <path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.5c0 2.42.687 4.68 1.878 6.6L3 29l7.086-2.318a12.42 12.42 0 0 0 5.915 1.507h.005c6.893 0 12.499-5.607 12.499-12.5C28.505 8.607 22.898 3 16.001 3zm0 22.79h-.004a10.31 10.31 0 0 1-5.253-1.438l-.377-.224-3.902 1.276 1.293-3.804-.246-.39a10.28 10.28 0 0 1-1.583-5.51c0-5.696 4.637-10.333 10.336-10.333 2.76 0 5.353 1.077 7.305 3.031a10.26 10.26 0 0 1 3.026 7.306c0 5.697-4.637 10.334-10.335 10.334z"/>
-        </svg>
-      </div>
+                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.5c0 2.42.687 4.68 1.878 6.6L3 29l7.086-2.318a12.42 12.42 0 0 0 5.915 1.507h.005c6.893 0 12.499-5.607 12.499-12.5C28.505 8.607 22.898 3 16.001 3zm0 22.79h-.004a10.31 10.31 0 0 1-5.253-1.438l-.377-.224-3.902 1.276 1.293-3.804-.246-.39a10.28 10.28 0 0 1-1.583-5.51c0-5.696 4.637-10.333 10.336-10.333 2.76 0 5.353 1.077 7.305 3.031a10.26 10.26 0 0 1 3.026 7.306c0 5.697-4.637 10.334-10.335 10.334z"/>
+                </svg>
+              </div>
 
       <div class="flash-text">
         <div class="flash-title">Wishes From Your Team</div>
@@ -1335,7 +1537,7 @@
       <div class="volleyball-cursor" id="volleyballCursor">
         <div class="volleyball" id="volleyball">
           <img
-            src="assets/volleyball.avif"
+            src="assets/beach-ball.png"
             alt="Volleyball"
             class="volleyball-img"
           />
@@ -1345,36 +1547,58 @@
   </div>
 </div>
 
-        <!-- Stage 2: hero title -->
+        <!-- Stage 2 + 3: WhatsApp-style chat screen — a group chat
+             header ("Wishes From Volleyball Team") with the two
+             wishes landing one at a time underneath it, like real
+             incoming messages. -->
         <div class="story-layer">
-          <h2 class="story-title" id="storyTitle">Wishes From<br><em>Your Team</em></h2>
-        </div>
-
-        <!-- Stage 3: wish cards -->
-        <div class="story-layer">
-          <div class="story-cards" id="storyCards">
-            <div class="story-card" id="storyCard1">
-              <div class="story-dp"><img src="assets/childhoo2.jpeg" alt="Dhivya Ma'am"></div>
-              <div class="story-bubble" id="storyBubble1">
-                <div class="story-bubble-name">Dhivya Ma'am</div>
-                <div class="story-bubble-text" id="storyText1">Wish you many more happy returns of the day maaa 🎂</div>
+          <div class="wa-chat-screen" id="waChatScreen">
+            <div class="wa-chat-header">
+              <div class="wa-chat-back">&#8592;</div>
+              <div class="wa-chat-avatar">
+                <img src="assets/block.png" alt="Volleyball Team">
+              </div>
+              <div class="wa-chat-titles">
+                <div class="wa-chat-title">Wishes From Volleyball Team</div>
+                <div class="wa-chat-sub">Dhivya Ma'am, Maha Akka</div>
+              </div>
+              <div class="wa-chat-icons">
+                <svg viewBox="0 0 24 24"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.3 2.2z"/></svg>
               </div>
             </div>
-            <div class="story-card" id="storyCard2">
-              <div class="story-dp"><img src="assets/childhoo3.jpeg" alt="Maha Akka"></div>
-              <div class="story-bubble" id="storyBubble2">
-                <div class="story-bubble-name">Maha Akka</div>
-                <div class="story-bubble-text" id="storyText2">Happy birthday kanna! Never stop being this bright and this loud ❤️</div>
+            <div class="wa-chat-body" id="waChatBody">
+              <div class="story-cards" id="storyCards">
+                <div class="story-card" id="storyCard1">
+                  <div class="story-dp"><img src="assets/dhivya-ma'am-dp.png" alt="Dhivya Ma'am"></div>
+                  <div class="story-bubble" id="storyBubble1">
+                    <div class="story-bubble-name">Dhivya Ma'am</div>
+                    <div class="story-bubble-text" id="storyText1">Wish you many more happy returns of the day maaa 🎂</div>
+                  </div>
+                </div>
+                <div class="story-card" id="storyCard2">
+                  <div class="story-dp"><img src="assets/maha-dp.jpeg" alt="Maha Akka"></div>
+                  <div class="story-bubble" id="storyBubble2">
+                    <div class="story-bubble-name">Maha Akka</div>
+                    <div class="story-bubble-text" id="storyText2">Happiee birthday Lakshmiiii✨ Stay blessed and be happy always 💫 May all your wishes and dreams comes true ❣️</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Stage 4: video reveal — update these two paths -->
+        <!-- Stage 4: video reveal — four videos, one after another.
+             Update these four paths to your actual filenames. loop is
+             only on the last one so it lingers once the sequence
+             finishes; the first three need their 'ended' event to
+             fire so the JS below can hand off to the next video. -->
         <div class="story-layer">
           <div class="story-videos" id="storyVideos">
-            <video class="story-video story-video-left" id="storyVideoLeft" src="assets/team1.mp4" muted playsinline loop></video>
-            <video class="story-video story-video-right" id="storyVideoRight" src="assets/team2.mp4" muted playsinline loop></video>
+            <video class="story-video" id="storyVideo1" src="assets/team1.mp4" muted playsinline></video>
+            <video class="story-video" id="storyVideo2" src="assets/team2.mp4" muted playsinline></video>
+            <video class="story-video" id="storyVideo3" src="assets/team3.mp4" muted playsinline></video>
+            <video class="story-video" id="storyVideo4" src="assets/team4.mp4" muted playsinline loop></video>
           </div>
         </div>
 
@@ -1456,6 +1680,47 @@
     </div>
 
   </main>
+
+  <!-- ── Siblings to Friends: pinned scroll-driven photo columns + video ── -->
+  <section class="siblings-section" id="siblingsSection">
+    <div class="siblings-pin" id="siblingsPin">
+      <div class="siblings-sticky" id="siblingsSticky">
+
+        <div class="siblings-title-wrap" id="siblingsTitleWrap">
+          <h2 class="siblings-title">Siblings <em>to Friends</em></h2>
+          <p class="siblings-subtitle" id="siblingsLabel">every fight, every fix, every after</p>
+        </div>
+
+        <div class="siblings-columns" id="siblingsColumns">
+          <div class="sib-col" id="sibCol1">
+            <div class="sib-photo"><img src="assets/sib1.jpeg" alt=""></div>
+            <div class="sib-photo"><img src="assets/sib2.jpeg" alt=""></div>
+            <div class="sib-photo"><img src="assets/sib3.jpeg" alt=""></div>
+            <div class="sib-photo"><img src="assets/sib4.jpeg" alt=""></div>
+          </div>
+          <div class="sib-col sib-col-mid" id="sibCol2">
+            <div class="sib-photo"><img src="assets/sib5.jpeg" alt=""></div>
+            <div class="sib-photo"><img src="assets/sib6.jpeg" alt=""></div>
+            <div class="sib-photo"><img src="assets/sib7.jpeg" alt=""></div>
+            <div class="sib-photo"><img src="assets/sib8.jpeg" alt=""></div>
+          </div>
+          <div class="sib-col" id="sibCol3">
+  <div class="sib-photo"><img src="assets/sib9.jpeg" alt=""></div>
+  <div class="sib-photo"><img src="assets/sib10.jpeg" alt=""></div>
+  <div class="sib-photo"><img src="assets/sib11.jpeg" alt=""></div>
+  <div class="sib-photo"><img src="assets/sib12.jpeg" alt=""></div>
+</div>
+        </div>
+
+        <div class="siblings-video-stage" id="siblingsVideoStage">
+          <p class="siblings-video-title">Happy Birthday <em>Sri Maaaa</em></p>
+          <video class="siblings-video" id="siblingsVideo" src="assets/siblings-wish.mp4" playsinline muted></video>
+          <p class="siblings-video-hint">tap video to unmute</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
 
   <!-- Footer -->
   <footer>
@@ -1724,9 +1989,14 @@
        ── Cinematic story sequence (GSAP ScrollTrigger) ──
        One scrubbed timeline drives every stage: flash card + ball →
        title → sequential wish-card expansion → ball centers → videos
-       emerge. The volleyball uses three nested layers (idle bounce,
-       cursor parallax, scroll position) so those motions don't fight
-       over the same transform.
+       emerge. The volleyball uses four independent transforms so its
+       motions never fight each other:
+         .volleyball        → idle up/down wobble (always running)
+         .volleyball-cursor → position drift toward the pointer
+         .volleyball-wrap   → scroll-driven "move to center" tween
+         <img> itself       → continuous roll rotation, driven by how
+                              far the pointer has moved horizontally,
+                              like a ball actually rolling with the cursor
 
        Tuning tip: every stage below is placed on the timeline with an
        explicit start time (the second argument to .to()). Nudge those
@@ -1744,19 +2014,27 @@
     const ballWrap     = document.getElementById('volleyballWrap');
     const ballCursor   = document.getElementById('volleyballCursor');
     const ball         = document.getElementById('volleyball');
-    const title        = document.getElementById('storyTitle');
+    const ballImg      = ball ? ball.querySelector('img') : null;
+    const chatScreen   = document.getElementById('waChatScreen');
     const card1        = document.getElementById('storyCard1');
     const card2        = document.getElementById('storyCard2');
     const bubble1      = document.getElementById('storyBubble1');
     const bubble2      = document.getElementById('storyBubble2');
     const text1        = document.getElementById('storyText1');
     const text2        = document.getElementById('storyText2');
-    const videoLeft    = document.getElementById('storyVideoLeft');
-    const videoRight   = document.getElementById('storyVideoRight');
+
+    // Sequential videos — add or remove ids here if the count changes.
+    // Only the LAST one should keep the `loop` attribute in the HTML.
+    const videos = ['storyVideo1', 'storyVideo2', 'storyVideo3', 'storyVideo4']
+      .map(id => document.getElementById(id))
+      .filter(Boolean);
 
     if (!pin || !flashGroup || !ball) return;
 
-    /* ── Idle float: always running, independent of scroll ── */
+    /* ── Idle float: always running, independent of scroll.
+         Lives on .volleyball, separate from the roll rotation below
+         which lives on the <img>, so the two never overwrite
+         each other's transform. ── */
     gsap.to(ball, {
       y: -12,
       rotate: 10,
@@ -1766,19 +2044,41 @@
       repeat: -1
     });
 
-    /* ── Cursor parallax: ball drifts gently toward the pointer,
-         but only while the flash-card stage is on screen, so it
-         doesn't fight the later "move to center" scroll animation ── */
-    const quickX = gsap.quickTo(ballCursor, 'x', { duration: 0.7, ease: 'power3.out' });
-    const quickY = gsap.quickTo(ballCursor, 'y', { duration: 0.7, ease: 'power3.out' });
+    /* ── Cursor follow + rolling rotation ──
+         The ball drifts toward the pointer (position, on
+         .volleyball-cursor) and spins continuously based on how far
+         the pointer has traveled horizontally (rotation, on the
+         <img> itself) — like it's actually rolling along with the
+         cursor rather than just nudging toward it. Both switch off
+         once the scroll-driven "move to center" stage takes over. ── */
+    const quickX = gsap.quickTo(ballCursor, 'x', { duration: 0.55, ease: 'power3.out' });
+    const quickY = gsap.quickTo(ballCursor, 'y', { duration: 0.55, ease: 'power3.out' });
+    const quickRotate = ballImg
+      ? gsap.quickTo(ballImg, 'rotation', { duration: 0.35, ease: 'power2.out' })
+      : null;
+
     let cursorParallaxActive = true;
+    let lastMouseX = null;
+    let rollRotation = 0;
 
     window.addEventListener('mousemove', (e) => {
       if (!cursorParallaxActive) return;
-      const relX = (e.clientX / window.innerWidth  - 0.5) * 24;
-      const relY = (e.clientY / window.innerHeight - 0.5) * 24;
+
+      // Position: follow the pointer within a generous radius
+      const relX = (e.clientX / window.innerWidth  - 0.5) * 46;
+      const relY = (e.clientY / window.innerHeight - 0.5) * 46;
       quickX(relX);
       quickY(relY);
+
+      // Rotation: roll proportionally to horizontal cursor movement
+      if (quickRotate) {
+        if (lastMouseX !== null) {
+          const deltaX = e.clientX - lastMouseX;
+          rollRotation += deltaX * 1.4;
+          quickRotate(rollRotation);
+        }
+        lastMouseX = e.clientX;
+      }
     }, { passive: true });
 
     /* ── Master scrubbed timeline ── */
@@ -1796,23 +2096,24 @@
     // Stage 1 — flash card + ball entrance
     tl.to(flashGroup, { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power2.out' }, 0);
 
-    // Stage 2 — flash card exits, hero title enters and settles higher
+    // Stage 2 — flash card exits, the WhatsApp chat screen opens
     tl.to(flashGroup, { opacity: 0, y: -30, scale: 0.94, duration: 0.8, ease: 'power2.in' }, 1.6)
-      .to(title, { opacity: 1, y: -60, duration: 1, ease: 'power2.out' }, 1.8)
-      .to(title, { y: -140, duration: 0.6, ease: 'power1.inOut' }, 2.8);
+      .to(chatScreen, { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power2.out' }, 1.9);
 
-    // Stage 3 — wish card 1 expands first, sequentially, then card 2
-    tl.to(card1, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 3.2)
-      .to(bubble1, { width: 340, duration: 1.1, ease: 'power2.inOut' }, 3.3)
-      .to(text1, { opacity: 1, duration: 0.6, ease: 'power1.out' }, 4.1)
-      .to(card2, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 4.8)
-      .to(bubble2, { width: 340, duration: 1.1, ease: 'power2.inOut' }, 4.9)
-      .to(text2, { opacity: 1, duration: 0.6, ease: 'power1.out' }, 5.7);
+    // Stage 3 — the two wishes land one at a time inside the chat,
+    // each bubble expanding out to reveal its message like a real
+    // incoming WhatsApp text.
+    tl.to(card1, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 3.0)
+      .to(bubble1, { width: 340, duration: 1.1, ease: 'power2.inOut' }, 3.1)
+      .to(text1, { opacity: 1, duration: 0.6, ease: 'power1.out' }, 3.9)
+      .to(card2, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 4.6)
+      .to(bubble2, { width: 340, duration: 1.1, ease: 'power2.inOut' }, 4.7)
+      .to(text2, { opacity: 1, duration: 0.6, ease: 'power1.out' }, 5.5);
 
-    // Stage 4 — cards fade, ball drifts to true center and grows,
-    // cursor parallax switches off so the scroll-driven move wins
+    // Stage 4 — the chat screen closes, ball drifts to true center and
+    // grows, cursor parallax switches off so the scroll-driven move wins
     tl.call(() => { cursorParallaxActive = false; }, null, 6.4)
-      .to([card1, card2, title], { opacity: 0, duration: 0.7, ease: 'power1.in' }, 6.4)
+      .to(chatScreen, { opacity: 0, y: -20, scale: 0.94, duration: 0.7, ease: 'power1.in' }, 6.4)
       .to(ballCursor, { x: 0, y: 0, duration: 0.6, ease: 'power2.inOut' }, 6.4)
       .to(ballWrap, {
         x: () => -1 * (flashGroup.querySelector('.flash-card').offsetWidth / 2 + 11),
@@ -1821,15 +2122,40 @@
         ease: 'power2.inOut'
       }, 6.6);
 
-    // Stage 5 — videos emerge outward from the ball, ball fades as it
-    // "becomes" the video experience, both videos start playing
+    // Stage 5 — the ball fades as it "becomes" the video experience,
+    // and only the FIRST video is revealed + played. The rest start
+    // hidden — see the sequential player below, which brings each one
+    // in only once the previous one has actually finished.
     tl.to(ballWrap, { opacity: 0, scale: 2.1, duration: 0.7, ease: 'power2.in' }, 7.8)
-      .to(videoLeft,  { opacity: 1, x: 0, scale: 1, duration: 1, ease: 'power3.out' }, 8.0)
-      .to(videoRight, { opacity: 1, x: 0, scale: 1, duration: 1, ease: 'power3.out' }, 8.0)
+      .to(videos[0], { opacity: 1, scale: 1, duration: 1, ease: 'power3.out' }, 8.0)
       .call(() => {
-        videoLeft.play().catch(() => {});
-        videoRight.play().catch(() => {});
+        if (!videos[0]) return;
+        videos[0].currentTime = 0;
+        videos[0].play().catch(() => {});
       }, null, 8.0);
+
+    /* ── Sequential video player (N videos, one after another) ──
+         Runs outside the scrubbed timeline, on real playback time —
+         each video only ever appears once the previous one has
+         actually finished, never simultaneously. Add/remove ids from
+         the `videos` array above to change how many play. */
+    videos.forEach((current, i) => {
+      const next = videos[i + 1];
+      if (!next) return; // last video just plays (and loops, via HTML)
+      current.addEventListener('ended', () => {
+        gsap.to(current, { opacity: 0, scale: 0.9, duration: 0.5, ease: 'power2.in' });
+        gsap.to(next, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          ease: 'power3.out',
+          onStart: () => {
+            next.currentTime = 0;
+            next.play().catch(() => {});
+          }
+        });
+      });
+    });
   })();
   </script>
 
@@ -2109,6 +2435,48 @@
     }, { threshold: 0.35 });
 
     observer.observe(section);
+  })();
+  </script>
+
+  <!-- ── Siblings to Friends: pinned columns + video reveal (GSAP) ── -->
+  <script>
+  (function() {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    const pin        = document.getElementById('siblingsPin');
+const col1       = document.getElementById('sibCol1');
+const col2       = document.getElementById('sibCol2');
+const col3       = document.getElementById('sibCol3');
+const columns    = document.getElementById('siblingsColumns');
+const titleWrap  = document.getElementById('siblingsTitleWrap');
+const label      = document.getElementById('siblingsLabel');
+const videoStage = document.getElementById('siblingsVideoStage');
+const video      = document.getElementById('siblingsVideo');
+if (!pin || !col1 || !col2 || !col3) return;
+
+const D1 = 420, D2 = 640, D3 = 360;
+
+const tl = gsap.timeline({
+  scrollTrigger: { trigger: pin, start: 'top top', end: 'bottom bottom', scrub: 1 }
+});
+
+tl.to(col1, { y: -D1, ease: 'none', duration: 3 }, 0)
+  .to(col2, { y: -D2, ease: 'none', duration: 3 }, 0)
+  .to(col3, { y: -D3, ease: 'none', duration: 3 }, 0)
+  .to(titleWrap, { opacity: 0, duration: 0.6 }, 2.2);
+
+tl.to(columns, { opacity: 0, scale: 0.92, duration: 0.8, ease: 'power2.in' }, 3.0)
+  .to(label,   { opacity: 0, duration: 0.5 }, 3.0)
+  .to(videoStage, {
+    opacity: 1,
+    pointerEvents: 'auto',
+    duration: 0.9,
+    ease: 'power2.out',
+    onStart: () => { if (video) video.play().catch(() => {}); }
+  }, 3.3);
+
+video && video.addEventListener('click', () => { video.muted = !video.muted; });
   })();
   </script>
 
