@@ -962,7 +962,7 @@
        sequence. Increase/decrease to slow down or speed up the story. */
     .story-pin {
       position: relative;
-      height: 780vh;
+      height: 860vh;
     }
 
     .story-sticky {
@@ -1076,16 +1076,20 @@
    A single "phone screen" that fades in as one unit: a real chat
    header bar (back arrow, group avatar, group name, subtitle) on
    top, and the wish bubbles arriving one at a time underneath it,
-   the way messages actually land in a WhatsApp thread. */
+   the way messages actually land in a WhatsApp thread. Enlarged
+   so long messages (like Kevin Sir's) are fully visible, with an
+   internal scroll fallback for anything still overflowing. */
 .wa-chat-screen {
-  width: min(560px, 90vw);
-  max-height: min(72vh, 640px);
+  position: relative;
+  z-index: 1;
+  width: min(680px, 94vw);
+  max-height: min(88vh, 820px);
   display: flex;
   flex-direction: column;
   border-radius: 16px;
   overflow: hidden;
   background: #0b141a;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+  box-shadow: 0 30px 90px rgba(0,0,0,0.6);
   opacity: 0;
   transform: translateY(30px) scale(0.96);
 }
@@ -1158,15 +1162,28 @@
 
 .wa-chat-icons svg { width: 19px; height: 19px; fill: #8696a0; }
 
+/* Scrolls internally (with a slim styled scrollbar) instead of
+   clipping content — this is what was cutting off Kevin Sir's
+   message before. */
 .wa-chat-body {
-  padding: 24px 20px;
+  padding: 26px 24px;
   display: flex;
   flex-direction: column;
   gap: 22px;
   background:
     linear-gradient(rgba(11,20,26,0.95), rgba(11,20,26,0.95)),
     repeating-linear-gradient(135deg, rgba(255,255,255,0.012) 0 2px, transparent 2px 42px);
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(212,162,76,0.4) transparent;
+}
+
+.wa-chat-body::-webkit-scrollbar { width: 6px; }
+.wa-chat-body::-webkit-scrollbar-track { background: transparent; }
+.wa-chat-body::-webkit-scrollbar-thumb {
+  background: rgba(212,162,76,0.35);
+  border-radius: 3px;
 }
 
     /* ── Stage 3: wish cards, arriving one at a time inside the chat ── */
@@ -1201,6 +1218,7 @@
       border-radius: 14px;
       padding: 14px 18px;
       width: 74px;
+      max-width: 100%;
       overflow: hidden;
       white-space: nowrap;
     }
@@ -1255,8 +1273,31 @@
       transform: scale(0.35);
     }
 
+    /* ── Fullscreen banner behind the chat screen ──
+       Fills the entire pinned section (same size as the 1920×1080
+       sticky viewport), not just the chat panel's own footprint.
+       Starts fully transparent — GSAP fades it in once the flash
+       card stage has finished and the chat screen opens, and fades
+       it back out before the video stage, so it's scoped to that
+       one moment of the story rather than always visible. */
+    .wa-bg-figure {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0;
+      overflow: hidden;
+    }
+
+    .wa-bg-figure img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
     @media (max-width: 560px) {
-      .wa-chat-screen { width: 94vw; }
+      .wa-chat-screen { width: 96vw; max-height: 82vh; }
       .story-videos { width: 62vw; height: 44vh; }
     }
 
@@ -1279,7 +1320,7 @@
 
     .siblings-title-wrap {
       position: absolute;
-      top: 56px;
+      top: 28px;
       left: 0;
       right: 0;
       z-index: 3;
@@ -1305,6 +1346,10 @@
       color: var(--crimson);
       opacity: 0.85;
       transition: opacity 0.3s;
+      background: rgba(26,16,16,0.55);
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 20px;
     }
 
     .siblings-columns {
@@ -1313,10 +1358,11 @@
   display: flex;
   gap: 20px;
   width: min(1000px, 92vw);
-  height: 76vh;
+  height: 68vh;
+  margin-top: 110px;
   overflow: hidden;
-  mask-image: linear-gradient(to bottom, transparent, black 14%, black 88%, transparent);
-  -webkit-mask-image: linear-gradient(to bottom, transparent, black 14%, black 88%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, black 8%, black 94%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 8%, black 94%, transparent);
 }
 
 .sib-col { flex: 1; display: flex; flex-direction: column; gap: 20px; will-change: transform; }
@@ -1374,10 +1420,10 @@
     }
 
     @media (max-width: 640px) {
-  .siblings-columns { gap: 12px; height: 66vh; width: 94vw; }
+  .siblings-columns { gap: 12px; height: 60vh; width: 94vw; margin-top: 96px; }
   .sib-col { gap: 12px; }
   .sib-col-mid { margin-top: -75px; }
-  .siblings-title-wrap { top: 36px; }
+  .siblings-title-wrap { top: 20px; }
     }
   </style>
 </head>
@@ -1434,7 +1480,7 @@
       <div class="gallery-track" id="galleryTrack">
         <div class="photo-card" data-role="photo">
           <div class="photo-frame">
-            <img src="assets/childhoo1.jpeg" alt="Memory one">
+            <img src="assets/0-5.jpeg" alt="Memory one">
             <span class="photo-idx">01</span>
             <span class="photo-year">2016</span>
           </div>
@@ -1446,7 +1492,7 @@
 
         <div class="photo-card" data-role="photo">
           <div class="photo-frame">
-            <img src="assets/childhoo2.jpeg" alt="Memory two">
+            <img src="assets/6-10.jpeg" alt="Memory two">
             <span class="photo-idx">02</span>
             <span class="photo-year">2019</span>
           </div>
@@ -1458,7 +1504,7 @@
 
         <div class="photo-card" data-role="photo">
           <div class="photo-frame">
-            <img src="assets/childhoo3.jpeg" alt="Memory three">
+            <img src="assets/11-15.jpeg" alt="Memory three">
             <span class="photo-idx">03</span>
             <span class="photo-year">2022</span>
           </div>
@@ -1470,7 +1516,7 @@
 
         <div class="photo-card" data-role="photo">
           <div class="photo-frame">
-            <img src="assets/childhoo4.jpeg" alt="Memory four">
+            <img src="assets/16-now.jpeg" alt="Memory four">
             <span class="photo-idx">04</span>
             <span class="photo-year">2026</span>
           </div>
@@ -1502,9 +1548,12 @@
     <div class="gift-modal-backdrop" id="giftModalBackdrop"></div>
     <div class="gift-modal-panel">
       <button class="gift-modal-close" id="giftModalClose" aria-label="Close">✕</button>
-      <!-- Two videos play back to back. Swap the paths in the VIDEOS
-           array further down if your filenames are different. -->
-      <video id="giftVideo" class="gift-video" playsinline controls></video>
+      <!-- Two videos play back to back, centered in this modal. Swap
+           the paths in the VIDEOS array further down if your
+           filenames are different. -->
+      <iframe id="giftVideo" class="gift-video" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" 
+      title="Birthday wish video" frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       <p class="gift-modal-caption" id="giftVideoCaption">wish 1 of 2</p>
     </div>
   </div>
@@ -1529,7 +1578,7 @@
 
       <div class="flash-text">
         <div class="flash-title">Wishes From Your Team</div>
-        <div class="flash-sub">2 new messages</div>
+        <div class="flash-sub">3 New messages</div>
       </div>
     </div>
 
@@ -1548,10 +1597,16 @@
 </div>
 
         <!-- Stage 2 + 3: WhatsApp-style chat screen — a group chat
-             header ("Wishes From Volleyball Team") with the two
-             wishes landing one at a time underneath it, like real
-             incoming messages. -->
+             header ("Wishes From Volleyball Team") with the wishes
+             landing one at a time underneath it, like real incoming
+             messages. The full-screen banner behind it only fades
+             in once this stage starts (i.e. after the flash card),
+             driven by GSAP further down. -->
         <div class="story-layer">
+          <div class="wa-bg-figure" id="waBgFigure" aria-hidden="true">
+            <img src="assets/bg-dark.png" alt="">
+          </div>
+
           <div class="wa-chat-screen" id="waChatScreen">
             <div class="wa-chat-header">
               <div class="wa-chat-back">&#8592;</div>
@@ -1560,7 +1615,7 @@
               </div>
               <div class="wa-chat-titles">
                 <div class="wa-chat-title">Wishes From Volleyball Team</div>
-                <div class="wa-chat-sub">Dhivya Ma'am, Maha Akka</div>
+                <div class="wa-chat-sub">Dhivya Ma'am, Maha Akka, Kevin Sir</div>
               </div>
               <div class="wa-chat-icons">
                 <svg viewBox="0 0 24 24"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/></svg>
@@ -1570,17 +1625,29 @@
             <div class="wa-chat-body" id="waChatBody">
               <div class="story-cards" id="storyCards">
                 <div class="story-card" id="storyCard1">
-                  <div class="story-dp"><img src="assets/dhivya-ma'am-dp.png" alt="Dhivya Ma'am"></div>
+                  <div class="story-dp"><img src="assets/0dhivya-ma'am-dp.png" alt="Dhivya Ma'am"></div>
                   <div class="story-bubble" id="storyBubble1">
                     <div class="story-bubble-name">Dhivya Ma'am</div>
                     <div class="story-bubble-text" id="storyText1">Wish you many more happy returns of the day maaa 🎂</div>
                   </div>
                 </div>
                 <div class="story-card" id="storyCard2">
-                  <div class="story-dp"><img src="assets/maha-dp.jpeg" alt="Maha Akka"></div>
+                  <div class="story-dp"><img src="assets/0maha-dp-1.png" alt="Maha Akka"></div>
                   <div class="story-bubble" id="storyBubble2">
                     <div class="story-bubble-name">Maha Akka</div>
-                    <div class="story-bubble-text" id="storyText2">Happiee birthday Lakshmiiii✨ Stay blessed and be happy always 💫 May all your wishes and dreams comes true ❣️</div>
+                    <div class="story-bubble-text" id="storyText2">Happiee birthday Lakshmiiii✨ 
+                      Stay blessed and be happy always 💫 May all your wishes and dreams comes true ❣️</div>
+                  </div>
+                </div>
+                <div class="story-card" id="storyCard3">
+                  <div class="story-dp"><img src="assets/0kevin-sir-dp.png" alt="Kevin Sir"></div>
+                  <div class="story-bubble" id="storyBubble3">
+                    <div class="story-bubble-name">Kevin Sir</div>
+                    <div class="story-bubble-text" id="storyText3">Many more happy returns of the born day Lakshmi <br>
+                      <br>Your efforts will achieve your goal. Keep on aiming high. 
+                      My heartfelt wishes for your upcoming success in your life.<br> 
+                      <br>Take care
+                      God will bless you for your efforts.</div>
                   </div>
                 </div>
               </div>
@@ -1693,22 +1760,20 @@
 
         <div class="siblings-columns" id="siblingsColumns">
           <div class="sib-col" id="sibCol1">
-            <div class="sib-photo"><img src="assets/sib1.jpeg" alt=""></div>
-            <div class="sib-photo"><img src="assets/sib2.jpeg" alt=""></div>
-            <div class="sib-photo"><img src="assets/sib3.jpeg" alt=""></div>
-            <div class="sib-photo"><img src="assets/sib4.jpeg" alt=""></div>
+            <div class="sib-photo"><img src="assets/5.jpeg" alt=""></div>
+            <div class="sib-photo"><img src="assets/12.jpeg" alt=""></div>
+            <div class="sib-photo"><img src="assets/3.jpeg" alt=""></div>
           </div>
           <div class="sib-col sib-col-mid" id="sibCol2">
-            <div class="sib-photo"><img src="assets/sib5.jpeg" alt=""></div>
-            <div class="sib-photo"><img src="assets/sib6.jpeg" alt=""></div>
-            <div class="sib-photo"><img src="assets/sib7.jpeg" alt=""></div>
-            <div class="sib-photo"><img src="assets/sib8.jpeg" alt=""></div>
+            <div class="sib-photo"><img src="assets/8.jpeg" alt=""></div>
+            <div class="sib-photo"><img src="assets/16.jpeg" alt=""></div>
+            <div class="sib-photo"><img src="assets/4.jpeg" alt=""></div>
+            <div class="sib-photo"><img src="assets/8.jpeg" alt=""></div>
           </div>
           <div class="sib-col" id="sibCol3">
-  <div class="sib-photo"><img src="assets/sib9.jpeg" alt=""></div>
-  <div class="sib-photo"><img src="assets/sib10.jpeg" alt=""></div>
-  <div class="sib-photo"><img src="assets/sib11.jpeg" alt=""></div>
-  <div class="sib-photo"><img src="assets/sib12.jpeg" alt=""></div>
+  <div class="sib-photo"><img src="assets/9.jpeg" alt=""></div>
+  <div class="sib-photo"><img src="assets/10.jpeg" alt=""></div>
+  <div class="sib-photo"><img src="assets/15.jpeg" alt=""></div>
 </div>
         </div>
 
@@ -1879,7 +1944,18 @@
 
   <!-- ── Gift box: tap to open, plays birthday wish video(s) centered
        in a wide modal over the page. Once BOTH videos finish playing
-       naturally (not on manual close), it reveals the WhatsApp fab. ── -->
+       naturally (not on manual close), it reveals the WhatsApp fab.
+
+       FIX: video.play() is now called SYNCHRONOUSLY inside the click
+       handler (no setTimeout in between). Browsers only allow an
+       unmuted <video> to autoplay if .play() is called as a direct,
+       uninterrupted result of a user gesture (like a click). The
+       previous version called play() from inside a setTimeout, which
+       breaks that chain in stricter browsers (especially Safari/iOS),
+       so the play() promise silently rejected and nothing appeared to
+       happen. The lid-opening animation still plays via CSS, which is
+       independent of JS timing, so visually nothing changes — the
+       video now actually starts. ── -->
   <script>
   (function() {
     const giftBox      = document.getElementById('giftBox');
@@ -1890,8 +1966,9 @@
     const caption      = document.getElementById('giftVideoCaption');
     if (!giftBox || !modal || !video) return;
 
-    // Two videos, played back to back. Update these paths to match
-    // your actual filenames in /assets.
+    // Two videos, played back to back, centered in the modal. Update
+    // these paths to match your actual filenames in /assets exactly
+    // (including capitalization and extension).
     const VIDEOS = [
       'assets/mosaic.mp4',
       'assets/mosaic2.mp4'
@@ -1907,7 +1984,15 @@
         ? `wish ${i + 1} of ${queue.length}`
         : 'a birthday wish';
       video.load();
-      video.play().catch(() => { /* autoplay may need a tap on some browsers */ });
+      const p = video.play();
+      if (p && typeof p.catch === 'function') {
+        p.catch(err => {
+          // Surface playback issues instead of failing silently, so
+          // it's obvious in the console if a filename is wrong or the
+          // browser blocked it.
+          console.error('Gift video failed to play:', queue[i], err);
+        });
+      }
     }
 
     function openModal() {
@@ -1943,7 +2028,10 @@
 
     giftBox.addEventListener('click', () => {
       giftBox.classList.add('opened');
-      setTimeout(openModal, 420);
+      // openModal() (and therefore video.play()) now runs synchronously,
+      // in the same tick as the click — this preserves the user-gesture
+      // permission browsers require to autoplay unmuted video.
+      openModal();
     });
 
     closeBtn.addEventListener('click', closeModal);
@@ -1988,9 +2076,9 @@
   <!-- ══════════════════════════════════════════════════
        ── Cinematic story sequence (GSAP ScrollTrigger) ──
        One scrubbed timeline drives every stage: flash card + ball →
-       title → sequential wish-card expansion → ball centers → videos
-       emerge. The volleyball uses four independent transforms so its
-       motions never fight each other:
+       title → sequential wish-card expansion (3 wishes) → ball
+       centers → videos emerge. The volleyball uses four independent
+       transforms so its motions never fight each other:
          .volleyball        → idle up/down wobble (always running)
          .volleyball-cursor → position drift toward the pointer
          .volleyball-wrap   → scroll-driven "move to center" tween
@@ -2001,7 +2089,7 @@
        Tuning tip: every stage below is placed on the timeline with an
        explicit start time (the second argument to .to()). Nudge those
        numbers to speed up/slow down a stage relative to the others,
-       and adjust `.story-pin { height: 650vh }` in the CSS above to
+       and adjust `.story-pin { height: 860vh }` in the CSS above to
        change the overall scroll distance for the whole sequence.
        ══════════════════════════════════════════════════ -->
   <script>
@@ -2016,12 +2104,16 @@
     const ball         = document.getElementById('volleyball');
     const ballImg      = ball ? ball.querySelector('img') : null;
     const chatScreen   = document.getElementById('waChatScreen');
+    const bgFigure     = document.getElementById('waBgFigure');
     const card1        = document.getElementById('storyCard1');
     const card2        = document.getElementById('storyCard2');
+    const card3        = document.getElementById('storyCard3');
     const bubble1      = document.getElementById('storyBubble1');
     const bubble2      = document.getElementById('storyBubble2');
+    const bubble3      = document.getElementById('storyBubble3');
     const text1        = document.getElementById('storyText1');
     const text2        = document.getElementById('storyText2');
+    const text3        = document.getElementById('storyText3');
 
     // Sequential videos — add or remove ids here if the count changes.
     // Only the LAST one should keep the `loop` attribute in the HTML.
@@ -2098,41 +2190,46 @@
 
     // Stage 2 — flash card exits, the WhatsApp chat screen opens
     tl.to(flashGroup, { opacity: 0, y: -30, scale: 0.94, duration: 0.8, ease: 'power2.in' }, 1.6)
-      .to(chatScreen, { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power2.out' }, 1.9);
+      .to(chatScreen, { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power2.out' }, 1.9)
+      .to(bgFigure, { opacity: 0.55, duration: 1.2, ease: 'power2.out' }, 1.9);
 
-    // Stage 3 — the two wishes land one at a time inside the chat,
+    // Stage 3 — the three wishes land one at a time inside the chat,
     // each bubble expanding out to reveal its message like a real
     // incoming WhatsApp text.
     tl.to(card1, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 3.0)
-      .to(bubble1, { width: 340, duration: 1.1, ease: 'power2.inOut' }, 3.1)
+      .to(bubble1, { width: 400, duration: 1.1, ease: 'power2.inOut' }, 3.1)
       .to(text1, { opacity: 1, duration: 0.6, ease: 'power1.out' }, 3.9)
       .to(card2, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 4.6)
-      .to(bubble2, { width: 340, duration: 1.1, ease: 'power2.inOut' }, 4.7)
-      .to(text2, { opacity: 1, duration: 0.6, ease: 'power1.out' }, 5.5);
+      .to(bubble2, { width: 400, duration: 1.1, ease: 'power2.inOut' }, 4.7)
+      .to(text2, { opacity: 1, duration: 0.6, ease: 'power1.out' }, 5.5)
+      .to(card3, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 6.2)
+      .to(bubble3, { width: 400, duration: 1.1, ease: 'power2.inOut' }, 6.3)
+      .to(text3, { opacity: 1, duration: 0.6, ease: 'power1.out' }, 7.1);
 
     // Stage 4 — the chat screen closes, ball drifts to true center and
     // grows, cursor parallax switches off so the scroll-driven move wins
-    tl.call(() => { cursorParallaxActive = false; }, null, 6.4)
-      .to(chatScreen, { opacity: 0, y: -20, scale: 0.94, duration: 0.7, ease: 'power1.in' }, 6.4)
-      .to(ballCursor, { x: 0, y: 0, duration: 0.6, ease: 'power2.inOut' }, 6.4)
+    tl.call(() => { cursorParallaxActive = false; }, null, 7.9)
+      .to(chatScreen, { opacity: 0, y: -20, scale: 0.94, duration: 0.7, ease: 'power1.in' }, 7.9)
+      .to(bgFigure, { opacity: 0, duration: 0.7, ease: 'power1.in' }, 7.9)
+      .to(ballCursor, { x: 0, y: 0, duration: 0.6, ease: 'power2.inOut' }, 7.9)
       .to(ballWrap, {
         x: () => -1 * (flashGroup.querySelector('.flash-card').offsetWidth / 2 + 11),
         scale: 1.6,
         duration: 1.2,
         ease: 'power2.inOut'
-      }, 6.6);
+      }, 8.1);
 
     // Stage 5 — the ball fades as it "becomes" the video experience,
     // and only the FIRST video is revealed + played. The rest start
     // hidden — see the sequential player below, which brings each one
     // in only once the previous one has actually finished.
-    tl.to(ballWrap, { opacity: 0, scale: 2.1, duration: 0.7, ease: 'power2.in' }, 7.8)
-      .to(videos[0], { opacity: 1, scale: 1, duration: 1, ease: 'power3.out' }, 8.0)
+    tl.to(ballWrap, { opacity: 0, scale: 2.1, duration: 0.7, ease: 'power2.in' }, 9.3)
+      .to(videos[0], { opacity: 1, scale: 1, duration: 1, ease: 'power3.out' }, 9.5)
       .call(() => {
         if (!videos[0]) return;
         videos[0].currentTime = 0;
         videos[0].play().catch(() => {});
-      }, null, 8.0);
+      }, null, 9.5);
 
     /* ── Sequential video player (N videos, one after another) ──
          Runs outside the scrubbed timeline, on real playback time —
