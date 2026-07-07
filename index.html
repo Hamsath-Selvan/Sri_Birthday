@@ -869,15 +869,30 @@
       color: var(--gold);
     }
 
-    .gift-video {
-      display: block;
+    /* ── Gift video player wrapper ──
+         The YouTube IFrame API replaces the inner #giftVideo div with
+         its own <iframe>, and that generated iframe does NOT reliably
+         inherit any class we put on the original div. So instead of
+         styling the div directly, we size a stable wrapper around it
+         and target "any iframe inside it" — this way it doesn't matter
+         what attributes YouTube's own iframe ends up with. */
+    .gift-video-wrap {
+      position: relative;
       width: min(860px, 100%);
       height: min(60vh, calc(100vh - 210px));
       margin: 0 auto;
-      object-fit: contain;
-      object-position: center center;
       border-radius: 8px;
+      overflow: hidden;
       background: #000;
+    }
+
+    .gift-video-wrap iframe {
+      position: absolute;
+      inset: 0;
+      width: 100% !important;
+      height: 100% !important;
+      border: none;
+      display: block;
     }
 
     .gift-modal-caption {
@@ -1163,8 +1178,10 @@
 .wa-chat-icons svg { width: 19px; height: 19px; fill: #8696a0; }
 
 /* Scrolls internally (with a slim styled scrollbar) instead of
-   clipping content — this is what was cutting off Kevin Sir's
-   message before. */
+   clipping content. overflow-anchor: none stops the browser's
+   scroll-anchoring heuristic from silently moving scrollTop when
+   new content (the expanding bubbles) is added while this box is
+   scrolled — otherwise it would auto-jump to the bottom message. */
 .wa-chat-body {
   padding: 26px 24px;
   display: flex;
@@ -1175,6 +1192,7 @@
     repeating-linear-gradient(135deg, rgba(255,255,255,0.012) 0 2px, transparent 2px 42px);
   overflow-y: auto;
   overflow-x: hidden;
+  overflow-anchor: none;
   scrollbar-width: thin;
   scrollbar-color: rgba(212,162,76,0.4) transparent;
 }
@@ -1497,7 +1515,7 @@
             <span class="photo-year">2019</span>
           </div>
           <div class="photo-caption">
-            <span class="tag">Turning point</span>
+            <span class="tag">Friskiness</span>
             <h3>Loud laughs, longer summers</h3>
           </div>
         </div>
@@ -1548,12 +1566,14 @@
     <div class="gift-modal-backdrop" id="giftModalBackdrop"></div>
     <div class="gift-modal-panel">
       <button class="gift-modal-close" id="giftModalClose" aria-label="Close">✕</button>
-      <!-- Two videos play back to back, centered in this modal. Swap
-           the paths in the VIDEOS array further down if your
-           filenames are different. -->
-      <iframe id="giftVideo" class="gift-video" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" 
-      title="Birthday wish video" frameborder="0" 
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <!-- The YouTube player is created here by JS via the IFrame API.
+           #giftVideo is just the mount point YT.Player replaces with its
+           own <iframe> — the surrounding .gift-video-wrap is what we
+           actually size, since the generated iframe won't reliably keep
+           any class we put on the original div. -->
+      <div class="gift-video-wrap">
+        <div id="giftVideo"></div>
+      </div>
       <p class="gift-modal-caption" id="giftVideoCaption">wish 1 of 2</p>
     </div>
   </div>
@@ -1596,12 +1616,7 @@
   </div>
 </div>
 
-        <!-- Stage 2 + 3: WhatsApp-style chat screen — a group chat
-             header ("Wishes From Volleyball Team") with the wishes
-             landing one at a time underneath it, like real incoming
-             messages. The full-screen banner behind it only fades
-             in once this stage starts (i.e. after the flash card),
-             driven by GSAP further down. -->
+        <!-- Stage 2 + 3: WhatsApp-style chat screen — a group chat -->
         <div class="story-layer">
           <div class="wa-bg-figure" id="waBgFigure" aria-hidden="true">
             <img src="assets/bg-dark.png" alt="">
@@ -1625,14 +1640,14 @@
             <div class="wa-chat-body" id="waChatBody">
               <div class="story-cards" id="storyCards">
                 <div class="story-card" id="storyCard1">
-                  <div class="story-dp"><img src="assets/0dhivya-ma'am-dp.png" alt="Dhivya Ma'am"></div>
+                  <div class="story-dp"><img src="assets/dhivya-ma'am-dp.png" alt="Dhivya Ma'am"></div>
                   <div class="story-bubble" id="storyBubble1">
                     <div class="story-bubble-name">Dhivya Ma'am</div>
                     <div class="story-bubble-text" id="storyText1">Wish you many more happy returns of the day maaa 🎂</div>
                   </div>
                 </div>
                 <div class="story-card" id="storyCard2">
-                  <div class="story-dp"><img src="assets/0maha-dp-1.png" alt="Maha Akka"></div>
+                  <div class="story-dp"><img src="assets/maha-dp-1.png" alt="Maha Akka"></div>
                   <div class="story-bubble" id="storyBubble2">
                     <div class="story-bubble-name">Maha Akka</div>
                     <div class="story-bubble-text" id="storyText2">Happiee birthday Lakshmiiii✨ 
@@ -1640,7 +1655,7 @@
                   </div>
                 </div>
                 <div class="story-card" id="storyCard3">
-                  <div class="story-dp"><img src="assets/0kevin-sir-dp.png" alt="Kevin Sir"></div>
+                  <div class="story-dp"><img src="assets/kevin-sir-dp.png" alt="Kevin Sir"></div>
                   <div class="story-bubble" id="storyBubble3">
                     <div class="story-bubble-name">Kevin Sir</div>
                     <div class="story-bubble-text" id="storyText3">Many more happy returns of the born day Lakshmi <br>
@@ -1691,6 +1706,235 @@
       </div>
     
     </div> 
+<!-- ============================================================
+     FAMILY CONSTELLATION SECTION
+ -->
+
+<section class="fc-section" id="family" aria-label="Family photo constellation">
+  <header class="fc-header">
+    
+    <h2 class="fc-title">A little <em>Constellation</em> of us.</h2>
+    <p class="fc-sub">
+      Scroll slowly. Every photo drifts at its own paces.
+    </p>
+  </header>
+
+  <!-- Desktop scattered stage -->
+  <div class="fc-stage">
+   
+
+    <figure class="fc-card fc-portrait"  data-speed="1.2" style="top:4%;  left:6%;  --r:-6deg;">
+      <span class="fc-tape"></span>
+      <div class="fc-photo"><img src="assets/fam4.jpeg" alt="Selvan Sujathan" loading="lazy"></div>
+      <figcaption class="fc-cap"><span class="fc-label">Selvan Sujatha</span><span class="fc-caption">her light</span></figcaption>
+    </figure>
+
+    <figure class="fc-card fc-landscape" data-speed="0.6" style="top:2%;  left:36%; --r:3deg;">
+      <span class="fc-tape"></span>
+      <div class="fc-photo"><img src="assets/fam1.jpeg" alt="Dad and us" loading="lazy"></div>
+      <figcaption class="fc-cap"><span class="fc-label">Dad &amp; us</span><span class="fc-caption">sunday, funday</span></figcaption>
+    </figure>
+
+    <figure class="fc-card fc-portrait"  data-speed="1.6" style="top:10%; left:74%; --r:5deg;">
+      <span class="fc-tape"></span>
+      <div class="fc-photo"><img src="assets/fam5.jpeg" alt="The birthday girl" loading="lazy"></div>
+      <figcaption class="fc-cap"><span class="fc-label"> Trio</span><span class="fc-caption">Mom & Daughters</span></figcaption>
+    </figure>
+
+    <figure class="fc-card fc-landscape" data-speed="0.9" style="top:36%; left:2%;  --r:-4deg;">
+      <span class="fc-tape"></span>
+      <div class="fc-photo"><img src="assets/fam11.jpeg" alt="Diwali 2019" loading="lazy"></div>
+      <figcaption class="fc-cap"><span class="fc-label">Evergreen Couples</span>
+        </figcaption>
+    </figure>
+
+    <figure class="fc-card fc-landscape" data-speed="1.3" style="top:44%; left:34%; --r:2deg;">
+      <span class="fc-tape"></span>
+      <div class="fc-photo"><img src="assets/fam8.jpeg" alt="All of us" loading="lazy"></div>
+      <figcaption class="fc-cap"><span class="fc-label">All of us</span><span class="fc-caption">the whole crew</span></figcaption>
+    </figure>
+    
+<figure class="fc-card fc-landscape" data-speed="1.3" style="top:44%; left:34%; --r:2deg;">
+      <span class="fc-tape"></span>
+      <div class="fc-photo"><img src="assets/fam8.jpeg" alt="All of us" loading="lazy"></div>
+      <figcaption class="fc-cap"><span class="fc-label">All of us</span><span class="fc-caption">the whole crew</span></figcaption>
+    </figure>
+
+    <figure class="fc-card fc-portrait" data-speed="1.4" style="top:38%; left:74%; --r:-5deg;">
+      <span class="fc-tape"></span>
+      <div class="fc-photo"><img src="assets/fam7.jpeg" alt="New memory" loading="lazy"></div>
+      <figcaption class="fc-cap"><span class="fc-label">The Girls</span><span class="fc-caption">Master the Blaster </span></figcaption>
+    </figure>
+
+    
+    <figure class="fc-card fc-landscape" data-speed="1.1" style="top:72%; left:calc(50% - 380px); width:760px; --r:-3deg;">
+  <span class="fc-tape"></span>
+  <div class="fc-photo" style="aspect-ratio:1600/732;"><img src="assets/fam9.jpeg" alt="Today" loading="lazy"></div>
+  <figcaption class="fc-cap"><span class="fc-label">All of us</span><span class="fc-caption">still the same, only louder</span></figcaption>
+</figure>
+
+    
+  </div>
+
+  <!-- Mobile stacked fallback (auto-shown under 860px) -->
+  <div class="fc-stack" aria-hidden="true">
+    <figure class="fc-card fc-portrait  fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">Mom</span><span class="fc-caption">her light</span></figcaption></figure>
+    <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?w=900&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">Dad &amp; us</span><span class="fc-caption">sunday, everywhere</span></figcaption></figure>
+    <figure class="fc-card fc-portrait  fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">The birthday girl</span><span class="fc-caption">always been the sun</span></figcaption></figure>
+    <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1604423043492-41303370a171?w=900&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">Diwali '19</span><span class="fc-caption">diyas &amp; mischief</span></figcaption></figure>
+    <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1000&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">All of us</span><span class="fc-caption">the whole crew</span></figcaption></figure>
+    
+  </div>
+
+  <!-- Mobile stacked fallback (auto-shown under 860px) -->
+  <div class="fc-stack" aria-hidden="true">
+    <figure class="fc-card fc-portrait  fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">Mom</span><span class="fc-caption">her light</span></figcaption></figure>
+    <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?w=900&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">Dad &amp; us</span><span class="fc-caption">sunday, everywhere</span></figcaption></figure>
+    <figure class="fc-card fc-portrait  fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">The birthday girl</span><span class="fc-caption">always been the sun</span></figcaption></figure>
+    <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1604423043492-41303370a171?w=900&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">Diwali '19</span><span class="fc-caption">diyas &amp; mischief</span></figcaption></figure>
+    <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1000&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">All of us</span><span class="fc-caption">the whole crew</span></figcaption></figure>
+    <figure class="fc-card fc-portrait  fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?w=600&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">Little you</span><span class="fc-caption">same smile, smaller</span></figcaption></figure>
+    <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=1000&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">Today</span><span class="fc-caption">still the same, only louder</span></figcaption></figure>
+     </div>
+</section>
+
+<style>
+  /* ── Family Constellation ── */
+  .fc-section {
+    position: relative;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(212,162,76,0.18) 0%, transparent 60%),
+      radial-gradient(900px 500px at 0% 100%, rgba(179,18,46,0.18) 0%, transparent 55%),
+      var(--dark);
+    color: var(--cream);
+    padding: 120px 32px 160px;
+    overflow: hidden;
+    font-family: 'Fraunces', Georgia, serif;
+  }
+  .fc-header { max-width: 720px; margin: 0 auto 64px; text-align: center; position: relative; z-index: 2; }
+  .fc-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 4px;
+    color: var(--crimson);
+    text-transform: uppercase;
+    margin: 0 0 20px;
+  }
+  .fc-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(36px, 5vw, 68px);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin: 0 0 16px;
+    color: var(--cream);
+  }
+  .fc-title em { font-style: italic; color: var(--gold); font-weight: 300; }
+  .fc-sub { font-family: 'Fraunces', serif; font-size: 1rem; color: var(--muted, #a88); margin: 0; }
+
+  .fc-stage { position: relative; max-width: 1200px; margin: 0 auto; height: 1150px; }
+
+  .fc-card {
+    position: absolute;
+    background: var(--cream);
+    padding: 14px 14px 44px;
+    box-shadow:
+      0 2px 4px rgba(0,0,0,0.3),
+      0 24px 48px -20px rgba(0,0,0,0.55);
+    opacity: 0;
+    transform: rotate(var(--r, 0deg));
+    transition: box-shadow .4s ease, filter .4s ease;
+    will-change: transform;
+  }
+  .fc-card.is-in { animation: fcDrop .9s cubic-bezier(.2,.9,.2,1) forwards; }
+  @keyframes fcDrop {
+    0%   { opacity: 0; transform: translate3d(0, 30px, 0) rotate(var(--r,0deg)) scale(.96); }
+    100% { opacity: 1; }
+  }
+  .fc-card:hover {
+    box-shadow:
+      0 4px 6px rgba(0,0,0,0.4),
+      0 30px 60px -20px rgba(0,0,0,0.7),
+      0 0 0 1px rgba(212,162,76,0.5);
+    z-index: 5;
+  }
+
+  /* Two shapes */
+  .fc-portrait  { width: 220px; }
+  .fc-portrait  .fc-photo { aspect-ratio: 3 / 4; }
+  .fc-landscape { width: 340px; }
+  .fc-landscape .fc-photo { aspect-ratio: 4 / 3; }
+
+  .fc-photo { width: 100%; overflow: hidden; background: #2a1a1a; }
+  .fc-photo img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    filter: sepia(0.15) saturate(1.05) contrast(0.98);
+  }
+
+  .fc-tape {
+    position: absolute; top: -10px; left: 50%;
+    transform: translateX(-50%) rotate(-3deg);
+    width: 78px; height: 20px;
+    background: linear-gradient(180deg, #f0cf7b 0%, var(--gold) 100%);
+    opacity: 0.85;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+  }
+
+  .fc-cap {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: 8px; margin-top: 10px; padding: 0 2px;
+  }
+  .fc-label   { font-family: 'Fraunces', serif; font-style: italic; font-size: 15px; color: var(--dark); }
+  .fc-caption { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--crimson); letter-spacing: 0.04em; }
+
+  .fc-stack { display: none; }
+
+  @media (max-width: 860px) {
+    .fc-section { padding: 80px 20px 100px; }
+    .fc-stage { display: none; }
+    .fc-stack {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 40px; max-width: 420px; margin: 0 auto;
+    }
+    .fc-stack-card { position: relative; opacity: 1; animation: none; transform: rotate(var(--r,0deg)); }
+    .fc-stack-card.fc-portrait  { width: 240px; }
+    .fc-stack-card.fc-landscape { width: 320px; }
+  }
+</style>
+
+<script>
+  /* Family Constellation — parallax + entrance */
+  (function () {
+    const section = document.querySelector('.fc-section');
+    if (!section) return;
+    const cards = section.querySelectorAll('.fc-stage .fc-card');
+    let raf = 0;
+
+    function update() {
+      raf = 0;
+      const rect = section.getBoundingClientRect();
+      const vh = window.innerHeight || 1;
+      const progress = 1 - (rect.top + rect.height / 2) / vh;
+      cards.forEach((el) => {
+        const speed = Number(el.dataset.speed || 1);
+        const r = getComputedStyle(el).getPropertyValue('--r') || '0deg';
+        const y = progress * speed * -60;
+        el.style.transform = `translate3d(0, ${y}px, 0) rotate(${r.trim()})`;
+      });
+    }
+    function onScroll() { if (!raf) raf = requestAnimationFrame(update); }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('is-in'); });
+    }, { threshold: 0.15 });
+    cards.forEach((el) => io.observe(el));
+  })();
+</script>
+
 
     <!-- Letter section -->
     <div class="section-label">a letter · for you</div>
@@ -1854,13 +2098,7 @@
   })();
   </script>
 
-  <!-- ── Photo gallery: pinned, scroll-driven horizontal reel ──
-       As the page scrolls through the tall .gallery-pin spacer, the
-       sticky reel stays fixed on screen while the track itself is
-       translated horizontally left→right. The card nearest the front
-       of the reel gets the .active class and widens — this now includes
-       the gift box card, which is the final stop in the reel. No native
-       scrollbar, no drag handlers — vertical scroll is the only input. ── -->
+  <!-- ── Photo gallery: pinned, scroll-driven horizontal reel  ── -->
   <script>
   (function() {
     const pin      = document.getElementById('galleryPin');
@@ -1943,105 +2181,142 @@
   </script>
 
   <!-- ── Gift box: tap to open, plays birthday wish video(s) centered
-       in a wide modal over the page. Once BOTH videos finish playing
-       naturally (not on manual close), it reveals the WhatsApp fab.
-
-       FIX: video.play() is now called SYNCHRONOUSLY inside the click
-       handler (no setTimeout in between). Browsers only allow an
-       unmuted <video> to autoplay if .play() is called as a direct,
-       uninterrupted result of a user gesture (like a click). The
-       previous version called play() from inside a setTimeout, which
-       breaks that chain in stricter browsers (especially Safari/iOS),
-       so the play() promise silently rejected and nothing appeared to
-       happen. The lid-opening animation still plays via CSS, which is
-       independent of JS timing, so visually nothing changes — the
-       video now actually starts. ── -->
+       in a wide modal over the page, via the YouTube IFrame API. Once
+       ALL videos finish playing naturally (not on manual close), it
+       reveals the WhatsApp fab. ── -->
+  <script src="https://www.youtube.com/iframe_api"></script>
   <script>
-  (function() {
-    const giftBox      = document.getElementById('giftBox');
-    const modal        = document.getElementById('giftModal');
-    const backdrop     = document.getElementById('giftModalBackdrop');
-    const closeBtn     = document.getElementById('giftModalClose');
-    const video        = document.getElementById('giftVideo');
-    const caption      = document.getElementById('giftVideoCaption');
-    if (!giftBox || !modal || !video) return;
+(function() {
+  const giftBox   = document.getElementById('giftBox');
+  const modal     = document.getElementById('giftModal');
+  const backdrop  = document.getElementById('giftModalBackdrop');
+  const closeBtn  = document.getElementById('giftModalClose');
+  const caption   = document.getElementById('giftVideoCaption');
+  if (!giftBox || !modal) return;
 
-    // Two videos, played back to back, centered in the modal. Update
-    // these paths to match your actual filenames in /assets exactly
-    // (including capitalization and extension).
-    const VIDEOS = [
-      'assets/mosaic.mp4',
-      'assets/mosaic2.mp4'
-    ];
+  // 👉 Paste your full YouTube links here — any normal format works
+  // (watch?v=, youtu.be/, embed/, with or without extra query params).
+  const VIDEO_LINKS = [
+    'https://youtu.be/enJjEIZwAv8',
+    'https://youtu.be/cl9uQiTu94o'
+  ];
 
-    let queue = [];
-    let queueIndex = 0;
+  // Extracts the 11-character video ID from any common YouTube URL shape.
+  function extractYouTubeId(url) {
+    const match = url.match(
+      /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/
+    );
+    return match ? match[1] : null;
+  }
 
-    function playAt(i) {
-      queueIndex = i;
-      video.src = queue[i];
-      caption.textContent = queue.length > 1
-        ? `wish ${i + 1} of ${queue.length}`
-        : 'a birthday wish';
-      video.load();
-      const p = video.play();
-      if (p && typeof p.catch === 'function') {
-        p.catch(err => {
-          // Surface playback issues instead of failing silently, so
-          // it's obvious in the console if a filename is wrong or the
-          // browser blocked it.
-          console.error('Gift video failed to play:', queue[i], err);
-        });
-      }
+  const VIDEO_IDS = VIDEO_LINKS.map(extractYouTubeId).filter(Boolean);
+
+  let player = null;
+  let apiReady = false;
+  let queueIndex = 0;
+
+  // Required global callback name for the YouTube IFrame API.
+  window.onYouTubeIframeAPIReady = function() {
+    apiReady = true;
+  };
+
+  function createOrLoad(index) {
+    queueIndex = index;
+    caption.textContent = VIDEO_IDS.length > 1
+      ? `wish ${index + 1} of ${VIDEO_IDS.length}`
+      : 'a birthday wish';
+
+    if (!player) {
+      // width/height set here matter — the API sizes the iframe it
+      // generates using these values *before* our CSS ever touches it,
+      // so '100%' here plus the wrapper CSS keeps it filling the panel.
+      player = new YT.Player('giftVideo', {
+        width: '100%',
+        height: '100%',
+        videoId: VIDEO_IDS[index],
+        playerVars: {
+          autoplay: 1,
+          rel: 0,
+          modestbranding: 1,
+          playsinline: 1
+        },
+        events: {
+          onStateChange: onPlayerStateChange
+        }
+      });
+    } else {
+      player.loadVideoById(VIDEO_IDS[index]);
     }
+  }
 
-    function openModal() {
-      queue = VIDEOS.slice();
-      modal.classList.add('open');
-      modal.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-      playAt(0);
-    }
-
-    function closeModal() {
-      modal.classList.remove('open');
-      modal.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-      video.pause();
-      video.removeAttribute('src');
-      video.load();
-      giftBox.classList.remove('opened');
-    }
-
-    // Fires when a video reaches its natural end (not on manual close/skip)
-    video.addEventListener('ended', () => {
-      if (queueIndex < queue.length - 1) {
-        playAt(queueIndex + 1);
+  function onPlayerStateChange(event) {
+    if (event.data === YT.PlayerState.ENDED) {
+      if (queueIndex < VIDEO_IDS.length - 1) {
+        createOrLoad(queueIndex + 1);
       } else {
-        // Both videos have finished playing — surface the WhatsApp fab
+        // All videos finished — surface the WhatsApp fab
         closeModal();
         if (typeof window.__revealWaFab === 'function') {
           window.__revealWaFab();
         }
       }
-    });
+    }
+  }
 
-    giftBox.addEventListener('click', () => {
-      giftBox.classList.add('opened');
-      // openModal() (and therefore video.play()) now runs synchronously,
-      // in the same tick as the click — this preserves the user-gesture
-      // permission browsers require to autoplay unmuted video.
-      openModal();
-    });
+  function openModal() {
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
 
-    closeBtn.addEventListener('click', closeModal);
-    backdrop.addEventListener('click', closeModal);
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
-    });
-  })();
+    if (!VIDEO_IDS.length) {
+      console.error('No valid YouTube IDs found in VIDEO_LINKS.');
+      return;
+    }
+
+    if (apiReady) {
+      createOrLoad(0);
+    } else {
+      // API script hasn't finished loading yet — wait for it, then start.
+      let attempts = 0;
+      const check = setInterval(() => {
+        attempts++;
+        if (apiReady) {
+          clearInterval(check);
+          createOrLoad(0);
+        } else if (attempts > 40) { // ~4 seconds
+          clearInterval(check);
+          console.error(
+            'YouTube IFrame API never loaded — likely blocked by an ad blocker, ' +
+            'privacy extension, or offline connection. Check the Network tab for ' +
+            'a request to youtube.com/iframe_api and see if it was blocked.'
+          );
+        }
+      }, 100);
+    }
+  }
+
+  function closeModal() {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (player && typeof player.stopVideo === 'function') {
+      player.stopVideo();
+    }
+    giftBox.classList.remove('opened');
+  }
+
+  giftBox.addEventListener('click', () => {
+    giftBox.classList.add('opened');
+    openModal();
+  });
+
+  closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', closeModal);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+  });
+})();
 </script>
-
   <!-- ── WhatsApp fab: reveal after gift videos, scroll to the story
        section, and hide itself once the story section is reached ── -->
   <script>
@@ -2077,20 +2352,7 @@
        ── Cinematic story sequence (GSAP ScrollTrigger) ──
        One scrubbed timeline drives every stage: flash card + ball →
        title → sequential wish-card expansion (3 wishes) → ball
-       centers → videos emerge. The volleyball uses four independent
-       transforms so its motions never fight each other:
-         .volleyball        → idle up/down wobble (always running)
-         .volleyball-cursor → position drift toward the pointer
-         .volleyball-wrap   → scroll-driven "move to center" tween
-         <img> itself       → continuous roll rotation, driven by how
-                              far the pointer has moved horizontally,
-                              like a ball actually rolling with the cursor
-
-       Tuning tip: every stage below is placed on the timeline with an
-       explicit start time (the second argument to .to()). Nudge those
-       numbers to speed up/slow down a stage relative to the others,
-       and adjust `.story-pin { height: 860vh }` in the CSS above to
-       change the overall scroll distance for the whole sequence.
+       centers → videos emerge.       
        ══════════════════════════════════════════════════ -->
   <script>
   (function() {
@@ -2104,6 +2366,7 @@
     const ball         = document.getElementById('volleyball');
     const ballImg      = ball ? ball.querySelector('img') : null;
     const chatScreen   = document.getElementById('waChatScreen');
+    const chatBody     = document.getElementById('waChatBody');
     const bgFigure     = document.getElementById('waBgFigure');
     const card1        = document.getElementById('storyCard1');
     const card2        = document.getElementById('storyCard2');
@@ -2190,6 +2453,7 @@
 
     // Stage 2 — flash card exits, the WhatsApp chat screen opens
     tl.to(flashGroup, { opacity: 0, y: -30, scale: 0.94, duration: 0.8, ease: 'power2.in' }, 1.6)
+      .call(() => { if (chatBody) chatBody.scrollTop = 0; }, null, 1.85)
       .to(chatScreen, { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power2.out' }, 1.9)
       .to(bgFigure, { opacity: 0.55, duration: 1.2, ease: 'power2.out' }, 1.9);
 
@@ -2210,6 +2474,7 @@
     // grows, cursor parallax switches off so the scroll-driven move wins
     tl.call(() => { cursorParallaxActive = false; }, null, 7.9)
       .to(chatScreen, { opacity: 0, y: -20, scale: 0.94, duration: 0.7, ease: 'power1.in' }, 7.9)
+      .call(() => { if (chatBody) chatBody.scrollTop = 0; }, null, 8.05)
       .to(bgFigure, { opacity: 0, duration: 0.7, ease: 'power1.in' }, 7.9)
       .to(ballCursor, { x: 0, y: 0, duration: 0.6, ease: 'power2.inOut' }, 7.9)
       .to(ballWrap, {
