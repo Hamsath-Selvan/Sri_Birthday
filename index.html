@@ -931,6 +931,129 @@
     .mute-toggle-btn:hover { background: rgba(212,162,76,0.22); }
     .mute-toggle-btn.is-unmuted { color: var(--cream); border-color: rgba(255,248,240,0.4); }
 
+ /* ── Schools Intro: full-bleed so mascot can sit near the actual scrollbar ── */
+
+.rope-pin {
+  position: relative;
+  z-index: 10;
+}
+
+.rope-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0;
+  padding-right: 6px;
+  overflow: hidden;
+}
+
+.rope-figure {
+  width: 360px;
+  height: 436px;
+  margin-left: -80px;
+  z-index: 2;
+}
+
+.rope-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 14px 24px rgba(0,0,0,0.5));
+  opacity: 1;
+  transition: opacity 0.35s ease;
+}
+
+.rope-figure img.fading {
+  opacity: 0;
+}
+
+.rope-bubble-sm {
+  position: relative;
+  max-width: 300px;
+  background: rgba(26,16,16,0.55);
+  border: 1.5px solid var(--gold);
+  border-radius: 4px;
+  padding: 20px 24px;
+  z-index: 1;
+  transition: opacity 0.35s ease;
+}
+
+.rope-bubble-sm.fading {
+  opacity: 0;
+}
+
+.rope-bubble-sm::after {
+  content: '';
+  position: absolute;
+  top: 38%;
+  right: -19px;
+  width: 20px;
+  height: 20px;
+  border-top: 1.5px solid var(--gold);
+  border-right: 1.5px solid var(--gold);
+  background: rgba(26,16,16,0.55);
+  transform: rotate(45deg) skew(8deg, 8deg);
+}
+
+.school-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+.rope-bubble-sm .narrator-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-style: normal;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--cream);
+}
+
+.rope-hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 22px;
+  text-align: center;
+  font-size: 0.58rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  animation: hintPulse 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@media (max-width: 560px) {
+  .rope-sticky {
+    flex-direction: column-reverse;
+    justify-content: center;
+    padding-right: 20px;
+    gap: 24px;
+  }
+  .rope-figure {
+    width: 220px;
+    height: 268px;
+    margin-left: 0;
+  }
+  .rope-bubble-sm {
+    max-width: 92%;
+  }
+  .rope-bubble-sm::after {
+    top: -19px;
+    right: auto;
+    left: 50%;
+    margin-left: -10px;
+    transform: rotate(-135deg) skew(8deg, 8deg);
+  }
+}
+
     /* ══════════════════════════════════════════════════
        ── WhatsApp floating action button ──
        ══════════════════════════════════════════════════ */
@@ -1695,6 +1818,42 @@
     </div>
   </div>
 
+  <!-- ── Schools Reveal Section (pinned, scroll-driven, one school at a time) ── -->
+<div class="rope-pin" id="schoolIntroSection">
+  <div class="rope-sticky" id="schoolSticky">
+    <div class="rope-bubble-sm" id="schoolBubble">
+      <div class="school-tag" id="schoolTag">SCHOOL · 01</div>
+      <p class="narrator-text" id="schoolText">1st gift pudichi irrunthuchaaa...<br><br>Sari ipo unnoda schoolsss ku polamaaa</p>
+    </div>
+    <div class="rope-figure" id="schoolFigure">
+      <img id="schoolImage" src="assets/wave.png" alt="Mascot pulling">
+    </div>
+  </div>
+</div>
+
+  <!-- ── Narrator scroll reveals (Jackalope + Schools intro) ── -->
+  <script>
+  (function() {
+    const sections = ['narrator-section']
+      .map(id => document.getElementById(id))
+      .filter(Boolean);
+    if (!sections.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.35 });
+
+    sections.forEach(section => observer.observe(section));
+  })();
+  </script>
+
+  <!-- ── Cinematic scroll-driven story section ── -->
+  <section class="story-section" id="storySection">
   <!-- ── Cinematic scroll-driven story section ── -->
   <section class="story-section" id="storySection">
     <div class="story-pin" id="storyPin">
@@ -1729,6 +1888,8 @@
             </div>
           </div>
         </div>
+
+        
 
         <!-- Stage 2 + 3: WhatsApp-style chat screen — a group chat -->
         <div class="story-layer">
@@ -1787,8 +1948,8 @@
         <!-- Stage 4: video reveal — four videos, one after another. -->
         <div class="story-layer">
           <div class="story-videos" id="storyVideos">
-            <video class="story-video" id="storyVideo1" src="assets/team1.mp4" muted playsinline></video>
-            <video class="story-video" id="storyVideo2" src="assets/team2.mp4" muted playsinline></video>
+            <video class="story-video" id="storyVideo1" src="assets/sandy-sir.mp4" muted playsinline></video>
+            <video class="story-video" id="storyVideo2" src="assets/grana.mp4" muted playsinline></video>
             <video class="story-video" id="storyVideo3" src="assets/team3.mp4" muted playsinline></video>
             <video class="story-video" id="storyVideo4" src="assets/team4.mp4" muted playsinline loop></video>
           </div>
@@ -1800,307 +1961,7 @@
     </div>
   </section>
 
-<!-- ══════════════════════════════════════════════════
-     ── School ID Cards: pinned rope-pull reveal ──
-     ══════════════════════════════════════════════════ -->
-<section class="idc-section" id="idcSection">
-  <div class="idc-pin" id="idcPin">
-    <div class="idc-sticky" id="idcSticky">
 
-      <!-- Doll + speech bubble, fixed on the left -->
-      <div class="idc-doll-col">
-        <div class="idc-bubble" id="idcBubble">
-          <p class="idc-bubble-text">ipo unnoda school id cards aaah pakalama...</p>
-        </div>
-        <div class="idc-doll" id="idcDoll">
-          <img src="assets/wave.png" alt="Jackalope pulling a rope">
-        </div>
-        <div class="idc-rope" id="idcRope"></div>
-      </div>
-
-      <!-- Stage where cards / video get "reeled in" from the left -->
-      <div class="idc-stage" id="idcStage">
-
-        <div class="idc-card" id="idcCard1" data-role="idcard">
-          <span class="idc-hole"></span>
-          <div class="idc-photo"><img src="assets/BMC1.jpeg" alt="School 1 ID"></div>
-          <div class="idc-name">Lakshmi Sri</div>
-          <div class="idc-label" id="idcLabel1">Primary School</div>
-        </div>
-
-        <div class="idc-card" id="idcCard2" data-role="idcard">
-          <span class="idc-hole"></span>
-          <div class="idc-photo"><img src="assets/SVHV.jpeg" alt="School 2 ID"></div>
-          <div class="idc-name">Lakshmi Sri</div>
-          <div class="idc-label" id="idcLabel2">Middle School</div>
-        </div>
-
-        <div class="idc-card" id="idcCard3" data-role="idcard">
-          <span class="idc-hole"></span>
-          <div class="idc-photo"><img src="assets/Subbiah.jpeg" alt="School 3 ID"></div>
-          <div class="idc-name">Lakshmi Sri</div>
-          <div class="idc-label" id="idcLabel3">Senior Secondary</div>
-        </div>
-
-        <div class="idc-video-wrap" id="idcVideoWrap" data-role="idvideo">
-          <video id="idcFriendVideo" src="assets/friend-wish.mp4" playsinline muted></video>
-          <button class="mute-toggle-btn" id="idcMuteToggle" style="margin-top:12px;">🔇 tap to unmute</button>
-          <p class="idc-video-caption">a wish from your friend</p>
-        </div>
-
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<style>
-  .idc-section { position: relative; z-index: 10; background: var(--dark); }
-  .idc-pin { position: relative; height: 420vh; }
-  .idc-sticky {
-    position: sticky; top: 0; height: 100vh; width: 100%;
-    overflow: hidden;
-    display: flex; align-items: center;
-    background: radial-gradient(ellipse at 20% 50%, rgba(179,18,46,0.12) 0%, transparent 55%), var(--dark);
-  }
-
-  .idc-doll-col {
-    position: relative;
-    flex: 0 0 auto;
-    width: clamp(180px, 22vw, 280px);
-    margin-left: 6vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 3;
-  }
-
-  .idc-bubble {
-    position: relative;
-    max-width: 260px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(212,162,76,0.35);
-    border-radius: 14px;
-    padding: 16px 18px;
-    margin-bottom: 22px;
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  .idc-bubble::before {
-    content: '';
-    position: absolute;
-    left: 50%; bottom: -9px;
-    width: 16px; height: 16px;
-    margin-left: -8px;
-    background: var(--dark);
-    border-right: 1px solid rgba(212,162,76,0.35);
-    border-bottom: 1px solid rgba(212,162,76,0.35);
-    transform: rotate(45deg);
-  }
-  .idc-bubble-text {
-    font-family: 'Fraunces', Georgia, serif;
-    font-style: italic;
-    font-weight: 300;
-    font-size: 1.02rem;
-    color: rgba(255,248,240,0.85);
-    line-height: 1.6;
-    text-align: center;
-  }
-
-  .idc-doll {
-    width: 100%;
-    aspect-ratio: 3/4;
-    opacity: 0;
-    transform: translateX(-50px) rotate(-4deg);
-  }
-  .idc-doll img {
-    width: 100%; height: 100%;
-    object-fit: contain;
-    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
-    animation: idcBob 3s ease-in-out infinite;
-  }
-  @keyframes idcBob {
-    0%, 100% { transform: translateY(0) rotate(-2deg); }
-    50%      { transform: translateY(-6px) rotate(2deg); }
-  }
-
-  /* the "rope" connecting the doll's hand to whatever's being reeled in */
-  .idc-rope {
-    position: absolute;
-    top: 58%;
-    left: 88%;
-    height: 3px;
-    width: 0;
-    background: linear-gradient(to right, var(--gold), rgba(212,162,76,0.15));
-    transform-origin: left center;
-    z-index: 2;
-  }
-
-  .idc-stage {
-    position: relative;
-    flex: 1;
-    height: 60vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .idc-card {
-    position: absolute;
-    width: clamp(200px, 24vw, 260px);
-    background: var(--cream);
-    border: 2px solid var(--gold);
-    border-radius: 16px;
-    padding: 20px 18px 26px;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.5);
-    opacity: 0;
-    transform: translateX(-90vw) rotate(-8deg);
-  }
-
-  .idc-hole {
-    position: absolute;
-    top: 10px; left: 50%;
-    width: 34px; height: 8px;
-    margin-left: -17px;
-    background: rgba(26,16,16,0.15);
-    border-radius: 6px;
-  }
-
-  .idc-photo {
-    width: 100%;
-    aspect-ratio: 3/4;
-    border-radius: 8px;
-    overflow: hidden;
-    margin: 10px 0 14px;
-    background: #2a1a1a;
-  }
-  .idc-photo img { width: 100%; height: 100%; object-fit: cover; }
-
-  .idc-name {
-    font-family: 'Fraunces', Georgia, serif;
-    font-style: italic;
-    font-size: 1.05rem;
-    color: var(--dark);
-    text-align: center;
-  }
-
-  .idc-label {
-    margin-top: 6px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--crimson);
-    text-align: center;
-  }
-
-  .idc-video-wrap {
-    position: absolute;
-    width: clamp(220px, 30vw, 340px);
-    aspect-ratio: 9/16;
-    max-height: 70vh;
-    border-radius: 14px;
-    overflow: hidden;
-    background: #000;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.55);
-    border: 1px solid rgba(212,162,76,0.4);
-    opacity: 0;
-    transform: translateX(-90vw) rotate(-6deg);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    padding-bottom: 16px;
-  }
-  .idc-video-wrap video {
-    position: absolute;
-    inset: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-  }
-  .idc-video-caption {
-    position: relative;
-    z-index: 1;
-    font-size: 0.62rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gold);
-    background: rgba(26,16,16,0.6);
-    padding: 4px 12px;
-    border-radius: 20px;
-  }
-
-  @media (max-width: 780px) {
-    .idc-sticky { flex-direction: column; justify-content: center; gap: 24px; }
-    .idc-doll-col { margin-left: 0; }
-    .idc-rope { display: none; }
-    .idc-stage { height: 50vh; }
-  }
-</style>
-
-<script>
-(function() {
-  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-  gsap.registerPlugin(ScrollTrigger);
-
-  const pin    = document.getElementById('idcPin');
-  const bubble = document.getElementById('idcBubble');
-  const doll   = document.getElementById('idcDoll');
-  const rope   = document.getElementById('idcRope');
-
-  const card1  = document.getElementById('idcCard1');
-  const card2  = document.getElementById('idcCard2');
-  const card3  = document.getElementById('idcCard3');
-  const videoWrap = document.getElementById('idcVideoWrap');
-  const video  = document.getElementById('idcFriendVideo');
-  const items  = [card1, card2, card3, videoWrap];
-
-  if (!pin || !doll) return;
-
-  const tl = gsap.timeline({
-    scrollTrigger: { trigger: pin, start: 'top top', end: 'bottom bottom', scrub: 1 }
-  });
-
-  // Doll + bubble entrance
-  tl.to(doll,   { opacity: 1, x: 0, rotate: 0, duration: 0.8, ease: 'power2.out' }, 0)
-    .to(bubble, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, 0.1);
-
-  // Rope stretches out to "grab" whichever item is coming in, then retracts
-  function reelIn(item, start) {
-    tl.to(rope, { width: '46vw', duration: 0.5, ease: 'power2.out' }, start)
-      .to(item, { opacity: 1, x: 0, rotate: 0, duration: 0.9, ease: 'power3.out' }, start + 0.1)
-      .to(rope, { width: '0vw', duration: 0.4, ease: 'power2.in' }, start + 0.9);
-  }
-
-  function sendOut(item, start) {
-    tl.to(item, { opacity: 0, x: '40vw', rotate: 6, duration: 0.5, ease: 'power2.in' }, start);
-  }
-
-  reelIn(card1, 1.0);
-  sendOut(card1, 2.0);
-  reelIn(card2, 2.1);
-  sendOut(card2, 3.1);
-  reelIn(card3, 3.2);
-  sendOut(card3, 4.2);
-  reelIn(videoWrap, 4.3);
-
-  tl.call(() => {
-    video.currentTime = 0;
-    video.muted = true;
-    video.loop = true;
-    video.play().catch(() => {});
-  }, null, 4.9);
-
-  const muteToggle = document.getElementById('idcMuteToggle');
-  if (muteToggle) {
-    muteToggle.addEventListener('click', () => {
-      video.muted = !video.muted;
-      muteToggle.textContent = video.muted ? '🔇 tap to unmute' : '🔊 sound on';
-      muteToggle.classList.toggle('is-unmuted', !video.muted);
-    });
-  }
-})();
-</script>
 
   <!-- ── Main content -->
   <main>
@@ -2591,6 +2452,80 @@
     updateParallax();
   })();
   </script>
+<!-- ── Schools Reveal: pinned, scroll-driven school-by-school swap ── -->
+<script>
+(function() {
+  const pin    = document.getElementById('schoolIntroSection');
+  const sticky = document.getElementById('schoolSticky');
+  const img    = document.getElementById('schoolImage');
+  const bubble = document.getElementById('schoolBubble');
+  const tag    = document.getElementById('schoolTag');
+  const text   = document.getElementById('schoolText');
+  if (!pin || !sticky || !img) return;
+
+  // ── Edit this array to add / change schools. Each entry keeps the
+  //    same shape (id, image, text) so the markup/IDs above never change —
+  //    only this data drives what's shown. ──
+  const SCHOOLS = [
+    { id: '01', image: 'assets/wave.png', text: '1st gift pudichi irrunthuchaaa...<br><br>Sari ipo unnoda schoolsss ku polamaaa' },
+    { id: '02', image: 'assets/BMC1.jpeg', text: 'Replace this text<br><br>with school 2 details' },
+    { id: '03', image: 'assets/SVHV.jpeg', text: 'Replace this text<br><br>with school 3 details' },
+    { id: '04', image: 'assets/Subbiah.jpeg', text: 'Replace this text<br><br>with school 4 details' }
+  ];
+
+  const SCROLL_PER_SCHOOL = 500;
+  pin.style.height = `${window.innerHeight + SCHOOLS.length * SCROLL_PER_SCHOOL}px`;
+
+  let currentIndex = -1;
+
+  function applySchool(index) {
+    if (index === currentIndex) return;
+    currentIndex = index;
+    const s = SCHOOLS[index];
+
+    img.classList.add('fading');
+    bubble.classList.add('fading');
+
+    setTimeout(() => {
+      img.src = s.image;
+      tag.textContent = `SCHOOL · ${s.id}`;
+      text.innerHTML = s.text;
+      img.classList.remove('fading');
+      bubble.classList.remove('fading');
+    }, 350);
+  }
+
+  function update() {
+    const rect = pin.getBoundingClientRect();
+    const scrollable = pin.offsetHeight - window.innerHeight;
+    let progress = scrollable > 0 ? -rect.top / scrollable : 0;
+    progress = Math.min(1, Math.max(0, progress));
+
+    const idx = Math.min(
+      SCHOOLS.length - 1,
+      Math.floor(progress * SCHOOLS.length)
+    );
+    applySchool(idx);
+  }
+
+  let ticking = false;
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(() => { update(); ticking = false; });
+      ticking = true;
+    }
+  }
+
+  function onResize() {
+    pin.style.height = `${window.innerHeight + SCHOOLS.length * SCROLL_PER_SCHOOL}px`;
+    update();
+  }
+
+  applySchool(0);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onResize);
+})();
+</script>
 
   <!-- ── Photo gallery: pinned, scroll-driven horizontal reel  ── -->
   <script>
