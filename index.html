@@ -1030,7 +1030,131 @@
   pointer-events: none;
 }
 
+/* ── School ID card mockup ──
+     A laminated student-ID look, reusing the site's cream/tape
+     photo-card language (see .fc-card) so it reads as part of the
+     same "physical keepsake" world instead of a new UI style.
+     Sits beside the mascot's speech bubble and swaps its details
+     in sync with the school currently shown (see SCHOOLS array + JS). */
+.school-id-card {
+  position: relative;
+  z-index: 1;
+  width: 244px;
+  background: linear-gradient(165deg, var(--cream) 0%, #f3e6d2 100%);
+  border-radius: 10px;
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.3),
+    0 24px 48px -18px rgba(0,0,0,0.6);
+  transform: rotate(-3deg);
+  overflow: hidden;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.school-id-card.fading { opacity: 0; transform: rotate(-3deg) translateY(6px); }
+
+.school-id-punch {
+  position: absolute;
+  top: 10px; left: 50%;
+  width: 34px; height: 10px;
+  margin-left: -17px;
+  background: rgba(26,16,16,0.18);
+  border-radius: 6px;
+}
+
+.school-id-header {
+  background: var(--crimson);
+  color: var(--cream);
+  padding: 20px 16px 10px;
+  text-align: center;
+}
+
+.school-id-header .id-eyebrow {
+  font-size: 0.55rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  opacity: 0.8;
+  margin-bottom: 4px;
+}
+
+.school-id-header .id-school-name {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.02rem;
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.school-id-body {
+  display: flex;
+  gap: 14px;
+  padding: 16px;
+  align-items: flex-start;
+}
+
+.school-id-photo {
+  flex-shrink: 0;
+  width: 64px;
+  height: 76px;
+  border-radius: 4px;
+  border: 1px solid rgba(179,18,46,0.35);
+  background: linear-gradient(160deg, rgba(179,18,46,0.18), rgba(26,16,16,0.08));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(179,18,46,0.55);
+}
+
+.school-id-photo svg { width: 30px; height: 30px; }
+
+.school-id-fields { flex: 1; min-width: 0; }
+
+.school-id-name {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-size: 1.02rem;
+  color: var(--dark);
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.school-id-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.62rem;
+  color: rgba(26,16,16,0.65);
+  padding: 3px 0;
+  border-top: 1px dashed rgba(179,18,46,0.2);
+}
+
+.school-id-row:first-of-type { border-top: none; }
+
+.school-id-row .id-k {
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(179,18,46,0.7);
+}
+
+.school-id-row .id-v { text-align: right; color: var(--dark); }
+
+.school-id-strip {
+  height: 16px;
+  background: repeating-linear-gradient(90deg, var(--dark) 0 2px, transparent 2px 5px);
+  opacity: 0.75;
+  margin: 0 16px 14px;
+  border-radius: 2px;
+}
+
 @media (max-width: 560px) {
+  .school-id-card { width: 88vw; max-width: 300px; transform: rotate(0deg); }
+  .school-id-card.fading { transform: translateY(6px); }
+}
+
+.rope-hint {
+  /* (duplicate selector kept intentionally minimal — see rule above) */
+}
+
+    @media (max-width: 560px) {
   .rope-sticky {
     flex-direction: column-reverse;
     justify-content: center;
@@ -1825,6 +1949,30 @@
       <div class="school-tag" id="schoolTag">SCHOOL · 01</div>
       <p class="narrator-text" id="schoolText">1st gift pudichi irrunthuchaaa...<br><br>Sari ipo unnoda schoolsss ku polamaaa</p>
     </div>
+
+    <!-- School ID card mockup: swaps name/class/roll alongside the
+         mascot as each school scrolls into place (driven by the
+         SCHOOLS array below). -->
+    <div class="school-id-card" id="schoolIdCard">
+      <div class="school-id-punch"></div>
+      <div class="school-id-header">
+        <div class="id-eyebrow">student identity card</div>
+        <div class="id-school-name" id="schoolIdName">School Name Here</div>
+      </div>
+      <div class="school-id-body">
+        <div class="school-id-photo">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-9 2.2-9 5v2h18v-2c0-2.8-4.6-5-9-5z"/></svg>
+        </div>
+        <div class="school-id-fields">
+          <div class="school-id-name">Lakshmi Sri</div>
+          <div class="school-id-row"><span class="id-k">Class</span><span class="id-v" id="schoolIdClass">—</span></div>
+          <div class="school-id-row"><span class="id-k">Roll No.</span><span class="id-v" id="schoolIdRoll">—</span></div>
+          <div class="school-id-row"><span class="id-k">Years</span><span class="id-v" id="schoolIdYears">—</span></div>
+        </div>
+      </div>
+      <div class="school-id-strip"></div>
+    </div>
+
     <div class="rope-figure" id="schoolFigure">
       <img id="schoolImage" src="assets/wave.png" alt="Mascot pulling">
     </div>
@@ -1852,8 +2000,6 @@
   })();
   </script>
 
-  <!-- ── Cinematic scroll-driven story section ── -->
-  <section class="story-section" id="storySection">
   <!-- ── Cinematic scroll-driven story section ── -->
   <section class="story-section" id="storySection">
     <div class="story-pin" id="storyPin">
@@ -2027,12 +2173,6 @@
       <span class="fc-tape"></span>
       <div class="fc-photo"><img src="assets/fam8.jpeg" alt="All of us" loading="lazy"></div>
       <figcaption class="fc-cap"><span class="fc-label">All of us</span><span class="fc-caption">the whole crew</span></figcaption>
-    </figure>
-    
-<figure class="fc-card fc-landscape" data-speed="1.3" style="top:44%; left:34%; --r:2deg;">
-      <span class="fc-tape"></span>
-      <div class="fc-photo"><img src="assets/fam8.jpeg" alt="All of us" loading="lazy"></div>
-      <figcaption class="fc-cap"><span class="fc-label">The Girls</span><span class="fc-caption">the whole crew</span></figcaption>
     </figure>
 
     <figure class="fc-card fc-portrait" data-speed="1.4" style="top:38%; left:74%; --r:-5deg;">
@@ -2461,16 +2601,39 @@
   const bubble = document.getElementById('schoolBubble');
   const tag    = document.getElementById('schoolTag');
   const text   = document.getElementById('schoolText');
+  const idCard   = document.getElementById('schoolIdCard');
+  const idName   = document.getElementById('schoolIdName');
+  const idClass  = document.getElementById('schoolIdClass');
+  const idRoll   = document.getElementById('schoolIdRoll');
+  const idYears  = document.getElementById('schoolIdYears');
   if (!pin || !sticky || !img) return;
 
   // ── Edit this array to add / change schools. Each entry keeps the
   //    same shape (id, image, text) so the markup/IDs above never change —
-  //    only this data drives what's shown. ──
+  //    only this data drives what's shown. The id-card fields (name,
+  //    className, rollNo, years) feed the ID card mockup next to the
+  //    mascot — replace the placeholders with the real details. ──
   const SCHOOLS = [
-    { id: '01', image: 'assets/wave.png', text: '1st gift pudichi irrunthuchaaa...<br><br>Sari ipo unnoda schoolsss ku polamaaa' },
-    { id: '02', image: 'assets/BMC1.jpeg', text: 'Replace this text<br><br>with school 2 details' },
-    { id: '03', image: 'assets/SVHV.jpeg', text: 'Replace this text<br><br>with school 3 details' },
-    { id: '04', image: 'assets/Subbiah.jpeg', text: 'Replace this text<br><br>with school 4 details' }
+    {
+      id: '01', image: 'assets/wave.png',
+      text: '1st gift pudichi irrunthuchaaa...<br><br>Sari ipo unnoda schoolsss ku polamaaa',
+      name: 'School Name Here', className: '—', rollNo: '—', years: '—'
+    },
+    {
+      id: '02', image: 'assets/BMC1.jpeg',
+      text: 'Replace this text<br><br>with school 2 details',
+      name: 'School 2 Name Here', className: '—', rollNo: '—', years: '—'
+    },
+    {
+      id: '03', image: 'assets/SVHV.jpeg',
+      text: 'Replace this text<br><br>with school 3 details',
+      name: 'School 3 Name Here', className: '—', rollNo: '—', years: '—'
+    },
+    {
+      id: '04', image: 'assets/Subbiah.jpeg',
+      text: 'Replace this text<br><br>with school 4 details',
+      name: 'School 4 Name Here', className: '—', rollNo: '—', years: '—'
+    }
   ];
 
   const SCROLL_PER_SCHOOL = 500;
@@ -2485,6 +2648,7 @@
 
     img.classList.add('fading');
     bubble.classList.add('fading');
+    if (idCard) idCard.classList.add('fading');
 
     setTimeout(() => {
       img.src = s.image;
@@ -2492,6 +2656,14 @@
       text.innerHTML = s.text;
       img.classList.remove('fading');
       bubble.classList.remove('fading');
+
+      if (idCard) {
+        idName.textContent = s.name;
+        idClass.textContent = s.className;
+        idRoll.textContent = s.rollNo;
+        idYears.textContent = s.years;
+        idCard.classList.remove('fading');
+      }
     }, 350);
   }
 
@@ -2878,22 +3050,11 @@
         if (!videos[0]) return;
         videos[0].currentTime = 0;
         videos[0].play().catch(() => {});
+      }, null, 9.5)
+      .call(() => {
+        const btn = document.getElementById('storyMuteToggle');
+        if (btn) { btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
       }, null, 9.5);
-      tl.to(ballWrap, { opacity: 0, scale: 2.1, duration: 0.7, ease: 'power2.in' }, 9.3)
-  .to(videos[0], { opacity: 1, scale: 1, duration: 1, ease: 'power3.out' }, 9.5)
-  .call(() => {
-    if (!videos[0]) return;
-    videos[0].currentTime = 0;
-    videos[0].play().catch(() => {});
-  }, null, 9.5)
-  .call(() => {
-    const btn = document.getElementById('storyMuteToggle');
-    if (btn) { btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
-  }, null, 9.5)
-  .call(() => {
-    const btn = document.getElementById('storyMuteToggle');
-    if (btn) { btn.style.opacity = '0'; btn.style.pointerEvents = 'none'; }
-  }, null, 0); // hides again if user scrolls back to the very start
 
     videos.forEach((current, i) => {
       const next = videos[i + 1];
