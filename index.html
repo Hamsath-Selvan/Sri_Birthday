@@ -870,12 +870,10 @@
     }
 
     /* ── Gift video player wrapper ──
-         The YouTube IFrame API replaces the inner #giftVideo div with
-         its own <iframe>, and that generated iframe does NOT reliably
-         inherit any class we put on the original div. So instead of
-         styling the div directly, we size a stable wrapper around it
-         and target "any iframe inside it" — this way it doesn't matter
-         what attributes YouTube's own iframe ends up with. */
+         Now a plain local <video> element sits inside #giftVideo, so we
+         size this stable wrapper and target both `video` and `iframe`
+         inside it (iframe kept just in case a YouTube fallback is ever
+         reintroduced later). */
     .gift-video-wrap {
       position: relative;
       width: min(860px, 100%);
@@ -886,6 +884,7 @@
       background: #000;
     }
 
+    .gift-video-wrap video,
     .gift-video-wrap iframe {
       position: absolute;
       inset: 0;
@@ -893,6 +892,7 @@
       height: 100% !important;
       border: none;
       display: block;
+      background: #000;
     }
 
     .gift-modal-caption {
@@ -1566,13 +1566,11 @@
     <div class="gift-modal-backdrop" id="giftModalBackdrop"></div>
     <div class="gift-modal-panel">
       <button class="gift-modal-close" id="giftModalClose" aria-label="Close">✕</button>
-      <!-- The YouTube player is created here by JS via the IFrame API.
-           #giftVideo is just the mount point YT.Player replaces with its
-           own <iframe> — the surrounding .gift-video-wrap is what we
-           actually size, since the generated iframe won't reliably keep
-           any class we put on the original div. -->
+      <!-- Local video player. #giftVideo is a real <video> element now —
+           the JS below just swaps its src attribute between the two
+           wish clips and advances on 'ended', no external API needed. -->
       <div class="gift-video-wrap">
-        <div id="giftVideo"></div>
+        <video id="giftVideo" playsinline controls></video>
       </div>
       <p class="gift-modal-caption" id="giftVideoCaption">wish 1 of 2</p>
     </div>
@@ -1677,8 +1675,8 @@
              fire so the JS below can hand off to the next video. -->
         <div class="story-layer">
           <div class="story-videos" id="storyVideos">
-            <video class="story-video" id="storyVideo1" src="assets/team1.mp4" muted playsinline></video>
-            <video class="story-video" id="storyVideo2" src="assets/team2.mp4" muted playsinline></video>
+            <video class="story-video" id="storyVideo1" src="assets/grana.mp4" muted playsinline></video>
+            <video class="story-video" id="storyVideo2" src="assets/sandy-sir.mp4" muted playsinline></video>
             <video class="story-video" id="storyVideo3" src="assets/team3.mp4" muted playsinline></video>
             <video class="story-video" id="storyVideo4" src="assets/team4.mp4" muted playsinline loop></video>
           </div>
@@ -2181,10 +2179,10 @@
   </script>
 
   <!-- ── Gift box: tap to open, plays birthday wish video(s) centered
-       in a wide modal over the page, via the YouTube IFrame API. Once
+       in a wide modal over the page, using LOCAL video files from your
+       assets folder — no external API, no embed/blocker issues. Once
        ALL videos finish playing naturally (not on manual close), it
        reveals the WhatsApp fab. ── -->
-  <script src="https://www.youtube.com/iframe_api"></script>
   <script>
 (function() {
   const giftBox   = document.getElementById('giftBox');
@@ -2192,73 +2190,36 @@
   const backdrop  = document.getElementById('giftModalBackdrop');
   const closeBtn  = document.getElementById('giftModalClose');
   const caption   = document.getElementById('giftVideoCaption');
-  if (!giftBox || !modal) return;
+  const videoEl   = document.getElementById('giftVideo');
+  if (!giftBox || !modal || !videoEl) return;
 
-  // 👉 Paste your full YouTube links here — any normal format works
-  // (watch?v=, youtu.be/, embed/, with or without extra query params).
-  const VIDEO_LINKS = [
-    'https://youtu.be/enJjEIZwAv8',
-    'https://youtu.be/cl9uQiTu94o'
+  // 👉 Put your two local gift-wish video filenames here (inside assets/)
+  const VIDEO_FILES = [
+    'assets/priyaathai.mp4',
+    'assets/aachi-chithappa.mp4'
   ];
 
-  // Extracts the 11-character video ID from any common YouTube URL shape.
-  function extractYouTubeId(url) {
-    const match = url.match(
-      /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/
-    );
-    return match ? match[1] : null;
-  }
-
-  const VIDEO_IDS = VIDEO_LINKS.map(extractYouTubeId).filter(Boolean);
-
-  let player = null;
-  let apiReady = false;
   let queueIndex = 0;
 
-  // Required global callback name for the YouTube IFrame API.
-  window.onYouTubeIframeAPIReady = function() {
-    apiReady = true;
-  };
-
-  function createOrLoad(index) {
+  function loadVideo(index) {
     queueIndex = index;
-    caption.textContent = VIDEO_IDS.length > 1
-      ? `wish ${index + 1} of ${VIDEO_IDS.length}`
+    caption.textContent = VIDEO_FILES.length > 1
+      ? `wish ${index + 1} of ${VIDEO_FILES.length}`
       : 'a birthday wish';
 
-    if (!player) {
-      // width/height set here matter — the API sizes the iframe it
-      // generates using these values *before* our CSS ever touches it,
-      // so '100%' here plus the wrapper CSS keeps it filling the panel.
-      player = new YT.Player('giftVideo', {
-        width: '100%',
-        height: '100%',
-        videoId: VIDEO_IDS[index],
-        playerVars: {
-          autoplay: 1,
-          rel: 0,
-          modestbranding: 1,
-          playsinline: 1
-        },
-        events: {
-          onStateChange: onPlayerStateChange
-        }
-      });
-    } else {
-      player.loadVideoById(VIDEO_IDS[index]);
-    }
+    videoEl.src = VIDEO_FILES[index];
+    videoEl.currentTime = 0;
+    videoEl.play().catch(() => {});
   }
 
-  function onPlayerStateChange(event) {
-    if (event.data === YT.PlayerState.ENDED) {
-      if (queueIndex < VIDEO_IDS.length - 1) {
-        createOrLoad(queueIndex + 1);
-      } else {
-        // All videos finished — surface the WhatsApp fab
-        closeModal();
-        if (typeof window.__revealWaFab === 'function') {
-          window.__revealWaFab();
-        }
+  function onVideoEnded() {
+    if (queueIndex < VIDEO_FILES.length - 1) {
+      loadVideo(queueIndex + 1);
+    } else {
+      // All videos finished — surface the WhatsApp fab
+      closeModal();
+      if (typeof window.__revealWaFab === 'function') {
+        window.__revealWaFab();
       }
     }
   }
@@ -2268,42 +2229,22 @@
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
 
-    if (!VIDEO_IDS.length) {
-      console.error('No valid YouTube IDs found in VIDEO_LINKS.');
+    if (!VIDEO_FILES.length) {
+      console.error('No video files set in VIDEO_FILES.');
       return;
     }
-
-    if (apiReady) {
-      createOrLoad(0);
-    } else {
-      // API script hasn't finished loading yet — wait for it, then start.
-      let attempts = 0;
-      const check = setInterval(() => {
-        attempts++;
-        if (apiReady) {
-          clearInterval(check);
-          createOrLoad(0);
-        } else if (attempts > 40) { // ~4 seconds
-          clearInterval(check);
-          console.error(
-            'YouTube IFrame API never loaded — likely blocked by an ad blocker, ' +
-            'privacy extension, or offline connection. Check the Network tab for ' +
-            'a request to youtube.com/iframe_api and see if it was blocked.'
-          );
-        }
-      }, 100);
-    }
+    loadVideo(0);
   }
 
   function closeModal() {
     modal.classList.remove('open');
     modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
-    if (player && typeof player.stopVideo === 'function') {
-      player.stopVideo();
-    }
+    videoEl.pause();
     giftBox.classList.remove('opened');
   }
+
+  videoEl.addEventListener('ended', onVideoEnded);
 
   giftBox.addEventListener('click', () => {
     giftBox.classList.add('opened');
