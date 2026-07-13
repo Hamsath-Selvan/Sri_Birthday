@@ -389,11 +389,10 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      /* wider than viewport to cover letterbox bars, no scrollbars */
       width: 100vw;
-      height: 56.25vw;   /* 16:9 ratio */
+      height: 56.25vw;
       min-height: 100vh;
-      min-width: 177.78vh; /* 16:9 ratio */
+      min-width: 177.78vh;
       transform: translate(-50%, -50%);
       border: none;
       overflow: hidden;
@@ -535,14 +534,11 @@
       margin-bottom: 0;
     }
 
-    /* Tall spacer that creates the scroll distance for the pinned reel.
-       Height is set by JS based on how many cards there are. */
     .gallery-pin {
       position: relative;
       z-index: 5;
     }
 
-    /* Sticks to the viewport while .gallery-pin scrolls past underneath it */
     .gallery-sticky {
       position: sticky;
       top: 0;
@@ -559,8 +555,6 @@
       opacity: 1;
     }
 
-    /* No native scrollbar — the row is moved entirely by transform,
-       driven by page scroll position via JS. */
     .gallery-track {
       display: flex;
       align-items: center;
@@ -581,7 +575,6 @@
                   box-shadow 0.4s ease;
     }
 
-    /* The leading card in view widens — this is the "resize wider" cue */
     .photo-card.active {
       width: clamp(240px, 58vw, 400px);
       border-color: rgba(212,162,76,0.55);
@@ -682,8 +675,6 @@
       transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    /* When the gift box becomes the leading card in the reel, it widens
-       too, same cue as the photo cards, and its contents scale up with it */
     .gift-card.active {
       width: clamp(240px, 58vw, 400px);
     }
@@ -869,13 +860,6 @@
       color: var(--gold);
     }
 
-    /* ── Gift video player wrapper ──
-         The YouTube IFrame API replaces the inner #giftVideo div with
-         its own <iframe>, and that generated iframe does NOT reliably
-         inherit any class we put on the original div. So instead of
-         styling the div directly, we size a stable wrapper around it
-         and target "any iframe inside it" — this way it doesn't matter
-         what attributes YouTube's own iframe ends up with. */
     .gift-video-wrap {
       position: relative;
       width: min(860px, 100%);
@@ -895,6 +879,13 @@
       display: block;
     }
 
+    .gift-video-wrap video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
     .gift-modal-caption {
       margin-top: 14px;
       text-align: center;
@@ -904,11 +895,26 @@
       color: var(--muted);
     }
 
+    /* ── Shared mute-toggle button style (gift box, family envelope, siblings flip) ── */
+    .mute-toggle-btn {
+      margin-top: 10px;
+      background: rgba(212,162,76,0.12);
+      border: 1px solid rgba(212,162,76,0.35);
+      color: var(--gold);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .mute-toggle-btn:hover { background: rgba(212,162,76,0.22); }
+    .mute-toggle-btn.is-unmuted { color: var(--cream); border-color: rgba(255,248,240,0.4); }
+
     /* ══════════════════════════════════════════════════
        ── WhatsApp floating action button ──
-       Hidden by default. Revealed once the gift videos
-       finish playing all the way through (see script
-       further down that calls window.__revealWaFab()).
        ══════════════════════════════════════════════════ */
     .wa-fab {
       position: fixed;
@@ -963,18 +969,12 @@
 
     /* ══════════════════════════════════════════════════
        ── Cinematic scroll-driven story section ──
-       One continuous pinned sequence: WhatsApp flash card
-       + volleyball → hero title → two expanding wish cards
-       → volleyball centers → two videos emerge from it.
-       Driven by GSAP ScrollTrigger (scrub) further down.
        ══════════════════════════════════════════════════ */
     .story-section {
       position: relative;
       z-index: 10;
     }
 
-    /* Tall spacer — its height is the scroll "runway" for the whole
-       sequence. Increase/decrease to slow down or speed up the story. */
     .story-pin {
       position: relative;
       height: 860vh;
@@ -989,8 +989,6 @@
       background: radial-gradient(ellipse at 50% 30%, #14181d 0%, #0b141a 55%, var(--dark) 100%);
     }
 
-    /* Every stage layer stacks and centers via flex, so all elements
-       share the same visual center point unless individually offset. */
     .story-layer {
       position: absolute;
       inset: 0;
@@ -999,7 +997,6 @@
       justify-content: center;
     }
 
-    /* ── Stage 1: flash card + volleyball ── */
     .story-flash-group {
       display: flex;
       align-items: center;
@@ -1046,165 +1043,145 @@
       letter-spacing: 0.5px;
     }
 
-    /* Volleyball: three nested layers so scroll position, cursor
-       parallax, and idle float can all animate independently without
-       fighting over the same transform. The <img> itself gets a
-       fourth, separate transform just for the cursor-driven roll
-       rotation, so it never conflicts with the idle wobble on
-       .volleyball or the position tween on .volleyball-cursor. */
     .volleyball-wrap {
-  width: 76px;
-  height: 76px;
-  position: relative;
-}
+      width: 76px;
+      height: 76px;
+      position: relative;
+    }
 
-.volleyball-cursor {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
+    .volleyball-cursor {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
 
-.volleyball {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.5));
-}
+    .volleyball {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.5));
+    }
 
-/* Replace the old SVG rule with this */
-.volleyball img,
-.volleyball-img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: contain;
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-drag: none;
-  will-change: transform;
-}
+    .volleyball img,
+    .volleyball-img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+      will-change: transform;
+    }
 
-/* ── Stage 2 + 3: WhatsApp-style chat screen ──
-   A single "phone screen" that fades in as one unit: a real chat
-   header bar (back arrow, group avatar, group name, subtitle) on
-   top, and the wish bubbles arriving one at a time underneath it,
-   the way messages actually land in a WhatsApp thread. Enlarged
-   so long messages (like Kevin Sir's) are fully visible, with an
-   internal scroll fallback for anything still overflowing. */
-.wa-chat-screen {
-  position: relative;
-  z-index: 1;
-  width: min(680px, 94vw);
-  max-height: min(88vh, 820px);
-  display: flex;
-  flex-direction: column;
-  border-radius: 16px;
-  overflow: hidden;
-  background: #0b141a;
-  box-shadow: 0 30px 90px rgba(0,0,0,0.6);
-  opacity: 0;
-  transform: translateY(30px) scale(0.96);
-}
+    .wa-chat-screen {
+      position: relative;
+      z-index: 1;
+      width: min(680px, 94vw);
+      max-height: min(88vh, 820px);
+      display: flex;
+      flex-direction: column;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #0b141a;
+      box-shadow: 0 30px 90px rgba(0,0,0,0.6);
+      opacity: 0;
+      transform: translateY(30px) scale(0.96);
+    }
 
-.wa-chat-header {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  background: #202c33;
-  padding: 14px 18px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  flex-shrink: 0;
-}
+    .wa-chat-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #202c33;
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      flex-shrink: 0;
+    }
 
-.wa-chat-back {
-  color: #8696a0;
-  font-size: 1.3rem;
-  line-height: 1;
-  flex-shrink: 0;
-}
+    .wa-chat-back {
+      color: #8696a0;
+      font-size: 1.3rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
 
-.wa-chat-avatar {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  overflow: hidden;
-  flex-shrink: 0;
-  background: linear-gradient(160deg, var(--crimson), #7a0c1f);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+    .wa-chat-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: linear-gradient(160deg, var(--crimson), #7a0c1f);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-.wa-chat-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: 7px;
-}
+    .wa-chat-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 7px;
+    }
 
-.wa-chat-titles {
-  flex: 1;
-  min-width: 0;
-}
+    .wa-chat-titles {
+      flex: 1;
+      min-width: 0;
+    }
 
-.wa-chat-title {
-  font-family: 'Fraunces', Georgia, serif;
-  font-size: 1.02rem;
-  font-weight: 600;
-  color: #fff;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+    .wa-chat-title {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.02rem;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-.wa-chat-sub {
-  font-size: 0.7rem;
-  color: #8696a0;
-  margin-top: 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+    .wa-chat-sub {
+      font-size: 0.7rem;
+      color: #8696a0;
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-.wa-chat-icons {
-  display: flex;
-  gap: 18px;
-  flex-shrink: 0;
-}
+    .wa-chat-icons {
+      display: flex;
+      gap: 18px;
+      flex-shrink: 0;
+    }
 
-.wa-chat-icons svg { width: 19px; height: 19px; fill: #8696a0; }
+    .wa-chat-icons svg { width: 19px; height: 19px; fill: #8696a0; }
 
-/* Scrolls internally (with a slim styled scrollbar) instead of
-   clipping content. overflow-anchor: none stops the browser's
-   scroll-anchoring heuristic from silently moving scrollTop when
-   new content (the expanding bubbles) is added while this box is
-   scrolled — otherwise it would auto-jump to the bottom message. */
-.wa-chat-body {
-  padding: 26px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-  background:
-    linear-gradient(rgba(11,20,26,0.95), rgba(11,20,26,0.95)),
-    repeating-linear-gradient(135deg, rgba(255,255,255,0.012) 0 2px, transparent 2px 42px);
-  overflow-y: auto;
-  overflow-x: hidden;
-  overflow-anchor: none;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(212,162,76,0.4) transparent;
-}
+    .wa-chat-body {
+      padding: 26px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      background:
+        linear-gradient(rgba(11,20,26,0.95), rgba(11,20,26,0.95)),
+        repeating-linear-gradient(135deg, rgba(255,255,255,0.012) 0 2px, transparent 2px 42px);
+      overflow-y: auto;
+      overflow-x: hidden;
+      overflow-anchor: none;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(212,162,76,0.4) transparent;
+    }
 
-.wa-chat-body::-webkit-scrollbar { width: 6px; }
-.wa-chat-body::-webkit-scrollbar-track { background: transparent; }
-.wa-chat-body::-webkit-scrollbar-thumb {
-  background: rgba(212,162,76,0.35);
-  border-radius: 3px;
-}
+    .wa-chat-body::-webkit-scrollbar { width: 6px; }
+    .wa-chat-body::-webkit-scrollbar-track { background: transparent; }
+    .wa-chat-body::-webkit-scrollbar-thumb {
+      background: rgba(212,162,76,0.35);
+      border-radius: 3px;
+    }
 
-    /* ── Stage 3: wish cards, arriving one at a time inside the chat ── */
     .story-cards {
       display: flex;
       flex-direction: column;
@@ -1268,10 +1245,6 @@
       white-space: normal;
     }
 
-    /* ── Stage 4: video reveal ──
-       Both videos are stacked in the same centered spot (instead of
-       side by side) so only one is ever visible at a time — the JS
-       below crossfades between them instead of playing both at once. */
     .story-videos {
       position: relative;
       width: clamp(150px, 28vw, 320px);
@@ -1291,13 +1264,6 @@
       transform: scale(0.35);
     }
 
-    /* ── Fullscreen banner behind the chat screen ──
-       Fills the entire pinned section (same size as the 1920×1080
-       sticky viewport), not just the chat panel's own footprint.
-       Starts fully transparent — GSAP fades it in once the flash
-       card stage has finished and the chat screen opens, and fades
-       it back out before the video stage, so it's scoped to that
-       one moment of the story rather than always visible. */
     .wa-bg-figure {
       position: absolute;
       inset: 0;
@@ -1371,20 +1337,20 @@
     }
 
     .siblings-columns {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  gap: 20px;
-  width: min(1000px, 92vw);
-  height: 68vh;
-  margin-top: 110px;
-  overflow: hidden;
-  mask-image: linear-gradient(to bottom, transparent, black 8%, black 94%, transparent);
-  -webkit-mask-image: linear-gradient(to bottom, transparent, black 8%, black 94%, transparent);
-}
+      position: relative;
+      z-index: 2;
+      display: flex;
+      gap: 20px;
+      width: min(1000px, 92vw);
+      height: 68vh;
+      margin-top: 110px;
+      overflow: hidden;
+      mask-image: linear-gradient(to bottom, transparent, black 8%, black 94%, transparent);
+      -webkit-mask-image: linear-gradient(to bottom, transparent, black 8%, black 94%, transparent);
+    }
 
-.sib-col { flex: 1; display: flex; flex-direction: column; gap: 20px; will-change: transform; }
-.sib-col-mid { margin-top: -130px; } /* stagger the middle column */
+    .sib-col { flex: 1; display: flex; flex-direction: column; gap: 20px; will-change: transform; }
+    .sib-col-mid { margin-top: -130px; }
     .sib-photo {
       flex-shrink: 0;
       width: 100%;
@@ -1405,7 +1371,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 30px;
+      gap: 22px;
       opacity: 0;
       pointer-events: none;
     }
@@ -1420,15 +1386,40 @@
 
     .siblings-video-title em { font-style: italic; color: var(--gold); }
 
-    .siblings-video {
+    /* ── Siblings flip-card: video 1 plays, then flips in 3D to video 2 ── */
+    .sib-flip {
       width: min(820px, 94vw);
       max-height: 78vh;
+      aspect-ratio: 16/9;
+      perspective: 1600px;
+    }
+
+    .sib-flip-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 1s cubic-bezier(0.65,0,0.35,1);
       border-radius: 16px;
       box-shadow: 0 30px 70px rgba(0,0,0,0.6);
+    }
+
+    .sib-flip-inner.flipped { transform: rotateY(180deg); }
+
+    .sib-flip-face {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 16px;
       border: 1px solid rgba(212,162,76,0.3);
       background: #000;
+      backface-visibility: hidden;
       cursor: pointer;
     }
+
+    .sib-flip-back { transform: rotateY(180deg); }
 
     .siblings-video-hint {
       font-size: 0.6rem;
@@ -1438,10 +1429,105 @@
     }
 
     @media (max-width: 640px) {
-  .siblings-columns { gap: 12px; height: 60vh; width: 94vw; margin-top: 96px; }
-  .sib-col { gap: 12px; }
-  .sib-col-mid { margin-top: -75px; }
-  .siblings-title-wrap { top: 20px; }
+      .siblings-columns { gap: 12px; height: 60vh; width: 94vw; margin-top: 96px; }
+      .sib-col { gap: 12px; }
+      .sib-col-mid { margin-top: -75px; }
+      .siblings-title-wrap { top: 20px; }
+    }
+
+    /* ── Family Constellation: envelope video trigger + modal ── */
+    .fc-envelope {
+      position: absolute;
+      width: 190px; height: 130px;
+      background: none; border: none; padding: 0; cursor: pointer;
+      transform: rotate(var(--r,0deg));
+      z-index: 3;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .fc-envelope-back {
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, #f3e2c0, var(--cream));
+      border-radius: 4px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+    .fc-envelope-flap {
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 60%;
+      background: linear-gradient(160deg, #e6cd9a, #f3e2c0);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transform-origin: top center;
+      transition: transform 0.7s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .fc-envelope.opened .fc-envelope-flap {
+      transform: rotateX(180deg);
+    }
+    .fc-envelope-seal {
+      position: absolute; top: 42%; left: 50%;
+      width: 34px; height: 34px;
+      margin: -17px 0 0 -17px;
+      background: var(--crimson);
+      border-radius: 50%;
+      color: var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.35);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .fc-envelope.opened .fc-envelope-seal {
+      opacity: 0; transform: scale(0.4);
+    }
+    .fc-envelope-label {
+      position: absolute; bottom: -30px; left: 0; right: 0;
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .fc-modal {
+      position: fixed; inset: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px; opacity: 0; pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    .fc-modal.open { opacity: 1; pointer-events: auto; }
+    .fc-modal-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(10,4,4,0.82); backdrop-filter: blur(4px);
+    }
+    .fc-modal-panel {
+      position: relative; z-index: 2;
+      width: min(94vw, 700px);
+      background: var(--dark);
+      border: 1px solid rgba(212,162,76,0.35);
+      border-radius: 12px; padding: 18px;
+      display: flex; flex-direction: column; align-items: center;
+      transform: translateY(24px) scale(0.97);
+      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+    }
+    .fc-modal.open .fc-modal-panel { transform: translateY(0) scale(1); }
+    .fc-video-wrap {
+      position: relative; width: 100%;
+      aspect-ratio: 9/16; max-height: 65vh;
+      border-radius: 8px; overflow: hidden; background: #000;
+    }
+    .fc-video-wrap video { width: 100%; height: 100%; object-fit: cover; }
+    .fc-modal-caption {
+      margin-top: 10px; font-size: 0.62rem; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .fc-modal-close {
+      position: absolute; top: -14px; right: -14px;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--dark); border: 1px solid rgba(212,162,76,0.4);
+      color: var(--cream); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+    .fc-modal-close:hover { border-color: var(--gold); color: var(--gold); }
+
+    @media (max-width: 860px) {
+      .fc-envelope { position: relative; margin: 0 auto 40px; top: 0 !important; left: 0 !important; }
     }
   </style>
 </head>
@@ -1455,7 +1541,6 @@
   <!-- Header -->
   <header id="site-header">
 
-    <!-- The animated canvas — sits behind everything -->
     <canvas id="header-canvas"></canvas>
 
     <div class="header-inner parallax" data-speed="0.06">
@@ -1465,20 +1550,6 @@
       <div class="header-divider"></div>
     </div>
   </header>
-
-  <!-- ── Video Section ── 
-  <section class="video-section">
-    <div class="video-wrapper">
-     <iframe
-    id="birthday-video"
-    src="https://www.youtube.com/embed/QMOnlbjz_Pc?autoplay=1&mute=1&controls=1&rel=0&loop=1&playlist=QMOnlbjz_Pc&modestbranding=1&playsinline=1"
-    title="Birthday video for Lakshmi Sri"
-    frameborder="0"
-    allow="autoplay; fullscreen; encrypted-media"
-    allowfullscreen
-  ></iframe>
-    </div>
-  </section>-->
 
   <!-- ── Jackalope Narrator Section ── -->
   <section class="narrator-section" id="narrator-section">
@@ -1566,55 +1637,49 @@
     <div class="gift-modal-backdrop" id="giftModalBackdrop"></div>
     <div class="gift-modal-panel">
       <button class="gift-modal-close" id="giftModalClose" aria-label="Close">✕</button>
-      <!-- The YouTube player is created here by JS via the IFrame API.
-           #giftVideo is just the mount point YT.Player replaces with its
-           own <iframe> — the surrounding .gift-video-wrap is what we
-           actually size, since the generated iframe won't reliably keep
-           any class we put on the original div. -->
       <div class="gift-video-wrap">
-        <div id="giftVideo"></div>
+        <video id="giftVideo1" src="assets/priyaathai.mp4" playsinline muted></video>
+        <video id="giftVideo2" src="assets/chithappaaachi.mp4" playsinline muted style="display:none;"></video>
       </div>
+      <button class="mute-toggle-btn" id="giftMuteToggle">🔇 tap to unmute</button>
       <p class="gift-modal-caption" id="giftVideoCaption">wish 1 of 2</p>
     </div>
   </div>
 
-  <!-- ── Cinematic scroll-driven story section ──
-       One continuous pinned sequence, driven by GSAP ScrollTrigger
-       further down: flash card + volleyball → hero title → two
-       expanding wish cards → volleyball centers → videos emerge. ── -->
+  <!-- ── Cinematic scroll-driven story section ── -->
   <section class="story-section" id="storySection">
     <div class="story-pin" id="storyPin">
       <div class="story-sticky" id="storySticky">
 
         <!-- Stage 1: WhatsApp flash card + volleyball -->
-       <div class="story-layer">
-  <div class="story-flash-group" id="storyFlashGroup">
-    <div class="flash-card" id="flashCard">
-      <div class="flash-icon">
+        <div class="story-layer">
+          <div class="story-flash-group" id="storyFlashGroup">
+            <div class="flash-card" id="flashCard">
+              <div class="flash-icon">
                 <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
                   <path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.5c0 2.42.687 4.68 1.878 6.6L3 29l7.086-2.318a12.42 12.42 0 0 0 5.915 1.507h.005c6.893 0 12.499-5.607 12.499-12.5C28.505 8.607 22.898 3 16.001 3zm0 22.79h-.004a10.31 10.31 0 0 1-5.253-1.438l-.377-.224-3.902 1.276 1.293-3.804-.246-.39a10.28 10.28 0 0 1-1.583-5.51c0-5.696 4.637-10.333 10.336-10.333 2.76 0 5.353 1.077 7.305 3.031a10.26 10.26 0 0 1 3.026 7.306c0 5.697-4.637 10.334-10.335 10.334z"/>
                 </svg>
               </div>
 
-      <div class="flash-text">
-        <div class="flash-title">Wishes From Your Team</div>
-        <div class="flash-sub">3 New messages</div>
-      </div>
-    </div>
+              <div class="flash-text">
+                <div class="flash-title">Wishes From Your Team</div>
+                <div class="flash-sub">3 New messages</div>
+              </div>
+            </div>
 
-    <div class="volleyball-wrap" id="volleyballWrap">
-      <div class="volleyball-cursor" id="volleyballCursor">
-        <div class="volleyball" id="volleyball">
-          <img
-            src="assets/beach-ball.png"
-            alt="Volleyball"
-            class="volleyball-img"
-          />
+            <div class="volleyball-wrap" id="volleyballWrap">
+              <div class="volleyball-cursor" id="volleyballCursor">
+                <div class="volleyball" id="volleyball">
+                  <img
+                    src="assets/beach-ball.png"
+                    alt="Volleyball"
+                    class="volleyball-img"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
 
         <!-- Stage 2 + 3: WhatsApp-style chat screen — a group chat -->
         <div class="story-layer">
@@ -1670,15 +1735,11 @@
           </div>
         </div>
 
-        <!-- Stage 4: video reveal — four videos, one after another.
-             Update these four paths to your actual filenames. loop is
-             only on the last one so it lingers once the sequence
-             finishes; the first three need their 'ended' event to
-             fire so the JS below can hand off to the next video. -->
+        <!-- Stage 4: video reveal — four videos, one after another. -->
         <div class="story-layer">
           <div class="story-videos" id="storyVideos">
-            <video class="story-video" id="storyVideo1" src="assets/team1.mp4" muted playsinline></video>
-            <video class="story-video" id="storyVideo2" src="assets/team2.mp4" muted playsinline></video>
+            <video class="story-video" id="storyVideo1" src="assets/sandysir.mp4" muted playsinline></video>
+            <video class="story-video" id="storyVideo2" src="assets/grana.mp4" muted playsinline></video>
             <video class="story-video" id="storyVideo3" src="assets/team3.mp4" muted playsinline></video>
             <video class="story-video" id="storyVideo4" src="assets/team4.mp4" muted playsinline loop></video>
           </div>
@@ -1773,17 +1834,14 @@
   <figcaption class="fc-cap"><span class="fc-label">All of us</span><span class="fc-caption">still the same, only louder</span></figcaption>
 </figure>
 
-    
-  </div>
+    <!-- ── Envelope: tap to reveal two videos from home, in sequence ── -->
+    <button class="fc-envelope" id="fcEnvelope" style="top:58%; left:6%;" aria-label="Open a video from home">
+      <span class="fc-envelope-back"></span>
+      <span class="fc-envelope-flap"></span>
+      <span class="fc-envelope-seal">❤</span>
+      <span class="fc-envelope-label">a little something<br>from home</span>
+    </button>
 
-  <!-- Mobile stacked fallback (auto-shown under 860px) -->
-  <div class="fc-stack" aria-hidden="true">
-    <figure class="fc-card fc-portrait  fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">Mom</span><span class="fc-caption">her light</span></figcaption></figure>
-    <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?w=900&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">Dad &amp; us</span><span class="fc-caption">sunday, everywhere</span></figcaption></figure>
-    <figure class="fc-card fc-portrait  fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">The birthday girl</span><span class="fc-caption">always been the sun</span></figcaption></figure>
-    <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1604423043492-41303370a171?w=900&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">Diwali '19</span><span class="fc-caption">diyas &amp; mischief</span></figcaption></figure>
-    <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1000&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">All of us</span><span class="fc-caption">the whole crew</span></figcaption></figure>
-    
   </div>
 
   <!-- Mobile stacked fallback (auto-shown under 860px) -->
@@ -1795,8 +1853,29 @@
     <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1000&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">All of us</span><span class="fc-caption">the whole crew</span></figcaption></figure>
     <figure class="fc-card fc-portrait  fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?w=600&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">Little you</span><span class="fc-caption">same smile, smaller</span></figcaption></figure>
     <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=1000&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">Today</span><span class="fc-caption">still the same, only louder</span></figcaption></figure>
-     </div>
+
+    <!-- Mobile: same envelope trigger, laid out inline via the media query above -->
+    <button class="fc-envelope" id="fcEnvelopeMobile" aria-label="Open a video from home">
+      <span class="fc-envelope-back"></span>
+      <span class="fc-envelope-flap"></span>
+      <span class="fc-envelope-seal">❤</span>
+      <span class="fc-envelope-label">a little something<br>from home</span>
+    </button>
+  </div>
 </section>
+
+<!-- ── Family video modal (the envelope opens this) ── -->
+<div class="fc-modal" id="fcModal" aria-hidden="true">
+  <div class="fc-modal-backdrop" id="fcModalBackdrop"></div>
+  <div class="fc-modal-panel">
+    <button class="fc-modal-close" id="fcModalClose" aria-label="Close">✕</button>
+    <div class="fc-video-wrap">
+      <video id="fcVideo1" src="assets/sudhan-saranya.mp4" playsinline muted></video>
+    </div>
+    <button class="mute-toggle-btn" id="fcMuteToggle">🔇 tap to unmute</button>
+    <p class="fc-modal-caption" id="fcModalCaption">from your family</p>
+  </div>
+</div>
 
 <style>
   /* ── Family Constellation ── */
@@ -1935,6 +2014,65 @@
   })();
 </script>
 
+<!-- ── Family video envelope: open → play two videos in sequence ── -->
+<script>
+(function() {
+  const envelopes = [document.getElementById('fcEnvelope'), document.getElementById('fcEnvelopeMobile')].filter(Boolean);
+  const modal = document.getElementById('fcModal');
+  const backdrop = document.getElementById('fcModalBackdrop');
+  const closeBtn = document.getElementById('fcModalClose');
+  const v1 = document.getElementById('fcVideo1');
+  const muteToggle = document.getElementById('fcMuteToggle');
+  const caption = document.getElementById('fcModalCaption');
+  if (!envelopes.length || !modal || !v1) return;
+  v1.addEventListener('error', () => console.error('LOAD ERROR on', v1.src, v1.error));
+
+
+  function syncToggle() {
+    muteToggle.textContent = v1.muted ? '🔇 tap to unmute' : '🔊 sound on';
+    muteToggle.classList.toggle('is-unmuted', !v1.muted);
+  }
+
+  function openModal() {
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    caption.textContent = 'from your family';
+    v1.currentTime = 0;
+    v1.muted = true;
+    v1.loop = true;
+    v1.play().catch(err => console.error('Family video failed:', v1.src, err));
+    syncToggle();
+  }
+
+  function closeModal() {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    v1.pause();
+    envelopes.forEach(e => e.classList.remove('opened'));
+  }
+
+  muteToggle.addEventListener('click', () => {
+    v1.muted = !v1.muted;
+    syncToggle();
+  });
+
+  envelopes.forEach(env => {
+    env.addEventListener('click', () => {
+      env.classList.add('opened');
+      setTimeout(openModal, 450);
+    });
+  });
+
+  closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', closeModal);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+  });
+})();
+</script>
+
 
     <!-- Letter section -->
     <div class="section-label">a letter · for you</div>
@@ -2023,8 +2161,14 @@
 
         <div class="siblings-video-stage" id="siblingsVideoStage">
           <p class="siblings-video-title">Happy Birthday <em>Sri Maaaa</em></p>
-          <video class="siblings-video" id="siblingsVideo" src="assets/siblings-wish.mp4" playsinline muted></video>
-          <p class="siblings-video-hint">tap video to unmute</p>
+          <div class="sib-flip" id="sibFlip">
+            <div class="sib-flip-inner" id="sibFlipInner">
+              <video class="sib-flip-face sib-flip-front" id="siblingsVideo1" src="assets/siblings-wish1.mp4" playsinline muted></video>
+              <video class="sib-flip-face sib-flip-back" id="siblingsVideo2" src="assets/siblings-wish2.mp4" playsinline muted loop></video>
+            </div>
+          </div>
+          <button class="mute-toggle-btn" id="siblingsMuteToggle">🔇 tap to unmute</button>
+          <p class="siblings-video-hint" id="siblingsHint">wish 1 of 2</p>
         </div>
 
       </div>
@@ -2036,8 +2180,7 @@
     <div class="footer-text">made with red thread · <span>kalizz · 2026</span> · seventeen</div>
   </footer>
 
-  <!-- ── WhatsApp floating action button ──
-       Hidden until both gift videos finish playing. ── -->
+  <!-- ── WhatsApp floating action button ── -->
   <button class="wa-fab" id="waFab" aria-label="One more surprise waiting" title="One more surprise">
     <svg viewBox="0 0 32 32" fill="#fff" xmlns="http://www.w3.org/2000/svg">
       <path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.5c0 2.42.687 4.68 1.878 6.6L3 29l7.086-2.318a12.42 12.42 0 0 0 5.915 1.507h.005c6.893 0 12.499-5.607 12.499-12.5C28.505 8.607 22.898 3 16.001 3zm0 22.79h-.004a10.31 10.31 0 0 1-5.253-1.438l-.377-.224-3.902 1.276 1.293-3.804-.246-.39a10.28 10.28 0 0 1-1.583-5.51c0-5.696 4.637-10.333 10.336-10.333 2.76 0 5.353 1.077 7.305 3.031a10.26 10.26 0 0 1 3.026 7.306c0 5.697-4.637 10.334-10.335 10.334zm5.66-7.74c-.31-.155-1.834-.905-2.118-1.01-.284-.104-.492-.155-.7.156-.207.31-.804 1.01-.985 1.217-.181.207-.362.233-.673.078-.31-.155-1.309-.483-2.494-1.54-.922-.822-1.545-1.838-1.726-2.148-.181-.31-.02-.478.136-.633.14-.14.31-.362.465-.543.155-.181.207-.31.31-.518.104-.207.052-.388-.026-.543-.078-.155-.7-1.687-.959-2.311-.253-.607-.51-.525-.7-.535-.181-.008-.388-.01-.596-.01-.207 0-.543.078-.828.388-.284.31-1.086 1.061-1.086 2.588 0 1.528 1.112 3.004 1.267 3.211.155.207 2.19 3.345 5.306 4.69.742.32 1.32.512 1.771.655.744.237 1.421.204 1.956.124.597-.089 1.834-.75 2.093-1.474.259-.724.259-1.345.181-1.474-.078-.13-.284-.207-.596-.362z"/>
@@ -2060,9 +2203,7 @@
     });
   </script>
 
-  <!-- ── Site-wide parallax: header, memory cards, letter, timeline ──
-       Every element with class="parallax" drifts vertically based on its
-       distance from viewport center, scaled by its data-speed. ── -->
+  <!-- ── Site-wide parallax ── -->
   <script>
   (function() {
     const layers = Array.from(document.querySelectorAll('.parallax'));
@@ -2106,12 +2247,7 @@
     const track    = document.getElementById('galleryTrack');
     if (!pin || !sticky || !track) return;
 
-    // Every widening "stop" in the reel, in order — photo cards first,
-    // gift box last, so the gift box gets the same widen treatment.
     const allCards = Array.from(track.children);
-
-    // How much extra scroll distance to give the reel per card.
-    // Larger = slower, more deliberate horizontal movement.
     const SCROLL_PER_CARD = 420;
 
     let maxX = 0;
@@ -2122,8 +2258,6 @@
       pin.style.height = `${window.innerHeight + extra}px`;
     }
 
-    // Keep the horizontal travel distance in sync with the track's real
-    // width, even as the active card grows wider mid-transition.
     const ro = new ResizeObserver(() => {
       maxX = Math.max(0, track.scrollWidth - sticky.clientWidth);
     });
@@ -2135,14 +2269,12 @@
       let progress = scrollable > 0 ? -rect.top / scrollable : 0;
       progress = Math.min(1, Math.max(0, progress));
 
-      // Wake the reel in (opacity) once it's actually being scrolled through
       const inView = rect.top < window.innerHeight && rect.bottom > 0;
       if (inView !== awake) {
         awake = inView;
         sticky.classList.toggle('awake', awake);
       }
 
-      // Which card is "leading" right now — photo cards or the gift box
       const activeIdx = Math.min(
         allCards.length - 1,
         Math.floor(progress * allCards.length)
@@ -2169,7 +2301,6 @@
     }
 
     sizePin();
-    // Let layout settle, then take the first width measurement
     requestAnimationFrame(() => {
       maxX = Math.max(0, track.scrollWidth - sticky.clientWidth);
       update();
@@ -2180,130 +2311,76 @@
   })();
   </script>
 
-  <!-- ── Gift box: tap to open, plays birthday wish video(s) centered
-       in a wide modal over the page, via the YouTube IFrame API. Once
-       ALL videos finish playing naturally (not on manual close), it
-       reveals the WhatsApp fab. ── -->
-  <script src="https://www.youtube.com/iframe_api"></script>
+  <!-- ── Gift box: tap to open, plays two local birthday wish videos in
+       sequence (muted-autoplay then tap-to-unmute). Once both finish
+       playing naturally, it reveals the WhatsApp fab. ── -->
   <script>
 (function() {
-  const giftBox   = document.getElementById('giftBox');
-  const modal     = document.getElementById('giftModal');
-  const backdrop  = document.getElementById('giftModalBackdrop');
-  const closeBtn  = document.getElementById('giftModalClose');
-  const caption   = document.getElementById('giftVideoCaption');
-  if (!giftBox || !modal) return;
+  const giftBox    = document.getElementById('giftBox');
+  const modal      = document.getElementById('giftModal');
+  const backdrop   = document.getElementById('giftModalBackdrop');
+  const closeBtn   = document.getElementById('giftModalClose');
+  const caption    = document.getElementById('giftVideoCaption');
+  const muteToggle = document.getElementById('giftMuteToggle');
+  const v1 = document.getElementById('giftVideo1');
+  const v2 = document.getElementById('giftVideo2');
+  if (!giftBox || !modal || !v1 || !v2) return;
 
-  // 👉 Paste your full YouTube links here — any normal format works
-  // (watch?v=, youtu.be/, embed/, with or without extra query params).
-  const VIDEO_LINKS = [
-    'https://youtu.be/enJjEIZwAv8',
-    'https://youtu.be/cl9uQiTu94o'
-  ];
+  [v1, v2].forEach(v => {
+  v.addEventListener('error', () => console.error('LOAD ERROR on', v.src, v.error));
+});
 
-  // Extracts the 11-character video ID from any common YouTube URL shape.
-  function extractYouTubeId(url) {
-    const match = url.match(
-      /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/
-    );
-    return match ? match[1] : null;
+
+  let active = v1;
+
+  function syncMuteButton() {
+    muteToggle.textContent = active.muted ? '🔇 tap to unmute' : '🔊 sound on';
+    muteToggle.classList.toggle('is-unmuted', !active.muted);
   }
 
-  const VIDEO_IDS = VIDEO_LINKS.map(extractYouTubeId).filter(Boolean);
-
-  let player = null;
-  let apiReady = false;
-  let queueIndex = 0;
-
-  // Required global callback name for the YouTube IFrame API.
-  window.onYouTubeIframeAPIReady = function() {
-    apiReady = true;
-  };
-
-  function createOrLoad(index) {
-    queueIndex = index;
-    caption.textContent = VIDEO_IDS.length > 1
-      ? `wish ${index + 1} of ${VIDEO_IDS.length}`
-      : 'a birthday wish';
-
-    if (!player) {
-      // width/height set here matter — the API sizes the iframe it
-      // generates using these values *before* our CSS ever touches it,
-      // so '100%' here plus the wrapper CSS keeps it filling the panel.
-      player = new YT.Player('giftVideo', {
-        width: '100%',
-        height: '100%',
-        videoId: VIDEO_IDS[index],
-        playerVars: {
-          autoplay: 1,
-          rel: 0,
-          modestbranding: 1,
-          playsinline: 1
-        },
-        events: {
-          onStateChange: onPlayerStateChange
-        }
-      });
-    } else {
-      player.loadVideoById(VIDEO_IDS[index]);
-    }
-  }
-
-  function onPlayerStateChange(event) {
-    if (event.data === YT.PlayerState.ENDED) {
-      if (queueIndex < VIDEO_IDS.length - 1) {
-        createOrLoad(queueIndex + 1);
-      } else {
-        // All videos finished — surface the WhatsApp fab
-        closeModal();
-        if (typeof window.__revealWaFab === 'function') {
-          window.__revealWaFab();
-        }
-      }
-    }
-  }
+  function playActive() {
+  active.currentTime = 0;
+  active.muted = true;
+  active.play().catch(err => console.error('Gift video failed:', active.src, err));
+  syncMuteButton();
+}
 
   function openModal() {
     modal.classList.add('open');
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
-
-    if (!VIDEO_IDS.length) {
-      console.error('No valid YouTube IDs found in VIDEO_LINKS.');
-      return;
-    }
-
-    if (apiReady) {
-      createOrLoad(0);
-    } else {
-      // API script hasn't finished loading yet — wait for it, then start.
-      let attempts = 0;
-      const check = setInterval(() => {
-        attempts++;
-        if (apiReady) {
-          clearInterval(check);
-          createOrLoad(0);
-        } else if (attempts > 40) { // ~4 seconds
-          clearInterval(check);
-          console.error(
-            'YouTube IFrame API never loaded — likely blocked by an ad blocker, ' +
-            'privacy extension, or offline connection. Check the Network tab for ' +
-            'a request to youtube.com/iframe_api and see if it was blocked.'
-          );
-        }
-      }, 100);
-    }
+    v1.style.display = ''; v2.style.display = 'none';
+    active = v1;
+    caption.textContent = 'wish 1 of 2';
+    playActive();
   }
 
   function closeModal() {
     modal.classList.remove('open');
     modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
-    if (player && typeof player.stopVideo === 'function') {
-      player.stopVideo();
-    }
+    v1.pause(); v2.pause();
     giftBox.classList.remove('opened');
   }
+
+  v1.addEventListener('ended', () => {
+    v1.style.display = 'none'; v2.style.display = '';
+    active = v2;
+    caption.textContent = 'wish 2 of 2';
+    playActive();
+  });
+
+  v2.addEventListener('ended', () => {
+    closeModal();
+    if (typeof window.__revealWaFab === 'function') {
+      window.__revealWaFab();
+    }
+  });
+
+  muteToggle.addEventListener('click', () => {
+    active.muted = !active.muted;
+    syncMuteButton();
+  });
 
   giftBox.addEventListener('click', () => {
     giftBox.classList.add('opened');
@@ -2325,8 +2402,6 @@
     const target = document.getElementById('storySection');
     if (!fab || !target) return;
 
-    // Exposed globally so the gift-video script can call this once
-    // both wishes have finished playing.
     window.__revealWaFab = function() {
       fab.classList.add('show');
     };
@@ -2335,8 +2410,6 @@
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 
-    // Keep the fab visible until the visitor actually starts scrolling
-    // into the story section, then fade it out of the way.
     const hideObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -2350,9 +2423,6 @@
 
   <!-- ══════════════════════════════════════════════════
        ── Cinematic story sequence (GSAP ScrollTrigger) ──
-       One scrubbed timeline drives every stage: flash card + ball →
-       title → sequential wish-card expansion (3 wishes) → ball
-       centers → videos emerge.       
        ══════════════════════════════════════════════════ -->
   <script>
   (function() {
@@ -2378,18 +2448,12 @@
     const text2        = document.getElementById('storyText2');
     const text3        = document.getElementById('storyText3');
 
-    // Sequential videos — add or remove ids here if the count changes.
-    // Only the LAST one should keep the `loop` attribute in the HTML.
     const videos = ['storyVideo1', 'storyVideo2', 'storyVideo3', 'storyVideo4']
       .map(id => document.getElementById(id))
       .filter(Boolean);
 
     if (!pin || !flashGroup || !ball) return;
 
-    /* ── Idle float: always running, independent of scroll.
-         Lives on .volleyball, separate from the roll rotation below
-         which lives on the <img>, so the two never overwrite
-         each other's transform. ── */
     gsap.to(ball, {
       y: -12,
       rotate: 10,
@@ -2399,13 +2463,6 @@
       repeat: -1
     });
 
-    /* ── Cursor follow + rolling rotation ──
-         The ball drifts toward the pointer (position, on
-         .volleyball-cursor) and spins continuously based on how far
-         the pointer has traveled horizontally (rotation, on the
-         <img> itself) — like it's actually rolling along with the
-         cursor rather than just nudging toward it. Both switch off
-         once the scroll-driven "move to center" stage takes over. ── */
     const quickX = gsap.quickTo(ballCursor, 'x', { duration: 0.55, ease: 'power3.out' });
     const quickY = gsap.quickTo(ballCursor, 'y', { duration: 0.55, ease: 'power3.out' });
     const quickRotate = ballImg
@@ -2419,13 +2476,11 @@
     window.addEventListener('mousemove', (e) => {
       if (!cursorParallaxActive) return;
 
-      // Position: follow the pointer within a generous radius
       const relX = (e.clientX / window.innerWidth  - 0.5) * 46;
       const relY = (e.clientY / window.innerHeight - 0.5) * 46;
       quickX(relX);
       quickY(relY);
 
-      // Rotation: roll proportionally to horizontal cursor movement
       if (quickRotate) {
         if (lastMouseX !== null) {
           const deltaX = e.clientX - lastMouseX;
@@ -2436,30 +2491,23 @@
       }
     }, { passive: true });
 
-    /* ── Master scrubbed timeline ── */
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: pin,
         start: 'top top',
         end: 'bottom bottom',
         scrub: 1,
-        // markers: true, // uncomment while tuning
         onLeaveBack: () => { cursorParallaxActive = true; },
       }
     });
 
-    // Stage 1 — flash card + ball entrance
     tl.to(flashGroup, { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power2.out' }, 0);
 
-    // Stage 2 — flash card exits, the WhatsApp chat screen opens
     tl.to(flashGroup, { opacity: 0, y: -30, scale: 0.94, duration: 0.8, ease: 'power2.in' }, 1.6)
       .call(() => { if (chatBody) chatBody.scrollTop = 0; }, null, 1.85)
       .to(chatScreen, { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power2.out' }, 1.9)
       .to(bgFigure, { opacity: 0.55, duration: 1.2, ease: 'power2.out' }, 1.9);
 
-    // Stage 3 — the three wishes land one at a time inside the chat,
-    // each bubble expanding out to reveal its message like a real
-    // incoming WhatsApp text.
     tl.to(card1, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 3.0)
       .to(bubble1, { width: 400, duration: 1.1, ease: 'power2.inOut' }, 3.1)
       .to(text1, { opacity: 1, duration: 0.6, ease: 'power1.out' }, 3.9)
@@ -2470,8 +2518,6 @@
       .to(bubble3, { width: 400, duration: 1.1, ease: 'power2.inOut' }, 6.3)
       .to(text3, { opacity: 1, duration: 0.6, ease: 'power1.out' }, 7.1);
 
-    // Stage 4 — the chat screen closes, ball drifts to true center and
-    // grows, cursor parallax switches off so the scroll-driven move wins
     tl.call(() => { cursorParallaxActive = false; }, null, 7.9)
       .to(chatScreen, { opacity: 0, y: -20, scale: 0.94, duration: 0.7, ease: 'power1.in' }, 7.9)
       .call(() => { if (chatBody) chatBody.scrollTop = 0; }, null, 8.05)
@@ -2484,10 +2530,6 @@
         ease: 'power2.inOut'
       }, 8.1);
 
-    // Stage 5 — the ball fades as it "becomes" the video experience,
-    // and only the FIRST video is revealed + played. The rest start
-    // hidden — see the sequential player below, which brings each one
-    // in only once the previous one has actually finished.
     tl.to(ballWrap, { opacity: 0, scale: 2.1, duration: 0.7, ease: 'power2.in' }, 9.3)
       .to(videos[0], { opacity: 1, scale: 1, duration: 1, ease: 'power3.out' }, 9.5)
       .call(() => {
@@ -2496,14 +2538,9 @@
         videos[0].play().catch(() => {});
       }, null, 9.5);
 
-    /* ── Sequential video player (N videos, one after another) ──
-         Runs outside the scrubbed timeline, on real playback time —
-         each video only ever appears once the previous one has
-         actually finished, never simultaneously. Add/remove ids from
-         the `videos` array above to change how many play. */
     videos.forEach((current, i) => {
       const next = videos[i + 1];
-      if (!next) return; // last video just plays (and loops, via HTML)
+      if (!next) return;
       current.addEventListener('ended', () => {
         gsap.to(current, { opacity: 0, scale: 0.9, duration: 0.5, ease: 'power2.in' });
         gsap.to(next, {
@@ -2529,7 +2566,6 @@
     const header  = document.getElementById('site-header');
     const ctx     = canvas.getContext('2d');
 
-    /* ── Palette ── */
     const C = {
       crimson : 'rgba(179,18,46,',
       gold    : 'rgba(212,162,76,',
@@ -2537,9 +2573,7 @@
       sage    : 'rgba(79,143,106,'
     };
 
-    /* ── Symbol sets for each interest ── */
     const SYMBOLS = [
-      /* CODING */
       { text: '</>',  cat: 'code',   color: C.gold    },
       { text: '{ }',  cat: 'code',   color: C.gold    },
       { text: '( )',  cat: 'code',   color: C.cream   },
@@ -2553,7 +2587,6 @@
       { text: '#!',   cat: 'code',   color: C.gold    },
       { text: '::',   cat: 'code',   color: C.cream   },
 
-      /* VIDEO EDITING */
       { text: '▶▶',  cat: 'edit',   color: C.gold    },
       { text: '▌▌',  cat: 'edit',   color: C.cream   },
       { text: '✂',   cat: 'edit',   color: C.crimson },
@@ -2564,7 +2597,6 @@
       { text: '⧉',   cat: 'edit',   color: C.cream   },
       { text: '◈',   cat: 'edit',   color: C.crimson },
 
-      /* FOOD */
       { text: '♨',   cat: 'food',   color: C.crimson },
       { text: '⬟',   cat: 'food',   color: C.gold    },
       { text: '∿∿',  cat: 'food',   color: C.cream   },
@@ -2576,7 +2608,6 @@
       { text: '⌘',   cat: 'food',   color: C.cream   },
       { text: '✦',   cat: 'food',   color: C.crimson },
 
-      /* VOLLEYBALL */
       { text: '⚈',   cat: 'volleyball', color: C.gold    },
       { text: '⬤',   cat: 'volleyball', color: C.cream   },
       { text: '⤴',   cat: 'volleyball', color: C.crimson },
@@ -2584,7 +2615,6 @@
       { text: '⛹',   cat: 'volleyball', color: C.cream   },
       { text: '✹',   cat: 'volleyball', color: C.crimson },
 
-      /* CROCHET */
       { text: '〰',  cat: 'crochet', color: C.crimson },
       { text: '⌒⌒', cat: 'crochet', color: C.gold    },
       { text: '∞',   cat: 'crochet', color: C.cream   },
@@ -2595,7 +2625,6 @@
       { text: '❀',   cat: 'crochet', color: C.crimson },
     ];
 
-    /* ── Particle class ── */
     class Particle {
       constructor() { this.reset(true); }
 
@@ -2604,7 +2633,7 @@
         this.sym    = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
         this.x      = Math.random() * W;
         this.y      = init ? Math.random() * H : -20;
-        this.ox     = this.x; // origin x for drift
+        this.ox     = this.x;
         this.oy     = this.y;
         this.vx     = (Math.random() - 0.5) * 0.18;
         this.vy     = (Math.random() - 0.5) * 0.18;
@@ -2616,29 +2645,24 @@
         this.phase  = Math.random() * Math.PI * 2;
         this.speed  = 0.002 + Math.random() * 0.003;
 
-        /* cursor repulsion state */
         this.rx = 0;
         this.ry = 0;
-        this.lit = 0; // 0..1 lit-up factor from cursor proximity
+        this.lit = 0;
       }
 
       update(mouse, W, H) {
-        /* gentle float */
         this.phase += this.speed;
         this.x = this.ox + Math.sin(this.phase) * 18;
         this.y = this.oy + Math.cos(this.phase * 0.7) * 10;
 
-        /* slow drift */
         this.ox += this.vx;
         this.oy += this.vy;
 
-        /* wrap */
         if (this.ox < -40)  this.ox = W + 40;
         if (this.ox > W+40) this.ox = -40;
         if (this.oy < -40)  this.oy = H + 40;
         if (this.oy > H+40) this.oy = -40;
 
-        /* cursor interaction */
         const dx  = this.x - mouse.x;
         const dy  = this.y - mouse.y;
         const dist = Math.sqrt(dx*dx + dy*dy);
@@ -2646,25 +2670,20 @@
 
         if (dist < RADIUS && mouse.active) {
           const force = (1 - dist / RADIUS);
-          /* repel */
           this.rx += (dx / dist) * force * 2.2;
           this.ry += (dy / dist) * force * 2.2;
-          /* glow */
           this.lit = Math.min(1, this.lit + force * 0.18);
         } else {
-          this.lit *= 0.92; // fade glow
+          this.lit *= 0.92;
         }
 
-        /* apply + decay repulsion */
         this.ox += this.rx;
         this.oy += this.ry;
         this.rx *= 0.82;
         this.ry *= 0.82;
 
-        /* spin */
         this.angle += this.spin;
 
-        /* alpha */
         this.alpha = this.baseA + this.lit * 0.55;
       }
 
@@ -2673,7 +2692,6 @@
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angle);
 
-        /* glow halo when lit */
         if (this.lit > 0.05) {
           ctx.shadowColor = this.sym.color + '0.9)';
           ctx.shadowBlur  = 10 * this.lit;
@@ -2689,12 +2707,10 @@
       }
     }
 
-    /* ── State ── */
     let particles = [];
     let mouse     = { x: -999, y: -999, active: false };
     let raf;
 
-    /* ── Resize ── */
     function resize() {
       const rect = header.getBoundingClientRect();
       canvas.width  = rect.width;
@@ -2708,7 +2724,6 @@
                                () => new Particle());
     }
 
-    /* ── Mouse tracking on the whole header ── */
     header.addEventListener('mousemove', e => {
       const r     = canvas.getBoundingClientRect();
       mouse.x     = e.clientX - r.left;
@@ -2720,7 +2735,6 @@
       mouse.active = false;
     });
 
-    /* touch support */
     header.addEventListener('touchmove', e => {
       const r       = canvas.getBoundingClientRect();
       const t       = e.touches[0];
@@ -2733,11 +2747,9 @@
       mouse.active = false;
     });
 
-    /* ── Draw loop ── */
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      /* very subtle radial vignette to keep center clear */
       const cx  = canvas.width  / 2;
       const cy  = canvas.height / 2;
       const r   = Math.max(cx, cy) * 1.1;
@@ -2747,7 +2759,6 @@
       ctx.fillStyle = grd;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      /* draw cursor ripple ring */
       if (mouse.active) {
         ctx.save();
         ctx.beginPath();
@@ -2771,7 +2782,6 @@
       raf = requestAnimationFrame(draw);
     }
 
-    /* ── Boot ── */
     resize();
     draw();
 
@@ -2791,7 +2801,7 @@
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           section.classList.add('in-view');
-          observer.unobserve(section); // play once
+          observer.unobserve(section);
         }
       });
     }, { threshold: 0.35 });
@@ -2800,45 +2810,90 @@
   })();
   </script>
 
-  <!-- ── Siblings to Friends: pinned columns + video reveal (GSAP) ── -->
+  <!-- ── Siblings to Friends: pinned columns + flip-card video reveal (GSAP) ── -->
   <script>
   (function() {
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
     gsap.registerPlugin(ScrollTrigger);
 
     const pin        = document.getElementById('siblingsPin');
-const col1       = document.getElementById('sibCol1');
-const col2       = document.getElementById('sibCol2');
-const col3       = document.getElementById('sibCol3');
-const columns    = document.getElementById('siblingsColumns');
-const titleWrap  = document.getElementById('siblingsTitleWrap');
-const label      = document.getElementById('siblingsLabel');
-const videoStage = document.getElementById('siblingsVideoStage');
-const video      = document.getElementById('siblingsVideo');
-if (!pin || !col1 || !col2 || !col3) return;
+    const col1       = document.getElementById('sibCol1');
+    const col2       = document.getElementById('sibCol2');
+    const col3       = document.getElementById('sibCol3');
+    const columns    = document.getElementById('siblingsColumns');
+    const titleWrap  = document.getElementById('siblingsTitleWrap');
+    const label      = document.getElementById('siblingsLabel');
+    const videoStage = document.getElementById('siblingsVideoStage');
+    if (!pin || !col1 || !col2 || !col3) return;
 
-const D1 = 420, D2 = 640, D3 = 360;
+    const D1 = 420, D2 = 640, D3 = 360;
 
-const tl = gsap.timeline({
-  scrollTrigger: { trigger: pin, start: 'top top', end: 'bottom bottom', scrub: 1 }
-});
+    const tl = gsap.timeline({
+      scrollTrigger: { trigger: pin, start: 'top top', end: 'bottom bottom', scrub: 1 }
+    });
 
-tl.to(col1, { y: -D1, ease: 'none', duration: 3 }, 0)
-  .to(col2, { y: -D2, ease: 'none', duration: 3 }, 0)
-  .to(col3, { y: -D3, ease: 'none', duration: 3 }, 0)
-  .to(titleWrap, { opacity: 0, duration: 0.6 }, 2.2);
+    tl.to(col1, { y: -D1, ease: 'none', duration: 3 }, 0)
+      .to(col2, { y: -D2, ease: 'none', duration: 3 }, 0)
+      .to(col3, { y: -D3, ease: 'none', duration: 3 }, 0)
+      .to(titleWrap, { opacity: 0, duration: 0.6 }, 2.2);
 
-tl.to(columns, { opacity: 0, scale: 0.92, duration: 0.8, ease: 'power2.in' }, 3.0)
-  .to(label,   { opacity: 0, duration: 0.5 }, 3.0)
-  .to(videoStage, {
-    opacity: 1,
-    pointerEvents: 'auto',
-    duration: 0.9,
-    ease: 'power2.out',
-    onStart: () => { if (video) video.play().catch(() => {}); }
-  }, 3.3);
+    tl.to(columns, { opacity: 0, scale: 0.92, duration: 0.8, ease: 'power2.in' }, 3.0)
+      .to(label,   { opacity: 0, duration: 0.5 }, 3.0)
+      .to(videoStage, {
+        opacity: 1,
+        pointerEvents: 'auto',
+        duration: 0.9,
+        ease: 'power2.out',
+        onStart: () => { if (typeof window.__startSiblingsVideos === 'function') window.__startSiblingsVideos(); }
+      }, 3.3);
+  })();
+  </script>
 
-video && video.addEventListener('click', () => { video.muted = !video.muted; });
+  <!-- ── Siblings flip-card video pair: video1 plays, flips in 3D to video2 ── -->
+  <script>
+  (function() {
+    const v1 = document.getElementById('siblingsVideo1');
+    const v2 = document.getElementById('siblingsVideo2');
+    const inner = document.getElementById('sibFlipInner');
+    const muteToggle = document.getElementById('siblingsMuteToggle');
+    const hint = document.getElementById('siblingsHint');
+    if (!v1 || !v2 || !inner) return;
+
+    let active = v1;
+    let started = false;
+
+    function syncToggle() {
+      muteToggle.textContent = active.muted ? '🔇 tap to unmute' : '🔊 sound on';
+      muteToggle.classList.toggle('is-unmuted', !active.muted);
+    }
+
+    window.__startSiblingsVideos = function() {
+      if (started) return;
+      started = true;
+      v1.currentTime = 0;
+      v1.play().catch(() => {});
+      syncToggle();
+    };
+
+    v1.addEventListener('ended', () => {
+      inner.classList.add('flipped');
+      active = v2;
+      hint.textContent = 'wish 2 of 2';
+      v2.currentTime = 0;
+      v2.play().catch(() => {});
+      syncToggle();
+    });
+
+    muteToggle.addEventListener('click', () => {
+      active.muted = !active.muted;
+      syncToggle();
+    });
+
+    // Tapping either face also toggles sound, matching the old click-to-unmute UX
+    [v1, v2].forEach(v => v.addEventListener('click', () => {
+      active.muted = !active.muted;
+      syncToggle();
+    }));
   })();
   </script>
 
