@@ -834,6 +834,15 @@
       transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
     }
 
+    /* new wrapper for the scrollable inner content */
+.gift-modal-inner {
+  width: 100%;
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
     .gift-modal.open .gift-modal-panel {
       transform: translateY(0) scale(1);
     }
@@ -1246,10 +1255,10 @@
     }
 
     .story-videos {
-      position: relative;
-      width: clamp(150px, 28vw, 320px);
-      height: clamp(210px, 40vw, 440px);
-    }
+  position: relative;
+  width: clamp(220px, 34vw, 420px);
+  height: clamp(320px, 58vw, 620px);
+}
 
     .story-video {
       position: absolute;
@@ -1437,13 +1446,26 @@
 
     /* ── Family Constellation: envelope video trigger + modal ── */
     .fc-envelope {
-      position: absolute;
-      width: 190px; height: 130px;
-      background: none; border: none; padding: 0; cursor: pointer;
-      transform: rotate(var(--r,0deg));
-      z-index: 3;
-      -webkit-tap-highlight-color: transparent;
-    }
+  position: absolute;
+  width: 130px; height: 88px;
+  background: none; border: none; padding: 0; cursor: pointer;
+  transform: rotate(var(--r,0deg));
+  z-index: 3;
+  -webkit-tap-highlight-color: transparent;
+  animation: envelopeFloat 3.2s ease-in-out infinite;
+}
+
+@keyframes envelopeFloat {
+  0%, 100% { transform: rotate(var(--r,0deg)) translateY(0); }
+  50%      { transform: rotate(var(--r,0deg)) translateY(-10px); }
+}
+
+.fc-envelope:hover {
+  animation-play-state: paused;
+  transform: rotate(var(--r,0deg)) translateY(-14px);
+  transition: transform 0.3s ease;
+}
+
     .fc-envelope-back {
       position: absolute; inset: 0;
       background: linear-gradient(160deg, #f3e2c0, var(--cream));
@@ -1479,7 +1501,7 @@
     .fc-envelope-label {
       position: absolute; bottom: -30px; left: 0; right: 0;
       text-align: center;
-      font-family: 'JetBrains Mono', monospace;
+      font-family: 'Fraunces', monospace;
       font-size: 0.6rem; letter-spacing: 1.5px; text-transform: uppercase;
       color: var(--muted);
     }
@@ -1507,11 +1529,26 @@
     }
     .fc-modal.open .fc-modal-panel { transform: translateY(0) scale(1); }
     .fc-video-wrap {
-      position: relative; width: 100%;
-      aspect-ratio: 9/16; max-height: 65vh;
-      border-radius: 8px; overflow: hidden; background: #000;
-    }
-    .fc-video-wrap video { width: 100%; height: 100%; object-fit: cover; }
+  position: relative;
+  width: auto;
+  max-width: 90%;
+  max-height: 85vh;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fc-video-wrap video {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 85vh;
+  object-fit: contain;
+  display: block;
+}
     .fc-modal-caption {
       margin-top: 10px; font-size: 0.62rem; letter-spacing: 2px;
       text-transform: uppercase; color: var(--muted);
@@ -1636,14 +1673,16 @@
   <div class="gift-modal" id="giftModal" aria-hidden="true">
     <div class="gift-modal-backdrop" id="giftModalBackdrop"></div>
     <div class="gift-modal-panel">
-      <button class="gift-modal-close" id="giftModalClose" aria-label="Close">✕</button>
-      <div class="gift-video-wrap">
-        <video id="giftVideo1" src="assets/priyaathai.mp4" playsinline muted></video>
-        <video id="giftVideo2" src="assets/chithappaaachi.mp4" playsinline muted style="display:none;"></video>
-      </div>
-      <button class="mute-toggle-btn" id="giftMuteToggle">🔇 tap to unmute</button>
-      <p class="gift-modal-caption" id="giftVideoCaption">wish 1 of 2</p>
+  <button class="gift-modal-close" id="giftModalClose" aria-label="Close">✕</button>
+  <div class="gift-modal-inner">
+    <div class="gift-video-wrap">
+      <video id="giftVideo1" src="assets/priyaathai.mp4" playsinline muted></video>
+      <video id="giftVideo2" src="assets/chithappaaachi.mp4" playsinline muted style="display:none;"></video>
     </div>
+    <button class="mute-toggle-btn" id="giftMuteToggle"> tap to unmute</button>
+    <p class="gift-modal-caption" id="giftVideoCaption">wish 1 of 2</p>
+  </div>
+</div>
   </div>
 
   <!-- ── Cinematic scroll-driven story section ── -->
@@ -1708,7 +1747,7 @@
                   <div class="story-dp"><img src="assets/dhivya-ma'am-dp.png" alt="Dhivya Ma'am"></div>
                   <div class="story-bubble" id="storyBubble1">
                     <div class="story-bubble-name">Dhivya Ma'am</div>
-                    <div class="story-bubble-text" id="storyText1">Wish you many more happy returns of the day maaa 🎂</div>
+                    <div class="story-bubble-text" id="storyText1">Happy Birthday Lakshmi ♥️ Your dedication, curiosity, and hard work never go unnoticed. I have no doubt you have a brilliant future ahead of you." One of my best student♥️♥️♥️♥️</div>
                   </div>
                 </div>
                 <div class="story-card" id="storyCard2">
@@ -1743,11 +1782,315 @@
             <!--<video class="story-video" id="storyVideo3" src="assets/team3.mp4" muted playsinline></video>
             <video class="story-video" id="storyVideo4" src="assets/team4.mp4" muted playsinline loop></video> -->
           </div>
+           <button class="mute-toggle-btn" id="storyMuteToggle" style="position:absolute; bottom:24px; left:50%; transform:translateX(-50%); 
+           opacity:0; pointer-events:none; transition:opacity 0.4s ease;">🔇 tap to unmute</button>
         </div>
 
       </div>
     </div>
   </section>
+
+<!-- ══════════════════════════════════════════════════
+     ── School ID Cards: pinned rope-pull reveal ──
+     ══════════════════════════════════════════════════ -->
+<section class="idc-section" id="idcSection">
+  <div class="idc-pin" id="idcPin">
+    <div class="idc-sticky" id="idcSticky">
+
+      <!-- Doll + speech bubble, fixed on the left -->
+      <div class="idc-doll-col">
+        <div class="idc-bubble" id="idcBubble">
+          <p class="idc-bubble-text">ipo unnoda school id cards aaah pakalama...</p>
+        </div>
+        <div class="idc-doll" id="idcDoll">
+          <img src="assets/wave.png" alt="Jackalope pulling a rope">
+        </div>
+        <div class="idc-rope" id="idcRope"></div>
+      </div>
+
+      <!-- Stage where cards / video get "reeled in" from the left -->
+      <div class="idc-stage" id="idcStage">
+
+        <div class="idc-card" id="idcCard1" data-role="idcard">
+          <span class="idc-hole"></span>
+          <div class="idc-photo"><img src="assets/BMC1.jpeg" alt="School 1 ID"></div>
+          <div class="idc-name">Lakshmi Sri</div>
+          <div class="idc-label" id="idcLabel1">Primary School</div>
+        </div>
+
+        <div class="idc-card" id="idcCard2" data-role="idcard">
+          <span class="idc-hole"></span>
+          <div class="idc-photo"><img src="assets/SVHV.jpeg" alt="School 2 ID"></div>
+          <div class="idc-name">Lakshmi Sri</div>
+          <div class="idc-label" id="idcLabel2">Middle School</div>
+        </div>
+
+        <div class="idc-card" id="idcCard3" data-role="idcard">
+          <span class="idc-hole"></span>
+          <div class="idc-photo"><img src="assets/Subbiah.jpeg" alt="School 3 ID"></div>
+          <div class="idc-name">Lakshmi Sri</div>
+          <div class="idc-label" id="idcLabel3">Senior Secondary</div>
+        </div>
+
+        <div class="idc-video-wrap" id="idcVideoWrap" data-role="idvideo">
+          <video id="idcFriendVideo" src="assets/friend-wish.mp4" playsinline muted></video>
+          <button class="mute-toggle-btn" id="idcMuteToggle" style="margin-top:12px;">🔇 tap to unmute</button>
+          <p class="idc-video-caption">a wish from your friend</p>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .idc-section { position: relative; z-index: 10; background: var(--dark); }
+  .idc-pin { position: relative; height: 420vh; }
+  .idc-sticky {
+    position: sticky; top: 0; height: 100vh; width: 100%;
+    overflow: hidden;
+    display: flex; align-items: center;
+    background: radial-gradient(ellipse at 20% 50%, rgba(179,18,46,0.12) 0%, transparent 55%), var(--dark);
+  }
+
+  .idc-doll-col {
+    position: relative;
+    flex: 0 0 auto;
+    width: clamp(180px, 22vw, 280px);
+    margin-left: 6vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 3;
+  }
+
+  .idc-bubble {
+    position: relative;
+    max-width: 260px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(212,162,76,0.35);
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 22px;
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  .idc-bubble::before {
+    content: '';
+    position: absolute;
+    left: 50%; bottom: -9px;
+    width: 16px; height: 16px;
+    margin-left: -8px;
+    background: var(--dark);
+    border-right: 1px solid rgba(212,162,76,0.35);
+    border-bottom: 1px solid rgba(212,162,76,0.35);
+    transform: rotate(45deg);
+  }
+  .idc-bubble-text {
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 1.02rem;
+    color: rgba(255,248,240,0.85);
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  .idc-doll {
+    width: 100%;
+    aspect-ratio: 3/4;
+    opacity: 0;
+    transform: translateX(-50px) rotate(-4deg);
+  }
+  .idc-doll img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+    animation: idcBob 3s ease-in-out infinite;
+  }
+  @keyframes idcBob {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50%      { transform: translateY(-6px) rotate(2deg); }
+  }
+
+  /* the "rope" connecting the doll's hand to whatever's being reeled in */
+  .idc-rope {
+    position: absolute;
+    top: 58%;
+    left: 88%;
+    height: 3px;
+    width: 0;
+    background: linear-gradient(to right, var(--gold), rgba(212,162,76,0.15));
+    transform-origin: left center;
+    z-index: 2;
+  }
+
+  .idc-stage {
+    position: relative;
+    flex: 1;
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .idc-card {
+    position: absolute;
+    width: clamp(200px, 24vw, 260px);
+    background: var(--cream);
+    border: 2px solid var(--gold);
+    border-radius: 16px;
+    padding: 20px 18px 26px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+    opacity: 0;
+    transform: translateX(-90vw) rotate(-8deg);
+  }
+
+  .idc-hole {
+    position: absolute;
+    top: 10px; left: 50%;
+    width: 34px; height: 8px;
+    margin-left: -17px;
+    background: rgba(26,16,16,0.15);
+    border-radius: 6px;
+  }
+
+  .idc-photo {
+    width: 100%;
+    aspect-ratio: 3/4;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 10px 0 14px;
+    background: #2a1a1a;
+  }
+  .idc-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+  .idc-name {
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--dark);
+    text-align: center;
+  }
+
+  .idc-label {
+    margin-top: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--crimson);
+    text-align: center;
+  }
+
+  .idc-video-wrap {
+    position: absolute;
+    width: clamp(220px, 30vw, 340px);
+    aspect-ratio: 9/16;
+    max-height: 70vh;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.55);
+    border: 1px solid rgba(212,162,76,0.4);
+    opacity: 0;
+    transform: translateX(-90vw) rotate(-6deg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 16px;
+  }
+  .idc-video-wrap video {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  .idc-video-caption {
+    position: relative;
+    z-index: 1;
+    font-size: 0.62rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(26,16,16,0.6);
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  @media (max-width: 780px) {
+    .idc-sticky { flex-direction: column; justify-content: center; gap: 24px; }
+    .idc-doll-col { margin-left: 0; }
+    .idc-rope { display: none; }
+    .idc-stage { height: 50vh; }
+  }
+</style>
+
+<script>
+(function() {
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  const pin    = document.getElementById('idcPin');
+  const bubble = document.getElementById('idcBubble');
+  const doll   = document.getElementById('idcDoll');
+  const rope   = document.getElementById('idcRope');
+
+  const card1  = document.getElementById('idcCard1');
+  const card2  = document.getElementById('idcCard2');
+  const card3  = document.getElementById('idcCard3');
+  const videoWrap = document.getElementById('idcVideoWrap');
+  const video  = document.getElementById('idcFriendVideo');
+  const items  = [card1, card2, card3, videoWrap];
+
+  if (!pin || !doll) return;
+
+  const tl = gsap.timeline({
+    scrollTrigger: { trigger: pin, start: 'top top', end: 'bottom bottom', scrub: 1 }
+  });
+
+  // Doll + bubble entrance
+  tl.to(doll,   { opacity: 1, x: 0, rotate: 0, duration: 0.8, ease: 'power2.out' }, 0)
+    .to(bubble, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, 0.1);
+
+  // Rope stretches out to "grab" whichever item is coming in, then retracts
+  function reelIn(item, start) {
+    tl.to(rope, { width: '46vw', duration: 0.5, ease: 'power2.out' }, start)
+      .to(item, { opacity: 1, x: 0, rotate: 0, duration: 0.9, ease: 'power3.out' }, start + 0.1)
+      .to(rope, { width: '0vw', duration: 0.4, ease: 'power2.in' }, start + 0.9);
+  }
+
+  function sendOut(item, start) {
+    tl.to(item, { opacity: 0, x: '40vw', rotate: 6, duration: 0.5, ease: 'power2.in' }, start);
+  }
+
+  reelIn(card1, 1.0);
+  sendOut(card1, 2.0);
+  reelIn(card2, 2.1);
+  sendOut(card2, 3.1);
+  reelIn(card3, 3.2);
+  sendOut(card3, 4.2);
+  reelIn(videoWrap, 4.3);
+
+  tl.call(() => {
+    video.currentTime = 0;
+    video.muted = true;
+    video.loop = true;
+    video.play().catch(() => {});
+  }, null, 4.9);
+
+  const muteToggle = document.getElementById('idcMuteToggle');
+  if (muteToggle) {
+    muteToggle.addEventListener('click', () => {
+      video.muted = !video.muted;
+      muteToggle.textContent = video.muted ? '🔇 tap to unmute' : '🔊 sound on';
+      muteToggle.classList.toggle('is-unmuted', !video.muted);
+    });
+  }
+})();
+</script>
 
   <!-- ── Main content -->
   <main>
@@ -1818,13 +2161,13 @@
 <figure class="fc-card fc-landscape" data-speed="1.3" style="top:44%; left:34%; --r:2deg;">
       <span class="fc-tape"></span>
       <div class="fc-photo"><img src="assets/fam8.jpeg" alt="All of us" loading="lazy"></div>
-      <figcaption class="fc-cap"><span class="fc-label">All of us</span><span class="fc-caption">the whole crew</span></figcaption>
+      <figcaption class="fc-cap"><span class="fc-label">The Girls</span><span class="fc-caption">the whole crew</span></figcaption>
     </figure>
 
     <figure class="fc-card fc-portrait" data-speed="1.4" style="top:38%; left:74%; --r:-5deg;">
       <span class="fc-tape"></span>
       <div class="fc-photo"><img src="assets/fam7.jpeg" alt="New memory" loading="lazy"></div>
-      <figcaption class="fc-cap"><span class="fc-label">The Girls</span><span class="fc-caption">Master the Blaster </span></figcaption>
+      <figcaption class="fc-cap"><span class="fc-label">Our Boss</span><span class="fc-caption">Master the Blaster </span></figcaption>
     </figure>
 
     
@@ -1835,11 +2178,11 @@
 </figure>
 
     <!-- ── Envelope: tap to reveal two videos from home, in sequence ── -->
-    <button class="fc-envelope" id="fcEnvelope" style="top:58%; left:6%;" aria-label="Open a video from home">
+   <button class="fc-envelope" id="fcEnvelope" style="top:auto; bottom:4%; left:auto; right:4%;" aria-label="Open a video from home">
       <span class="fc-envelope-back"></span>
       <span class="fc-envelope-flap"></span>
       <span class="fc-envelope-seal">❤</span>
-      <span class="fc-envelope-label">a little something<br>from home</span>
+      <span class="fc-envelope-label">a little gift<br>for you is awaiting here</span>
     </button>
 
   </div>
@@ -1864,15 +2207,16 @@
   </div>
 </section>
 
+
 <!-- ── Family video modal (the envelope opens this) ── -->
 <div class="fc-modal" id="fcModal" aria-hidden="true">
   <div class="fc-modal-backdrop" id="fcModalBackdrop"></div>
   <div class="fc-modal-panel">
     <button class="fc-modal-close" id="fcModalClose" aria-label="Close">✕</button>
     <div class="fc-video-wrap">
-      <video id="fcVideo1" src="assets/sudhan-saranya.mp4" playsinline muted></video>
+      <video id="fcVideo1" src="assets/sudhan-sarooo.mp4" playsinline muted></video>
     </div>
-    <button class="mute-toggle-btn" id="fcMuteToggle">🔇 tap to unmute</button>
+    <button class="mute-toggle-btn fc-mute-btn" id="fcMuteToggle">🔇 tap to unmute</button>
     <p class="fc-modal-caption" id="fcModalCaption">from your family</p>
   </div>
 </div>
@@ -2536,6 +2880,21 @@
         videos[0].currentTime = 0;
         videos[0].play().catch(() => {});
       }, null, 9.5);
+      tl.to(ballWrap, { opacity: 0, scale: 2.1, duration: 0.7, ease: 'power2.in' }, 9.3)
+  .to(videos[0], { opacity: 1, scale: 1, duration: 1, ease: 'power3.out' }, 9.5)
+  .call(() => {
+    if (!videos[0]) return;
+    videos[0].currentTime = 0;
+    videos[0].play().catch(() => {});
+  }, null, 9.5)
+  .call(() => {
+    const btn = document.getElementById('storyMuteToggle');
+    if (btn) { btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
+  }, null, 9.5)
+  .call(() => {
+    const btn = document.getElementById('storyMuteToggle');
+    if (btn) { btn.style.opacity = '0'; btn.style.pointerEvents = 'none'; }
+  }, null, 0); // hides again if user scrolls back to the very start
 
     videos.forEach((current, i) => {
       const next = videos[i + 1];
@@ -2895,6 +3254,28 @@
     }));
   })();
   </script>
+<!-- ── Story videos: mute/unmute toggle ── -->
+  <script>
+  (function() {
+    const muteToggle = document.getElementById('storyMuteToggle');
+    const videos = ['storyVideo1', 'storyVideo2','storyVideo3', 'storyVideo4']
+      .map(id => document.getElementById(id))
+      .filter(Boolean);
+    if (!muteToggle || !videos.length) return;
 
+    function syncToggle() {
+      const anyUnmuted = videos.some(v => !v.muted);
+      muteToggle.textContent = anyUnmuted ? '🔊 sound on' : '🔇 tap to unmute';
+      muteToggle.classList.toggle('is-unmuted', anyUnmuted);
+    }
+
+    muteToggle.addEventListener('click', () => {
+      videos.forEach(v => { v.muted = !v.muted; });
+      syncToggle();
+    });
+
+    syncToggle();
+  })();
+  </script>
 </body>
 </html>
