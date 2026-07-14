@@ -835,14 +835,14 @@
     }
 
     /* new wrapper for the scrollable inner content */
-.gift-modal-inner {
-  width: 100%;
-  max-height: calc(100vh - 48px);
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+    .gift-modal-inner {
+      width: 100%;
+      max-height: calc(100vh - 48px);
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
     .gift-modal.open .gift-modal-panel {
       transform: translateY(0) scale(1);
     }
@@ -930,253 +930,6 @@
     }
     .mute-toggle-btn:hover { background: rgba(212,162,76,0.22); }
     .mute-toggle-btn.is-unmuted { color: var(--cream); border-color: rgba(255,248,240,0.4); }
-
- /* ── Schools Intro: full-bleed so mascot can sit near the actual scrollbar ── */
-
-.rope-pin {
-  position: relative;
-  z-index: 10;
-}
-
-.rope-sticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 0;
-  padding-right: 6px;
-  overflow: hidden;
-}
-
-.rope-figure {
-  width: 360px;
-  height: 436px;
-  margin-left: -80px;
-  z-index: 2;
-}
-
-.rope-figure img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  filter: drop-shadow(0 14px 24px rgba(0,0,0,0.5));
-  opacity: 1;
-  transition: opacity 0.35s ease;
-}
-
-.rope-figure img.fading {
-  opacity: 0;
-}
-
-.rope-bubble-sm {
-  position: relative;
-  max-width: 300px;
-  background: rgba(26,16,16,0.55);
-  border: 1.5px solid var(--gold);
-  border-radius: 4px;
-  padding: 20px 24px;
-  z-index: 1;
-  transition: opacity 0.35s ease;
-}
-
-.rope-bubble-sm.fading {
-  opacity: 0;
-}
-
-.rope-bubble-sm::after {
-  content: '';
-  position: absolute;
-  top: 38%;
-  right: -19px;
-  width: 20px;
-  height: 20px;
-  border-top: 1.5px solid var(--gold);
-  border-right: 1.5px solid var(--gold);
-  background: rgba(26,16,16,0.55);
-  transform: rotate(45deg) skew(8deg, 8deg);
-}
-
-.school-tag {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.65rem;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 12px;
-}
-
-.rope-bubble-sm .narrator-text {
-  font-family: 'JetBrains Mono', monospace;
-  font-style: normal;
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: var(--cream);
-}
-
-.rope-hint {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 22px;
-  text-align: center;
-  font-size: 0.58rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--muted);
-  animation: hintPulse 2.4s ease-in-out infinite;
-  pointer-events: none;
-}
-
-/* ── School ID card mockup ──
-     A laminated student-ID look, reusing the site's cream/tape
-     photo-card language (see .fc-card) so it reads as part of the
-     same "physical keepsake" world instead of a new UI style.
-     Sits beside the mascot's speech bubble and swaps its details
-     in sync with the school currently shown (see SCHOOLS array + JS). */
-.school-id-card {
-  position: relative;
-  z-index: 1;
-  width: 244px;
-  background: linear-gradient(165deg, var(--cream) 0%, #f3e6d2 100%);
-  border-radius: 10px;
-  box-shadow:
-    0 2px 4px rgba(0,0,0,0.3),
-    0 24px 48px -18px rgba(0,0,0,0.6);
-  transform: rotate(-3deg);
-  overflow: hidden;
-  transition: opacity 0.35s ease, transform 0.35s ease;
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.school-id-card.fading { opacity: 0; transform: rotate(-3deg) translateY(6px); }
-
-.school-id-punch {
-  position: absolute;
-  top: 10px; left: 50%;
-  width: 34px; height: 10px;
-  margin-left: -17px;
-  background: rgba(26,16,16,0.18);
-  border-radius: 6px;
-}
-
-.school-id-header {
-  background: var(--crimson);
-  color: var(--cream);
-  padding: 20px 16px 10px;
-  text-align: center;
-}
-
-.school-id-header .id-eyebrow {
-  font-size: 0.55rem;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  opacity: 0.8;
-  margin-bottom: 4px;
-}
-
-.school-id-header .id-school-name {
-  font-family: 'Fraunces', Georgia, serif;
-  font-size: 1.02rem;
-  font-weight: 400;
-  line-height: 1.25;
-}
-
-.school-id-body {
-  display: flex;
-  gap: 14px;
-  padding: 16px;
-  align-items: flex-start;
-}
-
-.school-id-photo {
-  flex-shrink: 0;
-  width: 64px;
-  height: 76px;
-  border-radius: 4px;
-  border: 1px solid rgba(179,18,46,0.35);
-  background: linear-gradient(160deg, rgba(179,18,46,0.18), rgba(26,16,16,0.08));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(179,18,46,0.55);
-}
-
-.school-id-photo svg { width: 30px; height: 30px; }
-
-.school-id-fields { flex: 1; min-width: 0; }
-
-.school-id-name {
-  font-family: 'Fraunces', Georgia, serif;
-  font-style: italic;
-  font-size: 1.02rem;
-  color: var(--dark);
-  margin-bottom: 6px;
-  line-height: 1.2;
-}
-
-.school-id-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  font-size: 0.62rem;
-  color: rgba(26,16,16,0.65);
-  padding: 3px 0;
-  border-top: 1px dashed rgba(179,18,46,0.2);
-}
-
-.school-id-row:first-of-type { border-top: none; }
-
-.school-id-row .id-k {
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: rgba(179,18,46,0.7);
-}
-
-.school-id-row .id-v { text-align: right; color: var(--dark); }
-
-.school-id-strip {
-  height: 16px;
-  background: repeating-linear-gradient(90deg, var(--dark) 0 2px, transparent 2px 5px);
-  opacity: 0.75;
-  margin: 0 16px 14px;
-  border-radius: 2px;
-}
-
-@media (max-width: 560px) {
-  .school-id-card { width: 88vw; max-width: 300px; transform: rotate(0deg); }
-  .school-id-card.fading { transform: translateY(6px); }
-}
-
-.rope-hint {
-  /* (duplicate selector kept intentionally minimal — see rule above) */
-}
-
-    @media (max-width: 560px) {
-  .rope-sticky {
-    flex-direction: column-reverse;
-    justify-content: center;
-    padding-right: 20px;
-    gap: 24px;
-  }
-  .rope-figure {
-    width: 220px;
-    height: 268px;
-    margin-left: 0;
-  }
-  .rope-bubble-sm {
-    max-width: 92%;
-  }
-  .rope-bubble-sm::after {
-    top: -19px;
-    right: auto;
-    left: 50%;
-    margin-left: -10px;
-    transform: rotate(-135deg) skew(8deg, 8deg);
-  }
-}
 
     /* ══════════════════════════════════════════════════
        ── WhatsApp floating action button ──
@@ -1511,10 +1264,10 @@
     }
 
     .story-videos {
-  position: relative;
-  width: clamp(220px, 34vw, 420px);
-  height: clamp(320px, 58vw, 620px);
-}
+      position: relative;
+      width: clamp(220px, 34vw, 420px);
+      height: clamp(320px, 58vw, 620px);
+    }
 
     .story-video {
       position: absolute;
@@ -1702,25 +1455,25 @@
 
     /* ── Family Constellation: envelope video trigger + modal ── */
     .fc-envelope {
-  position: absolute;
-  width: 130px; height: 88px;
-  background: none; border: none; padding: 0; cursor: pointer;
-  transform: rotate(var(--r,0deg));
-  z-index: 3;
-  -webkit-tap-highlight-color: transparent;
-  animation: envelopeFloat 3.2s ease-in-out infinite;
-}
+      position: absolute;
+      width: 130px; height: 88px;
+      background: none; border: none; padding: 0; cursor: pointer;
+      transform: rotate(var(--r,0deg));
+      z-index: 3;
+      -webkit-tap-highlight-color: transparent;
+      animation: envelopeFloat 3.2s ease-in-out infinite;
+    }
 
-@keyframes envelopeFloat {
-  0%, 100% { transform: rotate(var(--r,0deg)) translateY(0); }
-  50%      { transform: rotate(var(--r,0deg)) translateY(-10px); }
-}
+    @keyframes envelopeFloat {
+      0%, 100% { transform: rotate(var(--r,0deg)) translateY(0); }
+      50%      { transform: rotate(var(--r,0deg)) translateY(-10px); }
+    }
 
-.fc-envelope:hover {
-  animation-play-state: paused;
-  transform: rotate(var(--r,0deg)) translateY(-14px);
-  transition: transform 0.3s ease;
-}
+    .fc-envelope:hover {
+      animation-play-state: paused;
+      transform: rotate(var(--r,0deg)) translateY(-14px);
+      transition: transform 0.3s ease;
+    }
 
     .fc-envelope-back {
       position: absolute; inset: 0;
@@ -1785,26 +1538,26 @@
     }
     .fc-modal.open .fc-modal-panel { transform: translateY(0) scale(1); }
     .fc-video-wrap {
-  position: relative;
-  width: auto;
-  max-width: 90%;
-  max-height: 85vh;
-  border-radius: 8px;
-  overflow: hidden;
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+      position: relative;
+      width: auto;
+      max-width: 90%;
+      max-height: 85vh;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-.fc-video-wrap video {
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 85vh;
-  object-fit: contain;
-  display: block;
-}
+    .fc-video-wrap video {
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 85vh;
+      object-fit: contain;
+      display: block;
+    }
     .fc-modal-caption {
       margin-top: 10px; font-size: 0.62rem; letter-spacing: 2px;
       text-transform: uppercase; color: var(--muted);
@@ -1942,44 +1695,7 @@
     </div>
   </div>
 
-  <!-- ── Schools Reveal Section (pinned, scroll-driven, one school at a time) ── -->
-<div class="rope-pin" id="schoolIntroSection">
-  <div class="rope-sticky" id="schoolSticky">
-    <div class="rope-bubble-sm" id="schoolBubble">
-      <div class="school-tag" id="schoolTag">SCHOOL · 01</div>
-      <p class="narrator-text" id="schoolText">1st gift pudichi irrunthuchaaa...<br><br>Sari ipo unnoda schoolsss ku polamaaa</p>
-    </div>
-
-    <!-- School ID card mockup: swaps name/class/roll alongside the
-         mascot as each school scrolls into place (driven by the
-         SCHOOLS array below). -->
-    <div class="school-id-card" id="schoolIdCard">
-      <div class="school-id-punch"></div>
-      <div class="school-id-header">
-        <div class="id-eyebrow">student identity card</div>
-        <div class="id-school-name" id="schoolIdName">School Name Here</div>
-      </div>
-      <div class="school-id-body">
-        <div class="school-id-photo">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-9 2.2-9 5v2h18v-2c0-2.8-4.6-5-9-5z"/></svg>
-        </div>
-        <div class="school-id-fields">
-          <div class="school-id-name">Lakshmi Sri</div>
-          <div class="school-id-row"><span class="id-k">Class</span><span class="id-v" id="schoolIdClass">—</span></div>
-          <div class="school-id-row"><span class="id-k">Roll No.</span><span class="id-v" id="schoolIdRoll">—</span></div>
-          <div class="school-id-row"><span class="id-k">Years</span><span class="id-v" id="schoolIdYears">—</span></div>
-        </div>
-      </div>
-      <div class="school-id-strip"></div>
-    </div>
-
-    <div class="rope-figure" id="schoolFigure">
-      <img id="schoolImage" src="assets/wave.png" alt="Mascot pulling">
-    </div>
-  </div>
-</div>
-
-  <!-- ── Narrator scroll reveals (Jackalope + Schools intro) ── -->
+  <!-- ── Narrator scroll reveal ── -->
   <script>
   (function() {
     const sections = ['narrator-section']
@@ -1999,6 +1715,302 @@
     sections.forEach(section => observer.observe(section));
   })();
   </script>
+
+<!-- ══════════════════════════════════════════════════
+     ── School Days: narrator → mascot → ID cards → video ──
+     ══════════════════════════════════════════════════ -->
+<section class="school-section" id="schoolSection">
+  <div class="school-pin" id="schoolPin">
+    <div class="school-sticky" id="schoolSticky">
+
+      <!-- Part A: narrator reappears -->
+      <div class="school-narrator" id="schoolNarrator">
+        <div class="narrator-figure school-narrator-figure" id="schoolNarratorFigure">
+          <img src="assets/wave.png" alt="Jackalope">
+        </div>
+        <div class="narrator-bubble school-narrator-bubble" id="schoolNarratorBubble">
+          <div class="narrator-label">Naa vanthuten </div>
+          <p class="narrator-text">First gift unnaku pudichi irrunthucha, ipo unnoda schoolssss ku polama</p>
+        </div>
+      </div>
+
+
+      <!-- Part C + D: ID card + GIF, cycled by Part E -->
+      <div class="school-id-stage" id="schoolIdStage">
+        <div class="school-id-inner" id="schoolIdInner">
+  <div class="school-id-lanyard">
+    <span class="school-id-strap"></span>
+    <span class="school-id-clip"></span>
+  </div>
+
+  <div class="school-id-card" id="schoolIdCard">
+    <div class="school-id-punch"></div>
+
+    <div class="school-id-photo"><img id="schoolIdPhoto" src="" alt=""></div>
+    <div class="school-id-name" id="schoolIdName"></div>
+    <div class="school-id-funny" id="schoolIdFunny"></div>
+
+    <div class="school-id-divider"></div>
+
+   <div class="school-id-row"><span>Class</span><span id="schoolIdClass"></span></div>
+   <div class="school-id-row"><span>Years</span><span id="schoolIdYears"></span></div>
+
+    <div class="school-gif-slot" id="schoolGifSlot">
+      <img id="schoolGifImg" src="" alt="">
+    </div>
+  </div>
+</div>
+      </div>
+
+      <!-- Part F: full-screen video finale -->
+     <!-- Part F: vertical "shorts style" video finale -->
+ <div class="school-video-stage" id="schoolVideoStage">
+  <div class="school-video-box">
+    <div class="school-video-wrap">
+      <div id="schoolVideo"></div>
+    </div>
+  </div>
+  <button class="mute-toggle-btn" id="schoolMuteToggle" style="position:absolute; bottom:28px; left:50%; transform:translateX(-50%);">🔇 tap to unmute</button>
+ </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ── School section ── */
+  .school-section { position: relative; z-index: 10; }
+  .school-pin { position: relative; height: 600vh; }
+  .school-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at 50% 30%, #1c1212 0%, var(--dark) 65%);
+  }
+
+  /* Part A: narrator (positioned absolute so it can share the sticky stage) */
+  .school-narrator {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 22px;
+  padding: 0 1.5vw 0 40px;
+  pointer-events: none;
+}
+  .school-narrator-figure, .school-narrator-bubble {
+    opacity: 0; /* driven by GSAP, not the .in-view class */
+    transform: none;
+    transition: none;
+  }
+
+ .school-narrator-figure {
+  width: 1200px;
+  height: 810px;
+  flex-shrink: 0;
+  order: 2;
+}
+.school-narrator-bubble {
+  max-width: 380px;
+  order: 1;
+}
+
+.school-narrator-bubble::before {
+  left: auto;
+  right: -9px;
+  border-left: none;
+  border-bottom: none;
+  border-right: 1px solid rgba(212,162,76,0.3);
+  border-top: 1px solid rgba(212,162,76,0.3);
+}
+
+  
+
+  /* Part C + D: ID card + GIF */
+  .school-id-stage {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .school-id-inner {
+    display: flex;
+    align-items: center;
+    gap: 34px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* ── School ID card: lanyard mockup ── */
+.school-id-inner {
+  flex-direction: column;
+  gap: 0;
+}
+
+.school-id-lanyard {
+  width: 100px;
+  height: 210px;
+  position: relative;
+  z-index: 0;
+  margin-bottom: -18px;
+}
+.school-id-strap::before,
+.school-id-strap::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 22px;
+  height: 200px;
+  background: linear-gradient(180deg, #4a3423, #1a1010);
+  border-radius: 6px;
+}
+
+.school-id-strap::before { left: 24px; transform: rotate(-9deg); transform-origin: bottom center; }
+.school-id-strap::after  { right: 24px; transform: rotate(9deg);  transform-origin: bottom center; }
+.school-id-clip {
+  position: absolute;
+  bottom: -4px; left: 50%;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 7px solid #111;
+  border-bottom-color: transparent;
+  transform: translateX(-50%) rotate(-45deg);
+}
+
+  .school-id-card {
+  width: 340px;
+  background: #ffffff;
+  border: 2px solid var(--dark);
+  border-radius: 22px;
+  padding: 48px 28px 32px;
+  box-shadow: 0 28px 65px rgba(0,0,0,0.5);
+  position: relative;
+  z-index: 1;
+  color: var(--dark);
+  font-family: 'JetBrains Mono', monospace;
+  text-align: center;
+}
+
+.school-id-punch {
+  position: absolute;
+  top: 12px; left: 50%;
+  width: 60px; height: 12px;
+  margin-left: -30px;
+  background: rgba(0,0,0,0.14);
+  border-radius: 8px;
+}
+
+.school-id-photo {
+  width: 170px;
+  height: 200px;
+  margin: 0 auto 14px;
+}
+.school-id-photo img { width: 100%; height: 100%; object-fit: contain; }
+
+.school-id-name {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.2rem;
+  line-height: 1.3;
+  color: var(--crimson);
+  margin-bottom: 8px;
+}
+
+.school-id-funny {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+
+.school-id-divider {
+  height: 1px;
+  background: rgba(179,18,46,0.25);
+  margin: 0 4px 16px;
+}
+
+.school-id-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  padding: 5px 2px;
+}
+.school-id-row span:first-child { color: rgba(26,16,16,0.55); }
+.school-id-row span:last-child  { color: var(--dark); font-weight: 600; }
+
+.school-gif-slot {
+  width: 68px;
+  height: 68px;
+  margin: 18px auto 0;
+}
+.school-gif-slot img { width: 100%; height: 100%; object-fit: contain; }
+
+@media (max-width: 560px) {
+  .school-id-card { width: 88vw; max-width: 340px; }
+}
+
+
+  /* Part F: vertical "shorts style" video finale */
+  .school-video-stage {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .school-video-box {
+    position: relative;
+    width: min(400px, 82vw);
+    height: min(86vh, 712px);
+    aspect-ratio: 9 / 16;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    background: #000;
+    transform: scale(0.85);
+    transition: transform 0.3s ease;
+  }
+
+  .school-video-wrap {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .school-video-wrap iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 100%;
+    min-height: 100%;
+    /* Slight overscale + center-crop, since the source video's real
+       aspect ratio may not exactly match this 9:16 box */
+    transform: translate(-50%, -50%) scale(1.02);
+    border: none;
+    display: block;
+  }
+
+  @media (max-width: 560px) {
+    .school-video-box { width: 88vw; height: min(80vh, 640px); }
+  }
+
+</style>
+
 
   <!-- ── Cinematic scroll-driven story section ── -->
   <section class="story-section" id="storySection">
@@ -2034,8 +2046,7 @@
             </div>
           </div>
         </div>
-
-        
+ 
 
         <!-- Stage 2 + 3: WhatsApp-style chat screen — a group chat -->
         <div class="story-layer">
@@ -2096,8 +2107,7 @@
           <div class="story-videos" id="storyVideos">
             <video class="story-video" id="storyVideo1" src="assets/sandy-sir.mp4" muted playsinline></video>
             <video class="story-video" id="storyVideo2" src="assets/grana.mp4" muted playsinline></video>
-            <video class="story-video" id="storyVideo3" src="assets/team3.mp4" muted playsinline></video>
-            <video class="story-video" id="storyVideo4" src="assets/team4.mp4" muted playsinline loop></video>
+            <video class="story-video" id="storyVideo3" src="assets/sherine.mp4" muted playsinline></video>
           </div>
            <button class="mute-toggle-btn" id="storyMuteToggle" style="position:absolute; bottom:24px; left:50%; transform:translateX(-50%); 
            opacity:0; pointer-events:none; transition:opacity 0.4s ease;">🔇 tap to unmute</button>
@@ -2546,6 +2556,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
+
   <script>
     // Generate ambient thread lines
     const bgThreads = document.getElementById('bg-threads');
@@ -2556,6 +2567,231 @@
       bgThreads.appendChild(t);
     });
   </script>
+
+<script>
+(function() {
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  const pin        = document.getElementById('schoolPin');
+  const narrator    = document.getElementById('schoolNarrator');
+  const narFigure    = document.getElementById('schoolNarratorFigure');
+  const narBubble     = document.getElementById('schoolNarratorBubble');
+  const idStage      = document.getElementById('schoolIdStage');
+  const idInner       = document.getElementById('schoolIdInner');
+  const idPhoto        = document.getElementById('schoolIdPhoto');
+  const idName          = document.getElementById('schoolIdName');
+  const idFunny          = document.getElementById('schoolIdFunny');
+  const idClass            = document.getElementById('schoolIdClass');
+  const idYears                = document.getElementById('schoolIdYears');
+  const gifImg      = document.getElementById('schoolGifImg');
+  const videoStage  = document.getElementById('schoolVideoStage');
+if (!pin || !narrator ||  !idStage || !videoStage) return;
+
+// 👉 Paste your friend's birthday wish YouTube link here
+const SCHOOL_VIDEO_LINK = 'https://youtu.be/NLXBpxhrddo';
+
+function extractYouTubeId(url) {
+  const match = url.match(
+    /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/
+  );
+  return match ? match[1] : null;
+}
+const SCHOOL_VIDEO_ID = extractYouTubeId(SCHOOL_VIDEO_LINK);
+
+let schoolPlayer = null;
+let schoolApiReady = false;
+let schoolVideoStarted = false;
+
+// Reuses the same global callback name the gift box uses. If this
+// script runs after the gift box's <script src="...iframe_api">
+// already fired onYouTubeIframeAPIReady, this line still catches it.
+const existingCallback = window.onYouTubeIframeAPIReady;
+window.onYouTubeIframeAPIReady = function() {
+  if (typeof existingCallback === 'function') existingCallback();
+  schoolApiReady = true;
+};
+// In case the API already finished loading before this ran:
+if (window.YT && window.YT.Player) schoolApiReady = true;
+
+let schoolPlayerReady = false;
+
+function startSchoolVideo() {
+  if (schoolVideoStarted || !SCHOOL_VIDEO_ID) return;
+  schoolVideoStarted = true;
+
+  function create() {
+    schoolPlayer = new YT.Player('schoolVideo', {
+      width: '100%',
+      height: '100%',
+      videoId: SCHOOL_VIDEO_ID,
+      playerVars: { autoplay: 1, mute: 1, rel: 0, modestbranding: 1, playsinline: 1 },
+      events: {
+        onReady: () => {
+          schoolPlayerReady = true;
+          // The mute-toggle button lives in a separate <script> block
+          // below and can't see this function's local variables — so
+          // hand the player off via window once it's actually ready.
+          window.schoolPlayer = schoolPlayer;
+          window.schoolPlayerReady = true;
+        },
+        onStateChange: (event) => {
+          if (event.data === YT.PlayerState.ENDED) {
+            if (typeof window.__revealWaFab === 'function') {
+              window.__revealWaFab();
+            }
+          }
+        }
+      }
+    });
+  }
+
+  if (schoolApiReady) {
+    create();
+  } else {
+    let attempts = 0;
+    const check = setInterval(() => {
+      attempts++;
+      if (schoolApiReady) { clearInterval(check); create(); }
+      else if (attempts > 40) { clearInterval(check); console.error('YouTube API never loaded for school video.'); }
+    }, 100);
+  }
+}
+
+
+  // ── Part E data: extends the SCHOOLS pattern — EDIT THESE 3 ──
+  const SCHOOLS = [
+    {
+      name: 'BMC Matriculation Higher Secondary School',
+      funnyTitle: 'The Homework Escape Artist',
+      className: 'Pre KG to V',
+      years: '2014 - 2017',
+      photo: 'assets/BMC.png',
+      gif: 'assets/pencil.gif'
+    },
+    {
+      name: 'Sakthi Vinayakar Hindu Vidyalaya',
+      funnyTitle: 'Olympiad Champion',
+      className: 'VI - VII',
+      years: '2018 - 2021',
+      photo: 'assets/SVHV1.jpeg',
+      gif: 'assets/pen.gif'
+    },
+    {
+      name: 'Subbiah Vidyalayam Girls Higher Secondary School',
+      funnyTitle: 'Volleyball Captain ',
+      className: 'VIII - XII',
+       years: '2022 - 2026',
+      photo: 'assets/Subbiah.jpeg',
+      gif: 'assets/volleyball.gif'
+    }
+  ];
+
+  // ── Part E: single function that swaps card + photo + gif together ──
+  function setSchool(i) {
+    const s = SCHOOLS[i];
+    if (!s) return;
+    idPhoto.src   = s.photo;
+    idName.textContent   = s.name;
+    idFunny.textContent  = s.funnyTitle;
+    idClass.textContent  = s.className;
+    idYears.textContent  = s.years;
+    gifImg.src    = s.gif;
+  }
+
+
+  // ── Part G: master timeline sequencing A → B → C/D/E → F ──
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: pin,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 1
+    }
+  });
+
+// A — narrator reappears
+  tl.to(narFigure,  { opacity: 1, duration: 1, ease: 'power2.out' }, 0)
+    .to(narBubble,   { opacity: 1, duration: 1, ease: 'power2.out' }, 0.15)
+    .to(narrator,      { opacity: 0, duration: 0.6, ease: 'power1.in' }, 1.4);
+
+// C/D/E — ID card + gif, cycling through the 3 schools
+  tl.to(idStage,   { opacity: 1, duration: 0.7, ease: 'power2.out' }, 1.6)
+
+    .to(idInner,     { opacity: 0.15, duration: 0.4, ease: 'power1.in' }, 3.2)
+    .to(idInner,      { opacity: 1, duration: 0.4, ease: 'power1.out' }, 3.6)
+
+    .to(idInner,       { opacity: 0.15, duration: 0.4, ease: 'power1.in' }, 5.3)
+    .to(idInner,        { opacity: 1, duration: 0.4, ease: 'power1.out' }, 5.7)
+
+    .to(idStage,     { opacity: 0, duration: 0.6, ease: 'power1.in' }, 7.3);
+
+  // School swap is driven from continuous timeline progress rather than
+  // discrete .call() positions — .call() can get skipped entirely if the
+  // playhead jumps past it (fast scroll, or scrolling backward quickly),
+  // which is why school 1 sometimes failed to reappear on scroll-up.
+  // Checking on every update guarantees the right school is always shown,
+  // in either scroll direction.
+  let currentSchoolShown = -1;
+  const SCHOOL_SWITCH_TIMES = [1.6, 3.5, 5.6]; // matches the fade timings above
+
+  tl.eventCallback('onUpdate', () => {
+    const t = tl.time();
+    let idx = -1;
+    for (let i = 0; i < SCHOOL_SWITCH_TIMES.length; i++) {
+      if (t >= SCHOOL_SWITCH_TIMES[i]) idx = i;
+    }
+    if (idx !== currentSchoolShown && idx >= 0) {
+      currentSchoolShown = idx;
+      setSchool(idx);
+    }
+  });
+
+
+ // F — vertical video finale (pop-in, not slide)
+  const videoBox = document.querySelector('.school-video-box');
+  tl.to(videoStage, {
+      opacity: 1,
+      duration: 0.8,
+      ease: 'power2.out',
+      onStart: () => { startSchoolVideo(); }
+    }, 8.6)
+    .to(videoBox, {
+      scale: 1,
+      duration: 0.8,
+      ease: 'back.out(1.4)'
+    }, 8.6)
+    .call(() => {
+      // The stage has pointer-events:none by default so it doesn't
+      // block clicks earlier in the scroll — now that the video is
+      // actually visible, both the box (so YouTube's own play/pause/
+      // rewind controls work) and the mute button need it turned on.
+      videoStage.style.pointerEvents = 'auto';
+      const btn = document.getElementById('schoolMuteToggle');
+      if (btn) { btn.style.pointerEvents = 'auto'; }
+    }, null, 8.7);
+})();
+
+// ── Video finale: mute/unmute toggle ──
+(function() {
+  const btn = document.getElementById('schoolMuteToggle');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    if (!window.schoolPlayer || !window.schoolPlayerReady) return;
+    const currentlyMuted = window.schoolPlayer.isMuted();
+    if (currentlyMuted) {
+      window.schoolPlayer.unMute();
+      btn.textContent = '🔊 sound on';
+      btn.classList.add('is-unmuted');
+    } else {
+      window.schoolPlayer.mute();
+      btn.textContent = '🔇 tap to unmute';
+      btn.classList.remove('is-unmuted');
+    }
+  });
+})();
+</script>
+
 
   <!-- ── Site-wide parallax ── -->
   <script>
@@ -2592,112 +2828,6 @@
     updateParallax();
   })();
   </script>
-<!-- ── Schools Reveal: pinned, scroll-driven school-by-school swap ── -->
-<script>
-(function() {
-  const pin    = document.getElementById('schoolIntroSection');
-  const sticky = document.getElementById('schoolSticky');
-  const img    = document.getElementById('schoolImage');
-  const bubble = document.getElementById('schoolBubble');
-  const tag    = document.getElementById('schoolTag');
-  const text   = document.getElementById('schoolText');
-  const idCard   = document.getElementById('schoolIdCard');
-  const idName   = document.getElementById('schoolIdName');
-  const idClass  = document.getElementById('schoolIdClass');
-  const idRoll   = document.getElementById('schoolIdRoll');
-  const idYears  = document.getElementById('schoolIdYears');
-  if (!pin || !sticky || !img) return;
-
-  // ── Edit this array to add / change schools. Each entry keeps the
-  //    same shape (id, image, text) so the markup/IDs above never change —
-  //    only this data drives what's shown. The id-card fields (name,
-  //    className, rollNo, years) feed the ID card mockup next to the
-  //    mascot — replace the placeholders with the real details. ──
-  const SCHOOLS = [
-    {
-      id: '01', image: 'assets/wave.png',
-      text: '1st gift pudichi irrunthuchaaa...<br><br>Sari ipo unnoda schoolsss ku polamaaa',
-      name: 'School Name Here', className: '—', rollNo: '—', years: '—'
-    },
-    {
-      id: '02', image: 'assets/BMC1.jpeg',
-      text: 'Replace this text<br><br>with school 2 details',
-      name: 'School 2 Name Here', className: '—', rollNo: '—', years: '—'
-    },
-    {
-      id: '03', image: 'assets/SVHV.jpeg',
-      text: 'Replace this text<br><br>with school 3 details',
-      name: 'School 3 Name Here', className: '—', rollNo: '—', years: '—'
-    },
-    {
-      id: '04', image: 'assets/Subbiah.jpeg',
-      text: 'Replace this text<br><br>with school 4 details',
-      name: 'School 4 Name Here', className: '—', rollNo: '—', years: '—'
-    }
-  ];
-
-  const SCROLL_PER_SCHOOL = 500;
-  pin.style.height = `${window.innerHeight + SCHOOLS.length * SCROLL_PER_SCHOOL}px`;
-
-  let currentIndex = -1;
-
-  function applySchool(index) {
-    if (index === currentIndex) return;
-    currentIndex = index;
-    const s = SCHOOLS[index];
-
-    img.classList.add('fading');
-    bubble.classList.add('fading');
-    if (idCard) idCard.classList.add('fading');
-
-    setTimeout(() => {
-      img.src = s.image;
-      tag.textContent = `SCHOOL · ${s.id}`;
-      text.innerHTML = s.text;
-      img.classList.remove('fading');
-      bubble.classList.remove('fading');
-
-      if (idCard) {
-        idName.textContent = s.name;
-        idClass.textContent = s.className;
-        idRoll.textContent = s.rollNo;
-        idYears.textContent = s.years;
-        idCard.classList.remove('fading');
-      }
-    }, 350);
-  }
-
-  function update() {
-    const rect = pin.getBoundingClientRect();
-    const scrollable = pin.offsetHeight - window.innerHeight;
-    let progress = scrollable > 0 ? -rect.top / scrollable : 0;
-    progress = Math.min(1, Math.max(0, progress));
-
-    const idx = Math.min(
-      SCHOOLS.length - 1,
-      Math.floor(progress * SCHOOLS.length)
-    );
-    applySchool(idx);
-  }
-
-  let ticking = false;
-  function onScroll() {
-    if (!ticking) {
-      requestAnimationFrame(() => { update(); ticking = false; });
-      ticking = true;
-    }
-  }
-
-  function onResize() {
-    pin.style.height = `${window.innerHeight + SCHOOLS.length * SCROLL_PER_SCHOOL}px`;
-    update();
-  }
-
-  applySchool(0);
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onResize);
-})();
-</script>
 
   <!-- ── Photo gallery: pinned, scroll-driven horizontal reel  ── -->
   <script>
@@ -2806,8 +2936,12 @@
   let apiReady = false;
   let queueIndex = 0;
 
-  // Required global callback name for the YouTube IFrame API.
+  // Chain to any existing callback instead of overwriting it outright —
+  // the school-video script also hooks this global, and whichever script
+  // runs last would otherwise silently erase the other's callback.
+  const existingYTCallback = window.onYouTubeIframeAPIReady;
   window.onYouTubeIframeAPIReady = function() {
+    if (typeof existingYTCallback === 'function') existingYTCallback();
     apiReady = true;
   };
 
@@ -2845,11 +2979,9 @@
       if (queueIndex < VIDEO_IDS.length - 1) {
         createOrLoad(queueIndex + 1);
       } else {
-        // All videos finished — surface the WhatsApp fab
+        // All videos finished — just close, the WhatsApp fab now
+        // appears later, after the school section's finale video.
         closeModal();
-        if (typeof window.__revealWaFab === 'function') {
-          window.__revealWaFab();
-        }
       }
     }
   }
@@ -2913,7 +3045,7 @@
   <script>
   (function() {
     const fab    = document.getElementById('waFab');
-    const target = document.getElementById('storySection');
+    const target = document.getElementById('schoolSection');
     if (!fab || !target) return;
 
     window.__revealWaFab = function() {
