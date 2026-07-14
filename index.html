@@ -897,6 +897,23 @@
       background: #000;
     }
 
+    .sib-video-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.6);
+}
+.sib-video-wrap iframe {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  border: none;
+}
+
     .gift-video-wrap video {
       width: 100%;
       height: 100%;
@@ -1453,6 +1470,118 @@
       .siblings-title-wrap { top: 20px; }
     }
 
+    .final-video-section {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+      overflow: hidden;
+      padding: 0;
+    }
+
+   .final-video-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      opacity: 0;
+      transform: translateY(140px);
+      transition: opacity 1.1s cubic-bezier(0.16,1,0.3,1),
+                  transform 1.1s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .final-video-section.in-view .final-video-inner {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .final-video-label {
+      position: absolute;
+      top: 40px;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      text-align: center;
+      font-size: 0.72rem;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .final-video-box {
+      position: relative;
+      width: min(720px, 92vw);
+      max-height: 78vh;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+      background: #000;
+    }
+
+    .final-video-wrap {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .final-video-wrap video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      background: #000;
+    }
+
+    #finalMuteToggle {
+  position: relative;
+  z-index: 2;
+}
+
+    .final-replay-btn {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.55);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .final-replay-btn.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .final-replay-btn svg {
+      width: 56px;
+      height: 56px;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+      transition: transform 0.2s ease;
+    }
+
+    .final-replay-btn:hover svg {
+      transform: scale(1.1);
+    }
+
+
     /* ── Family Constellation: envelope video trigger + modal ── */
     .fc-envelope {
       position: absolute;
@@ -1736,27 +1865,42 @@
 
 
       <!-- Part C + D: ID card + GIF, cycled by Part E -->
-      <div class="school-id-stage" id="schoolIdStage">
-        <div class="school-id-inner" id="schoolIdInner">
+      <div class="school-id-inner" id="schoolIdInner">
   <div class="school-id-lanyard">
     <span class="school-id-strap"></span>
     <span class="school-id-clip"></span>
   </div>
 
   <div class="school-id-card" id="schoolIdCard">
+    <div class="school-id-holo"></div>
+
+    <div class="school-id-header">
+      <span class="school-id-header-emblem">✦</span>
+      <span class="school-id-header-text">Student Identity Card</span>
+    </div>
+
     <div class="school-id-punch"></div>
 
-    <div class="school-id-photo"><img id="schoolIdPhoto" src="" alt=""></div>
+    <div class="school-id-photo-wrap">
+      <div class="school-id-photo"><img id="schoolIdPhoto" src="" alt=""></div>
+      <span class="school-id-seal">✓</span>
+    </div>
+
     <div class="school-id-name" id="schoolIdName"></div>
     <div class="school-id-funny" id="schoolIdFunny"></div>
 
     <div class="school-id-divider"></div>
 
-   <div class="school-id-row"><span>Class</span><span id="schoolIdClass"></span></div>
-   <div class="school-id-row"><span>Years</span><span id="schoolIdYears"></span></div>
+    <div class="school-id-row"><span>Class</span><span id="schoolIdClass"></span></div>
+    <div class="school-id-row"><span>Years</span><span id="schoolIdYears"></span></div>
 
     <div class="school-gif-slot" id="schoolGifSlot">
       <img id="schoolGifImg" src="" alt="">
+    </div>
+
+    <div class="school-id-barcode">
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
     </div>
   </div>
 </div>
@@ -1811,8 +1955,8 @@
   }
 
  .school-narrator-figure {
-  width: 1200px;
-  height: 810px;
+  width: 800px;
+  height: 640px;
   flex-shrink: 0;
   order: 2;
 }
@@ -1886,18 +2030,62 @@
   transform: translateX(-50%) rotate(-45deg);
 }
 
-  .school-id-card {
+.school-id-card {
   width: 340px;
-  background: #ffffff;
-  border: 2px solid var(--dark);
-  border-radius: 22px;
-  padding: 48px 28px 32px;
-  box-shadow: 0 28px 65px rgba(0,0,0,0.5);
+  background: linear-gradient(165deg, #fffaf2 0%, #f4e9d8 100%);
+  border: 1px solid rgba(179,18,46,0.25);
+  border-radius: 20px;
+  padding: 0 26px 30px;
+  box-shadow:
+    0 4px 0 rgba(212,162,76,0.5),
+    0 30px 65px rgba(0,0,0,0.55);
   position: relative;
   z-index: 1;
   color: var(--dark);
   font-family: 'JetBrains Mono', monospace;
   text-align: center;
+  overflow: hidden;
+}
+
+/* holographic corner sheen */
+.school-id-holo {
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 130px; height: 130px;
+  background: conic-gradient(from 200deg,
+    rgba(212,162,76,0.5), rgba(179,18,46,0.35),
+    rgba(212,162,76,0.5), rgba(255,248,240,0.4), rgba(212,162,76,0.5));
+  filter: blur(2px);
+  opacity: 0.55;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* crimson header band */
+.school-id-header {
+  margin: 0 -26px 22px;
+  padding: 12px 16px 10px;
+  background: linear-gradient(120deg, var(--crimson), #7a0c1f);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+}
+.school-id-header::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -4px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.school-id-header-emblem { color: var(--gold); font-size: 0.9rem; }
+.school-id-header-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--cream);
 }
 
 .school-id-punch {
@@ -1907,14 +2095,96 @@
   margin-left: -30px;
   background: rgba(0,0,0,0.14);
   border-radius: 8px;
+  z-index: 3;
 }
 
+.school-id-photo-wrap {
+  position: relative;
+  width: 170px;
+  margin: 0 auto 16px;
+}
 .school-id-photo {
   width: 170px;
   height: 200px;
-  margin: 0 auto 14px;
+  border: 3px solid var(--gold);
+  border-radius: 4px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+  transform: rotate(-1.5deg);
+  overflow: hidden;
+  background: #efe3cf;
 }
 .school-id-photo img { width: 100%; height: 100%; object-fit: contain; }
+.school-id-seal {
+  position: absolute;
+  bottom: -10px; right: -10px;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--crimson);
+  border: 2px solid var(--gold);
+  color: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+  transform: rotate(8deg);
+}
+
+.school-id-name {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.2rem;
+  line-height: 1.3;
+  color: var(--crimson);
+  margin-bottom: 8px;
+}
+
+.school-id-funny {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+
+.school-id-divider {
+  height: 1px;
+  background: repeating-linear-gradient(90deg, rgba(179,18,46,0.35) 0 6px, transparent 6px 12px);
+  margin: 0 4px 16px;
+}
+
+.school-id-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  padding: 5px 2px;
+}
+.school-id-row span:first-child {
+  color: rgba(26,16,16,0.55);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 0.68rem;
+}
+.school-id-row span:last-child { color: var(--dark); font-weight: 600; }
+
+.school-gif-slot {
+  width: 68px;
+  height: 68px;
+  margin: 18px auto 12px;
+}
+.school-gif-slot img { width: 100%; height: 100%; object-fit: contain; }
+
+.school-id-barcode {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2px;
+  height: 26px;
+  margin-top: 4px;
+  opacity: 0.65;
+}
+.school-id-barcode span { display: block; width: 2px; background: var(--dark); }
+.school-id-barcode span:nth-child(3n)   { height: 100%; }
+.school-id-barcode span:nth-child(3n+1) { height: 60%; }
+.school-id-barcode span:nth-child(3n+2) { height: 80%; }
+
 
 .school-id-name {
   font-family: 'Fraunces', Georgia, serif;
@@ -2122,21 +2392,6 @@
   <!-- ── Main content -->
   <main>
 
-    <!-- Memories section -->
-    <div class="section-label">memories · collected</div>
-    <div class="memory-grid">
-      <div class="memory-card parallax" data-speed="0.035">
-       
-        <div class="card-title">Wishes from Dhivya Ma'am</div>
-        <div class="card-body">Every great story begins with a single knot. This one started on a July afternoon that neither of us knew would matter so much.</div>
-      </div>
-      <div class="memory-card parallax" data-speed="-0.045">
-        
-        <div class="card-title">Wishes from Maha Akka</div>
-        <div class="card-body">The ones that stretched past midnight, past reason, past every topic we thought we'd run out of — and still never ran out.</div>
-      </div>
-    
-    </div> 
 <!-- ============================================================
      FAMILY CONSTELLATION SECTION
  -->
@@ -2455,43 +2710,6 @@
       <div class="letter-sig">— with love · 16.07.2026</div>
     </div>
 
-    <!-- Timeline section -->
-    <div class="section-label">timeline · seventeen years</div>
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-year">2009</div>
-        <div class="timeline-dot-col">
-          <div class="timeline-dot"></div>
-          <div class="timeline-line"></div>
-        </div>
-        <div class="timeline-content parallax" data-speed="0.03">
-          <div class="timeline-title">The beginning.</div>
-          <div class="timeline-note">16 July. A thread cast into the world.</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-year">—</div>
-        <div class="timeline-dot-col">
-          <div class="timeline-dot"></div>
-          <div class="timeline-line"></div>
-        </div>
-        <div class="timeline-content parallax" data-speed="-0.035">
-          <div class="timeline-title">All the years in between.</div>
-          <div class="timeline-note">Too many good moments to archive properly. You know them all.</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-year">2026</div>
-        <div class="timeline-dot-col">
-          <div class="timeline-dot"></div>
-          <div class="timeline-line"></div>
-        </div>
-        <div class="timeline-content parallax" data-speed="0.045">
-          <div class="timeline-title">Seventeen. Right now.</div>
-          <div class="timeline-note">You unlocked the page. The archive is open. The next chapter is blank — and yours.</div>
-        </div>
-      </div>
-    </div>
 
   </main>
 
@@ -2527,21 +2745,42 @@
         <div class="siblings-video-stage" id="siblingsVideoStage">
           <p class="siblings-video-title">Happy Birthday <em>Sri Maaaa</em></p>
           <div class="sib-flip" id="sibFlip">
-            <div class="sib-flip-inner" id="sibFlipInner">
-            <!--  <video class="sib-flip-face sib-flip-front" id="siblingsVideo1" src="assets/siblings-wish1.mp4" playsinline muted></video> -->
-            </div>
-          </div>
+                <div class="sib-video-wrap">
+                 <div id="siblingsVideo"></div>
+               </div>
+               </div>
           <button class="mute-toggle-btn" id="siblingsMuteToggle">🔇 tap to unmute</button>
-          <p class="siblings-video-hint" id="siblingsHint">wish 1 of 2</p>
+          <p class="siblings-video-hint" id="siblingsHint">Wishes from Hamsath</p>
         </div>
 
       </div>
     </div>
   </section>
 
+
+  <!-- ── Final Video: closing birthday message ── -->
+  <section class="final-video-section" id="finalVideoSection">
+    <div class="final-video-inner">
+      <p class="final-video-label">surprise</p>
+      <div class="final-video-box">
+        <div class="final-video-wrap">
+          <video id="finalVideo" src="assets/surprise.mp4" playsinline muted></video>
+        </div>
+        <button class="final-replay-btn" id="finalReplayBtn" aria-label="Replay video">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="#fff">
+            <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>
+          </svg>
+        </button>
+      </div>
+      <button class="mute-toggle-btn" id="finalMuteToggle">🔇 tap to unmute</button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+
   <!-- Footer -->
   <footer>
-    <div class="footer-text">made with red thread · <span>kalizz · 2026</span> · seventeen</div>
+    <div class="footer-text">with lots of love from · <span>kalizz · 2026</span> · turning seventeen</div>
   </footer>
 
   <!-- ── WhatsApp floating action button ── -->
@@ -3043,9 +3282,10 @@ function startSchoolVideo() {
   <!-- ── WhatsApp fab: reveal after gift videos, scroll to the story
        section, and hide itself once the story section is reached ── -->
   <script>
+
   (function() {
     const fab    = document.getElementById('waFab');
-    const target = document.getElementById('schoolSection');
+    const target = document.getElementById('storySection');   // ← was 'schoolSection'
     if (!fab || !target) return;
 
     window.__revealWaFab = function() {
@@ -3064,7 +3304,7 @@ function startSchoolVideo() {
       });
     }, { threshold: 0.05 });
     hideObserver.observe(target);
-  })();
+})();
   </script>
 
   <!-- ══════════════════════════════════════════════════
@@ -3143,9 +3383,60 @@ function startSchoolVideo() {
         start: 'top top',
         end: 'bottom bottom',
         scrub: 1,
-        onLeaveBack: () => { cursorParallaxActive = true; },
+        onLeave: () => {
+          cursorParallaxActive = true;
+          videoStageActive = false;
+          resetAllVideos();
+        },
+        onLeaveBack: () => {
+          cursorParallaxActive = true;
+          videoStageActive = false;
+          resetAllVideos();
+        },
       }
     });
+
+    // ── Guard: videos may only be visible/advancing while the scrubbed
+    // timeline is actually in the video-stage range (>= VIDEO_STAGE_START).
+    // The per-video 'ended' listeners below fire in real time (whenever
+    // that particular <video> naturally finishes playing) and are NOT
+    // tracked by the scrubbed tl — so without this guard, a video that
+    // finishes while you're scrolled elsewhere (or one that keeps
+    // playing/looping in the background) can still trigger the "reveal
+    // next video" tween, and once revealed it has no way to hide again
+    // on scroll-back. This forces every video to hard-reset (paused,
+    // rewound, hidden) the instant you scroll out of the video stage,
+    // and blocks the 'ended' handler from doing anything while outside it.
+    const VIDEO_STAGE_START = 9.3;
+    let videoStageActive = false;
+
+    const storyMuteBtn = document.getElementById('storyMuteToggle');
+
+function resetAllVideos() {
+  videos.forEach(v => {
+    v.pause();
+    v.currentTime = 0;
+    gsap.set(v, { opacity: 0, scale: 0.35 });
+  });
+  if (storyMuteBtn) {
+    storyMuteBtn.style.opacity = '0';
+    storyMuteBtn.style.pointerEvents = 'none';
+  }
+}
+
+tl.eventCallback('onUpdate', () => {
+  const inStage = tl.time() >= VIDEO_STAGE_START;
+  if (!inStage && videoStageActive) {
+    videoStageActive = false;
+    resetAllVideos();
+  } else if (inStage && !videoStageActive) {
+    videoStageActive = true;
+    if (storyMuteBtn) {
+      storyMuteBtn.style.opacity = '1';
+      storyMuteBtn.style.pointerEvents = 'auto';
+    }
+  }
+});
 
     tl.to(flashGroup, { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power2.out' }, 0);
 
@@ -3183,15 +3474,13 @@ function startSchoolVideo() {
         videos[0].currentTime = 0;
         videos[0].play().catch(() => {});
       }, null, 9.5)
-      .call(() => {
-        const btn = document.getElementById('storyMuteToggle');
-        if (btn) { btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
-      }, null, 9.5);
+    
 
     videos.forEach((current, i) => {
       const next = videos[i + 1];
       if (!next) return;
       current.addEventListener('ended', () => {
+        if (!videoStageActive) return; // scrolled away — don't advance/reveal
         gsap.to(current, { opacity: 0, scale: 0.9, duration: 0.5, ease: 'power2.in' });
         gsap.to(next, {
           opacity: 1,
@@ -3207,6 +3496,7 @@ function startSchoolVideo() {
     });
   })();
   </script>
+
 
   <!-- ── Header canvas particle animation ── -->
   <script>
@@ -3501,51 +3791,86 @@ function startSchoolVideo() {
 
   <!-- ── Siblings flip-card video pair: video1 plays, flips in 3D to video2 ── -->
   <script>
-  (function() {
-    const v1 = document.getElementById('siblingsVideo1');
-    const v2 = document.getElementById('siblingsVideo2');
-    const inner = document.getElementById('sibFlipInner');
-    const muteToggle = document.getElementById('siblingsMuteToggle');
-    const hint = document.getElementById('siblingsHint');
-    if (!v1 || !v2 || !inner) return;
+(function() {
+  const muteToggle = document.getElementById('siblingsMuteToggle');
+  if (!muteToggle) return;
 
-    let active = v1;
-    let started = false;
+  // 👉 Paste your YouTube link here
+  const SIBLINGS_VIDEO_LINK = 'https://youtu.be/3iI2DA5foDc';
 
-    function syncToggle() {
-      muteToggle.textContent = active.muted ? '🔇 tap to unmute' : '🔊 sound on';
-      muteToggle.classList.toggle('is-unmuted', !active.muted);
+  function extractYouTubeId(url) {
+    const match = url.match(
+      /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/
+    );
+    return match ? match[1] : null;
+  }
+  const SIBLINGS_VIDEO_ID = extractYouTubeId(SIBLINGS_VIDEO_LINK);
+
+  let siblingsApiReady = false;
+  let started = false;
+
+  // Chain onto the same global callback the gift box / school video use
+  const existingCallback = window.onYouTubeIframeAPIReady;
+  window.onYouTubeIframeAPIReady = function() {
+    if (typeof existingCallback === 'function') existingCallback();
+    siblingsApiReady = true;
+  };
+  if (window.YT && window.YT.Player) siblingsApiReady = true;
+
+  function createPlayer() {
+    window.siblingsPlayer = new YT.Player('siblingsVideo', {
+      width: '100%',
+      height: '100%',
+      videoId: SIBLINGS_VIDEO_ID,
+      playerVars: { autoplay: 1, mute: 1, rel: 0, modestbranding: 1, playsinline: 1 },
+      events: {
+        onReady: () => {
+          window.siblingsPlayerReady = true;
+          syncToggle();
+        }
+      }
+    });
+  }
+
+  window.__startSiblingsVideos = function() {
+    if (started || !SIBLINGS_VIDEO_ID) return;
+    started = true;
+    if (siblingsApiReady) {
+      createPlayer();
+    } else {
+      let attempts = 0;
+      const check = setInterval(() => {
+        attempts++;
+        if (siblingsApiReady) { clearInterval(check); createPlayer(); }
+        else if (attempts > 40) { clearInterval(check); console.error('YouTube API never loaded for siblings video.'); }
+      }, 100);
     }
+  };
 
-    window.__startSiblingsVideos = function() {
-      if (started) return;
-      started = true;
-      v1.currentTime = 0;
-      v1.play().catch(() => {});
-      syncToggle();
-    };
+  function syncToggle() {
+    if (!window.siblingsPlayer || !window.siblingsPlayerReady) return;
+    const muted = window.siblingsPlayer.isMuted();
+    muteToggle.textContent = muted ? '🔇 tap to unmute' : '🔊 sound on';
+    muteToggle.classList.toggle('is-unmuted', !muted);
+  }
 
-    v1.addEventListener('ended', () => {
-      inner.classList.add('flipped');
-      active = v2;
-      hint.textContent = 'wish 2 of 2';
-      v2.currentTime = 0;
-      v2.play().catch(() => {});
-      syncToggle();
-    });
+muteToggle.addEventListener('click', () => {
+    if (!window.siblingsPlayer || !window.siblingsPlayerReady) return;
+    const currentlyMuted = window.siblingsPlayer.isMuted();
+    if (currentlyMuted) {
+      window.siblingsPlayer.unMute();
+      muteToggle.textContent = '🔊 sound on';
+      muteToggle.classList.add('is-unmuted');
+    } else {
+      window.siblingsPlayer.mute();
+      muteToggle.textContent = '🔇 tap to unmute';
+      muteToggle.classList.remove('is-unmuted');
+    }
+  });
+})();
+</script>
 
-    muteToggle.addEventListener('click', () => {
-      active.muted = !active.muted;
-      syncToggle();
-    });
 
-    // Tapping either face also toggles sound, matching the old click-to-unmute UX
-    [v1, v2].forEach(v => v.addEventListener('click', () => {
-      active.muted = !active.muted;
-      syncToggle();
-    }));
-  })();
-  </script>
 <!-- ── Story videos: mute/unmute toggle ── -->
   <script>
   (function() {
@@ -3569,5 +3894,54 @@ function startSchoolVideo() {
     syncToggle();
   })();
   </script>
+
+
+  <!-- ── Final video: plays once fully scrolled into view; replay button on end ── -->
+  <script>
+  (function() {
+    const section   = document.getElementById('finalVideoSection');
+    const video     = document.getElementById('finalVideo');
+    const muteBtn   = document.getElementById('finalMuteToggle');
+    const replayBtn = document.getElementById('finalReplayBtn');
+    if (!section || !video || !muteBtn || !replayBtn) return;
+
+    function syncToggle() {
+      muteBtn.textContent = video.muted ? '🔇 tap to unmute' : '🔊 sound on';
+      muteBtn.classList.toggle('is-unmuted', !video.muted);
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          section.classList.add('in-view');
+          video.currentTime = 0;
+          video.volume = 1;
+          video.play().catch(() => {});
+          observer.unobserve(section);
+        }
+      });
+    }, { threshold: 0.98 });
+
+    observer.observe(section);
+
+    muteBtn.addEventListener('click', () => {
+      video.muted = !video.muted;
+      video.volume = 1;
+      syncToggle();
+    });
+
+    video.addEventListener('ended', () => {
+      replayBtn.classList.add('show');
+    });
+
+    replayBtn.addEventListener('click', () => {
+      replayBtn.classList.remove('show');
+      video.currentTime = 0;
+      video.volume = 1;
+      video.play().catch(() => {});
+    });
+  })();
+  </script>
+
 </body>
 </html>
