@@ -220,7 +220,52 @@
       background: rgba(212,162,76,0.03);
       margin-bottom: 76px;
       position: relative;
+      overflow: hidden;
       will-change: transform;
+    }
+
+    /* ── Ancient scroll unroll ── */
+/* ── Ancient scroll unroll ── */
+    .letter-scroll-mask {
+      position: relative;
+      z-index: 1;
+      clip-path: inset(0 50% 0 50%);
+      transform: scaleX(0.02);
+      opacity: 0;
+      transform-origin: center;
+      transition: clip-path 1.4s cubic-bezier(0.65,0,0.35,1),
+                  transform 1.4s cubic-bezier(0.65,0,0.35,1),
+                  opacity 0.3s ease;
+    }
+
+    .letter-block.unrolled .letter-scroll-mask {
+      clip-path: inset(0 0% 0 0%);
+      transform: scaleX(1);
+      opacity: 1;
+    }
+
+    .letter-rod {
+      position: absolute;
+      top: 50%;
+      width: 12px;
+      height: 40px;
+      margin-top: -20px;
+      border-radius: 6px;
+      background: linear-gradient(180deg, #f0cf7b, var(--gold) 50%, #a9782c);
+      box-shadow: 0 0 14px rgba(212,162,76,0.55);
+      transform: scaleY(0.05);
+      transform-origin: center;
+      opacity: 0;
+      z-index: 2;
+      transition: transform 1.4s cubic-bezier(0.65,0,0.35,1),
+                  opacity 0.3s ease;
+    }
+    .letter-rod-left  { left: 14px; }
+    .letter-rod-right { right: 14px; }
+
+    .letter-block.unrolled .letter-rod {
+      transform: scaleY(1);
+      opacity: 1;
     }
 
     .letter-block::before {
@@ -620,7 +665,7 @@
       font-size: 0.58rem;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: var(--gold);
+      color: #c8163a;
     }
 
     .photo-caption {
@@ -699,7 +744,7 @@
       position: absolute;
       left: 0; right: 0; bottom: 0;
       height: 72px;
-      background: linear-gradient(160deg, var(--crimson), #7a0c1f);
+      background: linear-gradient(160deg, #c8163a, #7a0c1f);
       border: 1px solid rgba(212,162,76,0.4);
       border-radius: 6px;
       box-shadow: 0 10px 24px rgba(179,18,46,0.25);
@@ -711,7 +756,7 @@
       left: -6px; right: -6px;
       top: 26px;
       height: 22px;
-      background: linear-gradient(160deg, #c8163a, var(--crimson));
+      background: linear-gradient(160deg, #c8163a, #8a0f26);
       border: 1px solid rgba(212,162,76,0.5);
       border-radius: 6px;
       transform-origin: 50% 100%;
@@ -991,7 +1036,7 @@
       position: absolute;
       top: -3px; right: -3px;
       width: 17px; height: 17px;
-      background: var(--crimson);
+      background: #941d1d;
       border: 2px solid var(--dark);
       border-radius: 50%;
       font-size: 0.5rem;
@@ -1505,12 +1550,14 @@
 
     .final-video-label {
       position: absolute;
-      top: 40px;
+      top: 5px;
       left: 0;
       right: 0;
       z-index: 2;
       text-align: center;
-      font-size: 0.72rem;
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-size: clamp(1.1rem, 3vw, 1.8rem);
       letter-spacing: 3.5px;
       text-transform: uppercase;
       color: var(--gold);
@@ -1518,7 +1565,7 @@
 
     .final-video-box {
       position: relative;
-      width: min(720px, 92vw);
+      width: min(1000px, 95vw);
       max-height: 78vh;
       aspect-ratio: 16 / 9;
       border-radius: 12px;
@@ -1627,7 +1674,7 @@
       margin: -17px 0 0 -17px;
       background: var(--crimson);
       border-radius: 50%;
-      color: var(--gold);
+      color: #c8163a;
       display: flex; align-items: center; justify-content: center;
       font-size: 0.9rem;
       box-shadow: 0 4px 10px rgba(0,0,0,0.35);
@@ -1845,6 +1892,8 @@
   })();
   </script>
 
+
+
 <!-- ══════════════════════════════════════════════════
      ── School Days: narrator → mascot → ID cards → video ──
      ══════════════════════════════════════════════════ -->
@@ -1855,7 +1904,7 @@
       <!-- Part A: narrator reappears -->
       <div class="school-narrator" id="schoolNarrator">
         <div class="narrator-figure school-narrator-figure" id="schoolNarratorFigure">
-          <img src="assets/wave.png" alt="Jackalope">
+          <img src="assets/dolly.png" alt="Jackalope">
         </div>
         <div class="narrator-bubble school-narrator-bubble" id="schoolNarratorBubble">
           <div class="narrator-label">Naa vanthuten </div>
@@ -1866,25 +1915,25 @@
 
       <!-- Part C + D: ID card + GIF, cycled by Part E -->
       <div class="school-id-inner" id="schoolIdInner">
-        <div class="school-id-card" id="schoolIdCard">
-          <img class="school-id-art" src="assets/mockup.png" alt="">
-
-          <div class="school-id-photo-wrap">
-            <img id="schoolIdPhoto" src="" alt="">
-          </div>
-
-          <div class="school-id-name" id="schoolIdName"></div>
-          <div class="school-id-funny" id="schoolIdFunny"></div>
-
-          <div class="school-id-rows">
-            <div class="school-id-row"><span>Classes</span><span id="schoolIdClass"></span></div>
-            <div class="school-id-row"><span>Years</span><span id="schoolIdYears"></span></div>
-          </div>
-
-          <div class="school-gif-slot" id="schoolGifSlot">
-            <img id="schoolGifImg" src="" alt="">
-          </div>
-        </div>
+        <div class="school-id-stage" id="schoolIdStage">
+  <div class="school-id-inner" id="schoolIdInner">
+    <div class="school-id-card" id="schoolIdCard">
+      <img class="school-id-art" src="assets/mockup.png" alt="">
+      <div class="school-id-photo-wrap">
+        <img id="schoolIdPhoto" src="" alt="">
+      </div>
+      <div class="school-id-name" id="schoolIdName"></div>
+      <div class="school-id-funny" id="schoolIdFunny"></div>
+      <div class="school-id-rows">
+        <div class="school-id-row"><span>Classes</span><span id="schoolIdClass"></span></div>
+        <div class="school-id-row"><span>Years</span><span id="schoolIdYears"></span></div>
+      </div>
+      <div class="school-gif-slot" id="schoolGifSlot">
+        <img id="schoolGifImg" src="" alt="">
+      </div>
+    </div>
+  </div>
+</div>
       </div>
 
       <!-- Part F: full-screen video finale -->
@@ -1925,22 +1974,54 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 22px;
+  gap: 4px;
   padding: 0 1.5vw 0 40px;
   pointer-events: none;
 }
-  .school-narrator-figure, .school-narrator-bubble {
+  
+  
+  .school-narrator-bubble {
     opacity: 0; /* driven by GSAP, not the .in-view class */
     transform: none;
     transition: none;
   }
 
  .school-narrator-figure {
-  width: 800px;
-  height: 640px;
+  width: min(580px, 42vw);   /* was min(500px, 38vw) — slightly bigger */
+  height: min(460px, 40vh);  /* was min(400px, 36vh) */
   flex-shrink: 0;
   order: 2;
 }
+
+  @media (max-width: 700px) {
+    .school-narrator {
+      flex-direction: column-reverse;
+      justify-content: center;
+      padding: 0 20px;
+      gap: 12px;
+    }
+    .school-narrator-figure {
+  width: min(680px, 48vw);   /* bumped up further */
+  height: min(540px, 46vh);
+  flex-shrink: 0;
+  order: 2;
+}
+
+.school-narrator-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+  animation: narratorBob 3.4s ease-in-out infinite;
+}
+
+    .school-narrator-bubble {
+      max-width: 90vw;
+    }
+    .school-narrator-bubble::before {
+      display: none; /* the side-pointer arrow doesn't make sense once stacked */
+    }
+  }
 .school-narrator-bubble {
   max-width: 380px;
   order: 1;
@@ -1957,7 +2038,7 @@
 
   
 
-  /* Part C + D: ID card + GIF */
+ /* Part C + D: ID card + GIF */
   .school-id-stage {
     position: absolute;
     inset: 0;
@@ -1975,9 +2056,6 @@
     justify-content: center;
   }
 
-  /* ── School ID card: real lanyard mockup photo (assets/mockup.png)
-       as the background art, with photo/text/gif overlaid on top at
-       fixed percentage positions matched to that artwork. ── */
   .school-id-inner {
     flex-direction: column;
     gap: 0;
@@ -1987,7 +2065,7 @@
   .school-id-card {
     position: relative;
     width: 320px;
-    aspect-ratio: 598 / 934;
+    aspect-ratio: 328 / 702;
   }
 
   .school-id-art {
@@ -1998,11 +2076,12 @@
   }
 
   .school-id-photo-wrap {
-    position: absolute;
-    left: 29.10%;
-    top: 41.97%;
-    width: 27.59%;
-    height: 23.77%;
+    position: absolute;   /* ← this was missing — without it, left/top/margin do nothing */
+    left: 50%;
+    top: 40.46%;
+    width: 33.23%;
+    height: 20.80%;
+    margin-left: -16.615%;
     overflow: hidden;
   }
   .school-id-photo-wrap img {
@@ -2014,57 +2093,62 @@
 
   .school-id-name {
     position: absolute;
-    left: 30.2%;
-    right: 44.08%;
-    top: 68%;
+    left: 10%;
+    right: 10%;
+    top: 62%;
     text-align: center;
     font-family: 'Fraunces', Georgia, serif;
-    font-size: 0.6rem;
+    font-size: 1rem;
     line-height: 1.3;
     color: #1d4e89;
   }
 
   .school-id-funny {
     position: absolute;
-    left: 30.2%;
-    right: 44.08%;
-    top: 76%;
+    left: 22.87%;
+    right: 24.1%;
+    top: 70%;
     text-align: center;
     font-family: 'Fraunces', Georgia, serif;
     font-style: italic;
-    font-size: 0.66rem;
+    font-size: 1.05rem;
     color: var(--crimson);
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(26,16,16,0.25);
   }
 
   .school-id-rows {
     position: absolute;
-    left: 30.2%;
-    right: 44.08%;
-    top: 84%;
+    left: 15%;
+    right: 15%;
+    top: 76%;   /* nudged down slightly to clear the new divider line above */
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.5rem;
+    font-size: 0.82rem;
   }
   .school-id-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 2px 0;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 3px 0;
+  gap: 8px;
+}
   .school-id-row span:first-child {
     color: rgba(26,16,16,0.55);
     letter-spacing: 0.4px;
     text-transform: uppercase;
-    font-size: 0.46rem;
+    font-size: 0.74rem;
   }
   .school-id-row span:last-child {
     color: #1a1010;
     font-weight: 600;
+    font-size: 0.82rem;
   }
 
   .school-gif-slot {
     position: absolute;
-    left: 42.31%;
-    top: 94.43%;
-    width: 8.36%;
+    left: 50%;
+    top: 84%;
+    width: 20%;
     aspect-ratio: 1 / 1;
     transform: translateX(-50%);
   }
@@ -2342,7 +2426,7 @@
       <video id="fcVideo1" src="assets/sudhan-sarooo.mp4" playsinline muted></video>
     </div>
     <button class="mute-toggle-btn fc-mute-btn" id="fcMuteToggle">🔇 tap to unmute</button>
-    <p class="fc-modal-caption" id="fcModalCaption">from your family</p>
+    
   </div>
 </div>
 
@@ -2503,16 +2587,19 @@
   }
 
   function openModal() {
-    modal.classList.add('open');
-    modal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-    caption.textContent = 'from your family';
-    v1.currentTime = 0;
-    v1.muted = true;
-    v1.loop = true;
-    v1.play().catch(err => console.error('Family video failed:', v1.src, err));
-    syncToggle();
-  }
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  v1.currentTime = 0;
+  v1.muted = true;
+  v1.loop = false;
+  v1.play().catch(err => console.error('Family video failed:', v1.src, err));
+  syncToggle();
+}
+
+  v1.addEventListener('ended', () => {
+    closeModal();
+  });
 
   function closeModal() {
     modal.classList.remove('open');
@@ -2543,20 +2630,23 @@
 </script>
 
 
-    <!-- Letter section -->
-    <div class="section-label">a letter · for you</div>
-    <div class="letter-block parallax" data-speed="0.04">
-      <p class="letter-text">
-        You found the passcode, which means you already knew the answer — 
-        you always do. Seventeen looks good on you, Kalizz. Not because the 
-        number changes anything, but because you keep becoming more yourself 
-        with every year, and that's the kind of thing worth celebrating with 
-        red thread and falling petals and a locked page that only you could open.
-        <br><br>
-        Here's to every thread still unspooled, every chapter still unwritten,
-        every ridiculous midnight yet to come.
-      </p>
-      <div class="letter-sig">— with love · 16.07.2026</div>
+   <!-- Letter section -->
+    <div class="section-label" style="margin-top:48px;">a letter · for you</div>
+    <div class="letter-block parallax" data-speed="0.04" id="letterBlock">
+      <span class="letter-rod letter-rod-left" id="letterRodLeft"></span>
+      <div class="letter-scroll-mask" id="letterScrollMask">
+        <p class="letter-text">
+          Hi Kalizzz.... Wish you a many more Happy returns of the day.Actually, this is not going to be a formal letter, and you know that very well.
+          It's just a reminder for you from your die-heart fan, forever mentor, your crime partner, your friend, your sister.
+           I am happy about all your progress. I often say that, journey is the real success, and I have learnt that from you, my baby girland I am so proud of you
+          <br><br>
+          Here's to every chapter still unwritten,
+          every ridiculous midnight yet to come. Let's keep laughing, learning, and loving through it all. 
+          Happy birthday, Kalizzz. May this year be your best one yet!
+        </p>
+        <div class="letter-sig"> — with love · Hamsath</div>
+      </div>
+      <span class="letter-rod letter-rod-right" id="letterRodRight"></span>
     </div>
 
 
@@ -2751,14 +2841,14 @@ function startSchoolVideo() {
   const SCHOOLS = [
     {
       name: 'BMC Matriculation Higher Secondary School',
-      funnyTitle: 'The Homework Escape Artist',
+      funnyTitle: 'The Cheeky Charmer',
       className: 'Pre KG to V',
-      years: '2014 - 2017',
+      years: '2013 - 2017',
       photo: 'assets/BMC.png',
       gif: 'assets/pencil.gif'
     },
     {
-      name: 'Sakthi Vinayakar Hindu Vidyalaya',
+      name: 'Sakthi Vinayakar Hindu Vidyalaya Senior Secondary School',
       funnyTitle: 'Olympiad Champion',
       className: 'VI - VII',
       years: '2018 - 2021',
@@ -3133,26 +3223,34 @@ function startSchoolVideo() {
   <script>
 
   (function() {
-    const fab    = document.getElementById('waFab');
-    const target = document.getElementById('storySection');   // ← was 'schoolSection'
-    if (!fab || !target) return;
+  const fab    = document.getElementById('waFab');
+  const target = document.getElementById('storySection');
+  if (!fab || !target) return;
 
-    window.__revealWaFab = function() {
-      fab.classList.add('show');
-    };
+  let revealed = false;
+  let passedStory = false;
 
-    fab.addEventListener('click', () => {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
+  window.__revealWaFab = function() {
+    revealed = true;
+    updateFab();
+  };
 
-    const hideObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          fab.classList.remove('show');
-        }
-      });
-    }, { threshold: 0.05 });
-    hideObserver.observe(target);
+  function updateFab() {
+    fab.classList.toggle('show', revealed && !passedStory);
+  }
+
+  fab.addEventListener('click', () => {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  function checkScroll() {
+    const rect = target.getBoundingClientRect();
+    if (rect.bottom <= 0) passedStory = true; // fully scrolled past — lock it off for good
+    updateFab();
+  }
+
+  window.addEventListener('scroll', checkScroll, { passive: true });
+  checkScroll();
 })();
   </script>
 
@@ -3599,6 +3697,25 @@ tl.eventCallback('onUpdate', () => {
   })();
   </script>
 
+<!-- ── Letter section: ancient scroll unroll ── -->
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const block = document.getElementById('letterBlock');
+    if (!block) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          block.classList.add('unrolled');
+          observer.unobserve(block);
+        }
+      });
+    }, { threshold: 0.25 });
+
+    observer.observe(block);
+  });
+  </script>  
+
   <!-- ── Siblings to Friends: pinned columns + flip-card video reveal (GSAP) ── -->
   <script>
   (function() {
@@ -3791,6 +3908,7 @@ muteToggle.addEventListener('click', () => {
     });
   })();
   </script>
+
 
 </body>
 </html>
