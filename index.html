@@ -11,7 +11,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --crimson:  #B3122E;
+      --crimson:  #d4a714;
       --gold:     #D4A24C;
       --cream:    #FFF8F0;
       --dark:     #1a1010;
@@ -1738,7 +1738,7 @@
   </section>
 
   <!-- ── Photo Gallery Section (pinned, scroll-driven reel) ── -->
-  <div class="section-label" style="max-width:1140px;margin:0 auto 28px;padding:0 40px;">photo archive · captured</div>
+  <div class="section-label" style="max-width:1140px;margin:0 auto 28px;padding:0 40px;">Scroll through your 17 Years</div>
   <div class="gallery-pin" id="galleryPin">
     <div class="gallery-sticky" id="gallerySticky">
       <div class="gallery-track" id="galleryTrack">
@@ -1866,44 +1866,25 @@
 
       <!-- Part C + D: ID card + GIF, cycled by Part E -->
       <div class="school-id-inner" id="schoolIdInner">
-  <div class="school-id-lanyard">
-    <span class="school-id-strap"></span>
-    <span class="school-id-clip"></span>
-  </div>
+        <div class="school-id-card" id="schoolIdCard">
+          <img class="school-id-art" src="assets/mockup.png" alt="">
 
-  <div class="school-id-card" id="schoolIdCard">
-    <div class="school-id-holo"></div>
+          <div class="school-id-photo-wrap">
+            <img id="schoolIdPhoto" src="" alt="">
+          </div>
 
-    <div class="school-id-header">
-      <span class="school-id-header-emblem">✦</span>
-      <span class="school-id-header-text">Student Identity Card</span>
-    </div>
+          <div class="school-id-name" id="schoolIdName"></div>
+          <div class="school-id-funny" id="schoolIdFunny"></div>
 
-    <div class="school-id-punch"></div>
+          <div class="school-id-rows">
+            <div class="school-id-row"><span>Classes</span><span id="schoolIdClass"></span></div>
+            <div class="school-id-row"><span>Years</span><span id="schoolIdYears"></span></div>
+          </div>
 
-    <div class="school-id-photo-wrap">
-      <div class="school-id-photo"><img id="schoolIdPhoto" src="" alt=""></div>
-      <span class="school-id-seal">✓</span>
-    </div>
-
-    <div class="school-id-name" id="schoolIdName"></div>
-    <div class="school-id-funny" id="schoolIdFunny"></div>
-
-    <div class="school-id-divider"></div>
-
-    <div class="school-id-row"><span>Class</span><span id="schoolIdClass"></span></div>
-    <div class="school-id-row"><span>Years</span><span id="schoolIdYears"></span></div>
-
-    <div class="school-gif-slot" id="schoolGifSlot">
-      <img id="schoolGifImg" src="" alt="">
-    </div>
-
-    <div class="school-id-barcode">
-      <span></span><span></span><span></span><span></span><span></span><span></span>
-      <span></span><span></span><span></span><span></span><span></span><span></span>
-    </div>
-  </div>
-</div>
+          <div class="school-gif-slot" id="schoolGifSlot">
+            <img id="schoolGifImg" src="" alt="">
+          </div>
+        </div>
       </div>
 
       <!-- Part F: full-screen video finale -->
@@ -1994,240 +1975,108 @@
     justify-content: center;
   }
 
-  /* ── School ID card: lanyard mockup ── */
-.school-id-inner {
-  flex-direction: column;
-  gap: 0;
-}
+  /* ── School ID card: real lanyard mockup photo (assets/mockup.png)
+       as the background art, with photo/text/gif overlaid on top at
+       fixed percentage positions matched to that artwork. ── */
+  .school-id-inner {
+    flex-direction: column;
+    gap: 0;
+    align-items: center;
+  }
 
-.school-id-lanyard {
-  width: 100px;
-  height: 210px;
-  position: relative;
-  z-index: 0;
-  margin-bottom: -18px;
-}
-.school-id-strap::before,
-.school-id-strap::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  width: 22px;
-  height: 200px;
-  background: linear-gradient(180deg, #4a3423, #1a1010);
-  border-radius: 6px;
-}
+  .school-id-card {
+    position: relative;
+    width: 320px;
+    aspect-ratio: 598 / 934;
+  }
 
-.school-id-strap::before { left: 24px; transform: rotate(-9deg); transform-origin: bottom center; }
-.school-id-strap::after  { right: 24px; transform: rotate(9deg);  transform-origin: bottom center; }
-.school-id-clip {
-  position: absolute;
-  bottom: -4px; left: 50%;
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  border: 7px solid #111;
-  border-bottom-color: transparent;
-  transform: translateX(-50%) rotate(-45deg);
-}
+  .school-id-art {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
-.school-id-card {
-  width: 340px;
-  background: linear-gradient(165deg, #fffaf2 0%, #f4e9d8 100%);
-  border: 1px solid rgba(179,18,46,0.25);
-  border-radius: 20px;
-  padding: 0 26px 30px;
-  box-shadow:
-    0 4px 0 rgba(212,162,76,0.5),
-    0 30px 65px rgba(0,0,0,0.55);
-  position: relative;
-  z-index: 1;
-  color: var(--dark);
-  font-family: 'JetBrains Mono', monospace;
-  text-align: center;
-  overflow: hidden;
-}
+  .school-id-photo-wrap {
+    position: absolute;
+    left: 29.10%;
+    top: 41.97%;
+    width: 27.59%;
+    height: 23.77%;
+    overflow: hidden;
+  }
+  .school-id-photo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
 
-/* holographic corner sheen */
-.school-id-holo {
-  position: absolute;
-  top: -40px; right: -40px;
-  width: 130px; height: 130px;
-  background: conic-gradient(from 200deg,
-    rgba(212,162,76,0.5), rgba(179,18,46,0.35),
-    rgba(212,162,76,0.5), rgba(255,248,240,0.4), rgba(212,162,76,0.5));
-  filter: blur(2px);
-  opacity: 0.55;
-  border-radius: 50%;
-  pointer-events: none;
-}
+  .school-id-name {
+    position: absolute;
+    left: 30.2%;
+    right: 44.08%;
+    top: 68%;
+    text-align: center;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 0.6rem;
+    line-height: 1.3;
+    color: #1d4e89;
+  }
 
-/* crimson header band */
-.school-id-header {
-  margin: 0 -26px 22px;
-  padding: 12px 16px 10px;
-  background: linear-gradient(120deg, var(--crimson), #7a0c1f);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  position: relative;
-}
-.school-id-header::after {
-  content: '';
-  position: absolute;
-  left: 0; right: 0; bottom: -4px;
-  height: 4px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-}
-.school-id-header-emblem { color: var(--gold); font-size: 0.9rem; }
-.school-id-header-text {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.62rem;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: var(--cream);
-}
+  .school-id-funny {
+    position: absolute;
+    left: 30.2%;
+    right: 44.08%;
+    top: 76%;
+    text-align: center;
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-size: 0.66rem;
+    color: var(--crimson);
+  }
 
-.school-id-punch {
-  position: absolute;
-  top: 12px; left: 50%;
-  width: 60px; height: 12px;
-  margin-left: -30px;
-  background: rgba(0,0,0,0.14);
-  border-radius: 8px;
-  z-index: 3;
-}
+  .school-id-rows {
+    position: absolute;
+    left: 30.2%;
+    right: 44.08%;
+    top: 84%;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.5rem;
+  }
+  .school-id-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0;
+  }
+  .school-id-row span:first-child {
+    color: rgba(26,16,16,0.55);
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    font-size: 0.46rem;
+  }
+  .school-id-row span:last-child {
+    color: #1a1010;
+    font-weight: 600;
+  }
 
-.school-id-photo-wrap {
-  position: relative;
-  width: 170px;
-  margin: 0 auto 16px;
-}
-.school-id-photo {
-  width: 170px;
-  height: 200px;
-  border: 3px solid var(--gold);
-  border-radius: 4px;
-  box-shadow: 0 10px 24px rgba(0,0,0,0.25);
-  transform: rotate(-1.5deg);
-  overflow: hidden;
-  background: #efe3cf;
-}
-.school-id-photo img { width: 100%; height: 100%; object-fit: contain; }
-.school-id-seal {
-  position: absolute;
-  bottom: -10px; right: -10px;
-  width: 38px; height: 38px;
-  border-radius: 50%;
-  background: var(--crimson);
-  border: 2px solid var(--gold);
-  color: var(--gold);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1rem;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.35);
-  transform: rotate(8deg);
-}
+  .school-gif-slot {
+    position: absolute;
+    left: 42.31%;
+    top: 94.43%;
+    width: 8.36%;
+    aspect-ratio: 1 / 1;
+    transform: translateX(-50%);
+  }
+  .school-gif-slot img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 
-.school-id-name {
-  font-family: 'Fraunces', Georgia, serif;
-  font-size: 1.2rem;
-  line-height: 1.3;
-  color: var(--crimson);
-  margin-bottom: 8px;
-}
-
-.school-id-funny {
-  font-family: 'Fraunces', Georgia, serif;
-  font-style: italic;
-  font-size: 1rem;
-  color: var(--gold);
-  margin-bottom: 16px;
-}
-
-.school-id-divider {
-  height: 1px;
-  background: repeating-linear-gradient(90deg, rgba(179,18,46,0.35) 0 6px, transparent 6px 12px);
-  margin: 0 4px 16px;
-}
-
-.school-id-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.82rem;
-  padding: 5px 2px;
-}
-.school-id-row span:first-child {
-  color: rgba(26,16,16,0.55);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  font-size: 0.68rem;
-}
-.school-id-row span:last-child { color: var(--dark); font-weight: 600; }
-
-.school-gif-slot {
-  width: 68px;
-  height: 68px;
-  margin: 18px auto 12px;
-}
-.school-gif-slot img { width: 100%; height: 100%; object-fit: contain; }
-
-.school-id-barcode {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 2px;
-  height: 26px;
-  margin-top: 4px;
-  opacity: 0.65;
-}
-.school-id-barcode span { display: block; width: 2px; background: var(--dark); }
-.school-id-barcode span:nth-child(3n)   { height: 100%; }
-.school-id-barcode span:nth-child(3n+1) { height: 60%; }
-.school-id-barcode span:nth-child(3n+2) { height: 80%; }
-
-
-.school-id-name {
-  font-family: 'Fraunces', Georgia, serif;
-  font-size: 1.2rem;
-  line-height: 1.3;
-  color: var(--crimson);
-  margin-bottom: 8px;
-}
-
-.school-id-funny {
-  font-family: 'Fraunces', Georgia, serif;
-  font-style: italic;
-  font-size: 1rem;
-  color: var(--gold);
-  margin-bottom: 16px;
-}
-
-.school-id-divider {
-  height: 1px;
-  background: rgba(179,18,46,0.25);
-  margin: 0 4px 16px;
-}
-
-.school-id-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.82rem;
-  padding: 5px 2px;
-}
-.school-id-row span:first-child { color: rgba(26,16,16,0.55); }
-.school-id-row span:last-child  { color: var(--dark); font-weight: 600; }
-
-.school-gif-slot {
-  width: 68px;
-  height: 68px;
-  margin: 18px auto 0;
-}
-.school-gif-slot img { width: 100%; height: 100%; object-fit: contain; }
-
-@media (max-width: 560px) {
-  .school-id-card { width: 88vw; max-width: 340px; }
-}
-
+  @media (max-width: 560px) {
+    .school-id-card { width: 74vw; max-width: 300px; }
+  }
 
   /* Part F: vertical "shorts style" video finale */
   .school-video-stage {
