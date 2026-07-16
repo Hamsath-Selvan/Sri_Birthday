@@ -1725,6 +1725,52 @@
     }
     .fc-modal-close:hover { border-color: var(--gold); color: var(--gold); }
 
+    .fc-photo-reveal {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fc-photo-reveal.show {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fc-photo-reveal-wrap {
+  position: relative;
+  width: auto;
+  max-width: 90%;
+  max-height: 85vh;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fc-photo-reveal-wrap img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 85vh;
+  object-fit: contain;
+  display: block;
+}
+
+.fc-photo-reveal-caption {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--gold);
+  text-align: center;
+}
+
     @media (max-width: 860px) {
       .fc-envelope { position: relative; margin: 0 auto 40px; top: 0 !important; left: 0 !important; }
     }
@@ -2399,11 +2445,18 @@
   <div class="fc-modal-backdrop" id="fcModalBackdrop"></div>
   <div class="fc-modal-panel">
     <button class="fc-modal-close" id="fcModalClose" aria-label="Close">✕</button>
-    <div class="fc-video-wrap">
+    <div class="fc-video-wrap" id="fcVideoWrap">
       <video id="fcVideo1" src="assets/sudhan-sarooo.mp4" playsinline muted></video>
     </div>
     <button class="mute-toggle-btn fc-mute-btn" id="fcMuteToggle">🔇 tap to unmute</button>
-    
+
+    <div class="fc-photo-reveal" id="fcPhotoReveal">
+      <div class="fc-photo-reveal-wrap">
+        <img src="assets/gift-wish.jpeg" alt="Sudhan Anna">
+      </div>
+      <p class="fc-photo-reveal-caption">Wishes from Sudhan Anna</p>
+    </div>
+
   </div>
 </div>
 
@@ -2552,11 +2605,11 @@
   const backdrop = document.getElementById('fcModalBackdrop');
   const closeBtn = document.getElementById('fcModalClose');
   const v1 = document.getElementById('fcVideo1');
+  const videoWrap = document.getElementById('fcVideoWrap');
   const muteToggle = document.getElementById('fcMuteToggle');
-  const caption = document.getElementById('fcModalCaption');
+  const photoReveal = document.getElementById('fcPhotoReveal');
   if (!envelopes.length || !modal || !v1) return;
   v1.addEventListener('error', () => console.error('LOAD ERROR on', v1.src, v1.error));
-
 
   function syncToggle() {
     muteToggle.textContent = v1.muted ? '🔇 tap to unmute' : '🔊 sound on';
@@ -2564,18 +2617,27 @@
   }
 
   function openModal() {
-  modal.classList.add('open');
-  modal.setAttribute('aria-hidden', 'false');
-  document.body.style.overflow = 'hidden';
-  v1.currentTime = 0;
-  v1.muted = true;
-  v1.loop = false;
-  v1.play().catch(err => console.error('Family video failed:', v1.src, err));
-  syncToggle();
-}
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+
+    // reset to video state each time it's opened
+    photoReveal.classList.remove('show');
+    videoWrap.style.display = '';
+    muteToggle.style.display = '';
+
+    v1.currentTime = 0;
+    v1.muted = true;
+    v1.loop = false;
+    v1.play().catch(err => console.error('Family video failed:', v1.src, err));
+    syncToggle();
+  }
 
   v1.addEventListener('ended', () => {
-    closeModal();
+    // swap video out for the photo + caption instead of closing
+    videoWrap.style.display = 'none';
+    muteToggle.style.display = 'none';
+    photoReveal.classList.add('show');
   });
 
   function closeModal() {
@@ -3222,7 +3284,10 @@ function startSchoolVideo() {
 
   function checkScroll() {
     const rect = target.getBoundingClientRect();
-    if (rect.bottom <= 0) passedStory = true; // fully scrolled past — lock it off for good
+    // Hide as soon as the WhatsApp story view has scrolled into place
+    // (its sticky stage reaches the top of the viewport) — not only
+    // once fully scrolled past it.
+    if (rect.top <= 0) passedStory = true;
     updateFab();
   }
 
@@ -3674,16 +3739,40 @@ tl.eventCallback('onUpdate', () => {
   })();
   </script>
 
-<!-- ── Letter section: ancient scroll unroll ── -->
+<!-- ── Letter section: typewriter reveal ── -->
   <script>
   document.addEventListener('DOMContentLoaded', function() {
+    const el    = document.getElementById('letterTypewriter');
+    const sig   = document.getElementById('letterSig');
     const block = document.getElementById('letterBlock');
-    if (!block) return;
+    if (!el || !block) return;
+
+    const LINES = [
+      "Hi Kalizzz.... Wish you a many more Happy returns of the day. Actually, this is not going to be a formal letter, and you know that very well. It's just a reminder for you from your die-heart fan, forever mentor, your crime partner, your friend, your sister. I am happy about all your progress. I often say that, journey is the real success, and I have learnt that from you, my baby girl, and I am so proud of you",
+      "Here's to every chapter still unwritten, every ridiculous midnight yet to come. Let's keep laughing, learning, and loving through it all. Happy birthday, Kalizzz. May this year be your best one yet!"
+    ];
+
+    const FULL_TEXT = LINES.join('\n\n');
+    let i = 0, typing = false;
+
+    function typeNext() {
+      if (i > FULL_TEXT.length) {
+        el.innerHTML = FULL_TEXT;
+        sig.classList.add('show');
+        return;
+      }
+      el.innerHTML = FULL_TEXT.slice(0, i) + '<span class="typing-cursor"></span>';
+      const ch = FULL_TEXT[i];
+      i++;
+      const delay = (ch === '.' || ch === ',' || ch === '!') ? 90 : 22;
+      setTimeout(typeNext, delay);
+    }
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          block.classList.add('unrolled');
+        if (entry.isIntersecting && !typing) {
+          typing = true;
+          typeNext();
           observer.unobserve(block);
         }
       });
@@ -3691,7 +3780,7 @@ tl.eventCallback('onUpdate', () => {
 
     observer.observe(block);
   });
-  </script>  
+  </script>
 
   <!-- ── Siblings to Friends: pinned columns + flip-card video reveal (GSAP) ── -->
   <script>
