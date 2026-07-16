@@ -3,42 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lakshmi Sri · Seventeen · Archive</title>
+  <title>Lakshmi Sri · Seventeen</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    :root {
-      --crimson:  #d4a714;
-      --gold:     #D4A24C;
-      --cream:    #FFF8F0;
-      --dark:     #1a1010;
-      --muted:    #7a5a5a;
-      --sage:     #4F8F6A;
-    }
-
     body {
-      background: var(--dark);
-      color: var(--cream);
-      font-family: 'JetBrains Mono', monospace;
       min-height: 100vh;
-      overflow-x: hidden;
+      background: #1a1010;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    /* ── Page fade in ── */
-    body {
-      animation: pageIn 0.8s ease both;
+    /* ── Stars ── */
+    .stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
     }
 
-    @keyframes pageIn {
-      from { opacity: 0;  }
-      to   { opacity: 1;  }
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: rgba(212,162,76,0.4);
+      border-radius: 50%;
+      animation: twinkle ease-in-out infinite;
     }
 
-    /* ── Ambient background threads ── */
-    .bg-threads {
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.1; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.4); }
+    }
+
+    /* ── Thread lines ── */
+    .threads {
       position: fixed;
       inset: 0;
       pointer-events: none;
@@ -48,3867 +54,815 @@
     .thread-line {
       position: absolute;
       width: 1px;
-      background: linear-gradient(to bottom, transparent, rgba(179,18,46,0.15) 40%, rgba(179,18,46,0.08) 70%, transparent);
-      animation: threadPulse 4s ease-in-out infinite;
+      background: linear-gradient(to bottom, transparent, rgba(179,18,46,0.3) 30%, rgba(179,18,46,0.15) 70%, transparent);
+      animation: threadPulse 3s ease-in-out infinite;
     }
 
     @keyframes threadPulse {
-      0%, 100% { opacity: 0.2; }
-      50%       { opacity: 0.6; }
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.8; }
     }
 
-    /* ── Header ── */
-    header {
-      position: relative;
-      z-index: 10;
-      text-align: center;
-      padding: 80px 24px 52px;
-      border-bottom: 1px solid rgba(179,18,46,0.2);
-      overflow: hidden;
-    }
-
-    /* Canvas sits behind all header text */
-    #header-canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none; /* so text is still selectable */
-    }
-
-    /* All header text content sits above canvas */
-    .header-inner {
-      position: relative;
-      z-index: 2;
-      will-change: transform;
-    }
-
-    .header-eyebrow {
-      font-size: 0.78rem;
-      letter-spacing: 4.5px;
-      text-transform: uppercase;
-      color: var(--crimson);
-      margin-bottom: 20px;
-    }
-
-    .header-title {
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: clamp(2.8rem, 8vw, 5rem);
-      font-weight: 300;
-      color: var(--cream);
-      line-height: 1.05;
-      margin-bottom: 12px;
-    }
-
-    .header-title em {
-      font-style: italic;
-      color: var(--gold);
-    }
-
-    .header-sub {
-      font-size: 0.8rem;
-      letter-spacing: 3.2px;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-top: 16px;
-    }
-
-    .header-divider {
-      width: 90px;
-      height: 1px;
-      background: linear-gradient(to right, transparent, var(--gold), transparent);
-      margin: 32px auto 0;
-    }
-
-    /* ── Main layout ── */
-    main {
-      position: relative;
-      z-index: 10;
-      max-width: 1140px;
-      margin: 0 auto;
-      padding: 76px 40px 120px;
-    }
-
-    /* ── Section label ── */
-    .section-label {
-      font-size: 0.72rem;
-      letter-spacing: 3.5px;
-      text-transform: uppercase;
-      color: var(--crimson);
-      margin-bottom: 34px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .section-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: rgba(179,18,46,0.2);
-    }
-
-    /* ── Memory cards ── */
-    .memory-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 28px;
-      margin-bottom: 76px;
-    }
-
-    .memory-card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(179,18,46,0.2);
-      border-radius: 12px;
-      padding: 34px 32px;
-      transition: border-color 0.3s, background 0.3s;
-      position: relative;
-      overflow: hidden;
-      will-change: transform;
-    }
-
-    .memory-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 2px;
-      height: 100%;
-      background: linear-gradient(to bottom, var(--crimson), transparent);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-
-    .memory-card:hover {
-      border-color: rgba(212,162,76,0.4);
-      background: rgba(255,255,255,0.05);
-    }
-
-    .memory-card:hover::before { opacity: 1; }
-
-    .card-number {
-      font-size: 0.7rem;
-      color: rgba(212,162,76,0.45);
-      letter-spacing: 2.4px;
-      margin-bottom: 16px;
-    }
-
-    .card-title {
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: 1.5rem;
-      font-weight: 300;
-      color: var(--cream);
-      margin-bottom: 14px;
-      line-height: 1.3;
-    }
-
-    .card-body {
-      font-family: 'Fraunces', Georgia, serif;
-      font-style: italic;
-      font-weight: 300;
-      font-size: 1.05rem;
-      color: rgba(255,248,240,0.6);
-      line-height: 1.75;
-      letter-spacing: 0.2px;
-    }
-
-    /* ── Letter block ── */
-    .letter-block {
-      border: 1px solid rgba(212,162,76,0.2);
-      border-radius: 12px;
-      padding: 56px 52px;
-      background: rgba(212,162,76,0.03);
-      margin-bottom: 76px;
-      position: relative;
-      overflow: hidden;
-      will-change: transform;
-    }
-
-    /* ── Ancient scroll unroll ── */
-/* ── Ancient scroll unroll ── */
-    .letter-scroll-mask {
-      position: relative;
-      z-index: 1;
-      clip-path: inset(0 50% 0 50%);
-      transform: scaleX(0.02);
-      opacity: 0;
-      transform-origin: center;
-      transition: clip-path 1.4s cubic-bezier(0.65,0,0.35,1),
-                  transform 1.4s cubic-bezier(0.65,0,0.35,1),
-                  opacity 0.3s ease;
-    }
-
-    .letter-block.unrolled .letter-scroll-mask {
-      clip-path: inset(0 0% 0 0%);
-      transform: scaleX(1);
-      opacity: 1;
-    }
-
-    .letter-rod {
-      position: absolute;
-      top: 50%;
-      width: 12px;
-      height: 40px;
-      margin-top: -20px;
-      border-radius: 6px;
-      background: linear-gradient(180deg, #f0cf7b, var(--gold) 50%, #a9782c);
-      box-shadow: 0 0 14px rgba(212,162,76,0.55);
-      transform: scaleY(0.05);
-      transform-origin: center;
-      opacity: 0;
-      z-index: 2;
-      transition: transform 1.4s cubic-bezier(0.65,0,0.35,1),
-                  opacity 0.3s ease;
-    }
-    .letter-rod-left  { left: 14px; }
-    .letter-rod-right { right: 14px; }
-
-    .letter-block.unrolled .letter-rod {
-      transform: scaleY(1);
-      opacity: 1;
-    }
-
-    .letter-block::before {
-      content: '"';
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: 7rem;
-      color: rgba(179,18,46,0.08);
-      position: absolute;
-      top: -12px;
-      left: 24px;
-      line-height: 1;
-      pointer-events: none;
-    }
-
-    .letter-text {
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: 1.3rem;
-      font-weight: 300;
-      font-style: italic;
-      color: rgba(255,248,240,0.72);
-      line-height: 2;
-      position: relative;
-      z-index: 1;
-    }
-
-    .letter-sig {
-      margin-top: 28px;
-      font-size: 0.78rem;
-      letter-spacing: 2.2px;
-      color: var(--gold);
-      text-align: right;
-    }
-
-    /* ── Timeline ── */
-    .timeline {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      margin-bottom: 76px;
-    }
-
-    .timeline-item {
-      display: grid;
-      grid-template-columns: 100px 1px 1fr;
-      gap: 0 26px;
-      position: relative;
-    }
-
-    .timeline-item + .timeline-item .timeline-dot-col::before {
-      content: '';
-      display: block;
-      height: 100%;
-      width: 1px;
-      background: rgba(179,18,46,0.2);
-      position: absolute;
-      top: 0; left: 50%;
-    }
-
-    .timeline-year {
-      font-size: 0.78rem;
-      color: var(--muted);
-      letter-spacing: 1.2px;
-      padding: 6px 0;
-      text-align: right;
-    }
-
-    .timeline-dot-col {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-    }
-
-    .timeline-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--crimson);
-      flex-shrink: 0;
-      margin-top: 8px;
-      z-index: 1;
-    }
-
-    .timeline-line {
-      flex: 1;
-      width: 1px;
-      background: rgba(179,18,46,0.2);
-    }
-
-    .timeline-content {
-      padding: 4px 0 40px;
-      will-change: transform;
-    }
-
-    .timeline-title {
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: 1.3rem;
-      font-weight: 300;
-      color: var(--cream);
-      margin-bottom: 8px;
-    }
-
-    .timeline-note {
-      font-size: 0.9rem;
-      color: rgba(255,248,240,0.45);
-      line-height: 1.75;
-    }
-
-    /* ── Footer ── */
-    footer {
-      position: relative;
-      z-index: 10;
-      text-align: center;
-      padding: 32px 24px;
-      border-top: 1px solid rgba(179,18,46,0.15);
-    }
-
-    .footer-text {
-      font-size: 0.62rem;
-      color: rgba(122,90,90,0.4);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    .footer-text span {
-      color: rgba(212,162,76,0.35);
-    }
-
-    /* ── Back link ── */
-    .back-link {
+    /* ── Petals ── */
+    .petals {
       position: fixed;
-      top: 20px;
-      left: 20px;
-      z-index: 20;
-      font-size: 0.65rem;
-      color: rgba(122,90,90,0.5);
-      text-decoration: none;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
-
-    .back-link:hover { color: var(--gold); }
-
-    /* ── Video Section ── */
-    .video-section {
-      position: relative;
-      z-index: 10;
-      width: 100%;
-      height: 100vh;
-      background: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .video-wrapper {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-
-    .video-wrapper iframe {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 100vw;
-      height: 56.25vw;
-      min-height: 100vh;
-      min-width: 177.78vh;
-      transform: translate(-50%, -50%);
-      border: none;
-      overflow: hidden;
-    }
-
-    /* ── Jackalope Narrator Section ── */
-    .narrator-section {
-      position: relative;
-      z-index: 10;
-      max-width: 1140px;
-      margin: 0 auto;
-      padding: 100px 40px 80px;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      gap: 26px;
-      flex-wrap: wrap;
-    }
-
-    .narrator-figure {
-      flex-shrink: 0;
-      width: 170px;
-      height: 206px;
-      position: relative;
-      opacity: 0;
-      transform: translateX(-60px) translateY(30px) rotate(-6deg);
-      transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-                  transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .narrator-section.in-view .narrator-figure {
-      opacity: 1;
-      transform: translateX(0) translateY(0) rotate(0deg);
-    }
-
-    .narrator-figure img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
-      animation: narratorBob 3.4s ease-in-out infinite;
-      animation-play-state: paused;
-    }
-
-    .narrator-section.in-view .narrator-figure img {
-      animation-play-state: running;
-    }
-
-    @keyframes narratorBob {
-      0%, 100% { transform: translateY(0) rotate(-1.5deg); }
-      50%       { transform: translateY(-8px) rotate(1.5deg); }
-    }
-
-    .narrator-bubble {
-      position: relative;
-      max-width: 520px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(212,162,76,0.3);
-      border-radius: 16px;
-      padding: 28px 30px;
-      opacity: 0;
-      transform: translateX(40px) translateY(20px);
-      transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
-                  transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
-    }
-
-    .narrator-section.in-view .narrator-bubble {
-      opacity: 1;
-      transform: translateX(0) translateY(0);
-    }
-
-    .narrator-bubble::before {
-      content: '';
-      position: absolute;
-      left: -9px;
-      bottom: 34px;
-      width: 16px;
-      height: 16px;
-      background: var(--dark);
-      border-left: 1px solid rgba(212,162,76,0.3);
-      border-bottom: 1px solid rgba(212,162,76,0.3);
-      transform: rotate(45deg);
-    }
-
-    .narrator-label {
-      font-size: 0.68rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--crimson);
-      margin-bottom: 12px;
-    }
-
-    .narrator-text {
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: 1.2rem;
-      font-weight: 300;
-      font-style: italic;
-      color: rgba(255,248,240,0.85);
-      line-height: 1.8;
-    }
-
-    @media (max-width: 560px) {
-      .narrator-section {
-        flex-direction: column;
-        align-items: center;
-        padding: 70px 20px 50px;
-      }
-      .narrator-figure {
-        transform: translateY(30px) scale(0.9);
-      }
-      .narrator-section.in-view .narrator-figure {
-        transform: translateY(0) scale(1);
-      }
-      .narrator-bubble {
-        transform: translateY(20px);
-      }
-      .narrator-section.in-view .narrator-bubble {
-        transform: translateY(0);
-      }
-      .narrator-bubble::before {
-        left: 50%;
-        top: -9px;
-        bottom: auto;
-        margin-left: -8px;
-        border-left: 1px solid rgba(212,162,76,0.3);
-        border-bottom: none;
-        border-top: 1px solid rgba(212,162,76,0.3);
-        transform: rotate(45deg);
-      }
-    }
-
-    @media (max-width: 480px) {
-      .letter-block { padding: 28px 20px; }
-      .timeline-item { grid-template-columns: 56px 1px 1fr; }
-    }
-
-    /* ── Photo Gallery Section: pinned, scroll-driven horizontal reel ── */
-    .gallery-section {
-      margin-bottom: 0;
-    }
-
-    .gallery-pin {
-      position: relative;
-      z-index: 5;
-    }
-
-    .gallery-sticky {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      width: 100%;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      opacity: 0;
-      transition: opacity 0.6s ease;
-    }
-
-    .gallery-sticky.awake {
-      opacity: 1;
-    }
-
-    .gallery-track {
-      display: flex;
-      align-items: center;
-      gap: 22px;
-      padding: 0 8vw;
-      will-change: transform;
-    }
-
-    .photo-card {
-      flex: 0 0 auto;
-      width: clamp(150px, 34vw, 220px);
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(179,18,46,0.2);
-      border-radius: 10px;
-      overflow: hidden;
-      transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-                  border-color 0.4s ease,
-                  box-shadow 0.4s ease;
-    }
-
-    .photo-card.active {
-      width: clamp(240px, 58vw, 400px);
-      border-color: rgba(212,162,76,0.55);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-    }
-
-    .photo-frame {
-      position: relative;
-      aspect-ratio: 4/5;
-      overflow: hidden;
-      background: linear-gradient(160deg, rgba(179,18,46,0.25), rgba(26,16,16,0.9));
-    }
-
-    .photo-frame img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      filter: saturate(0.85) contrast(1.05);
-      transition: filter 0.6s ease;
-    }
-
-    .photo-card.active .photo-frame img {
-      filter: saturate(1) contrast(1.1);
-    }
-
-    .photo-idx {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      font-size: 0.6rem;
-      letter-spacing: 2px;
-      color: var(--gold);
-      background: rgba(26,16,16,0.55);
-      padding: 3px 7px;
-      border: 1px solid rgba(212,162,76,0.25);
-    }
-
-    .photo-year {
-      position: absolute;
-      bottom: 12px;
-      right: 12px;
-      font-size: 0.58rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: #c8163a;
-    }
-
-    .photo-caption {
-      padding: 16px 16px 20px;
-    }
-
-    .photo-caption .tag {
-      font-size: 0.58rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-      display: block;
-      margin-bottom: 6px;
-    }
-
-    .photo-caption h3 {
-      font-family: 'Fraunces', Georgia, serif;
-      font-weight: 300;
-      font-size: 1rem;
-      line-height: 1.3;
-      color: var(--cream);
-    }
-
-    .gallery-hint {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 22px;
-      text-align: center;
-      font-size: 0.58rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-      animation: hintPulse 2.4s ease-in-out infinite;
+      inset: 0;
       pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
     }
 
-    @keyframes hintPulse {
-      0%, 100% { opacity: 0.4; }
-      50%      { opacity: 0.9; }
-    }
-
-    /* ── Gift box: last item in the gallery track ── */
-    .gift-card {
-      flex: 0 0 auto;
-      width: clamp(150px, 34vw, 220px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .gift-card.active {
-      width: clamp(240px, 58vw, 400px);
-    }
-
-    .gift-box {
-      position: relative;
-      width: 118px;
-      height: 112px;
-      background: none;
-      border: none;
-      padding: 0;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .gift-card.active .gift-box {
-      transform: scale(1.45);
-    }
-
-    .gift-base {
+    .petal {
       position: absolute;
-      left: 0; right: 0; bottom: 0;
-      height: 72px;
-      background: linear-gradient(160deg, #c8163a, #7a0c1f);
-      border: 1px solid rgba(212,162,76,0.4);
-      border-radius: 6px;
-      box-shadow: 0 10px 24px rgba(179,18,46,0.25);
-      transition: transform 0.3s ease;
-    }
-
-    .gift-lid {
-      position: absolute;
-      left: -6px; right: -6px;
-      top: 26px;
-      height: 22px;
-      background: linear-gradient(160deg, #c8163a, #8a0f26);
-      border: 1px solid rgba(212,162,76,0.5);
-      border-radius: 6px;
-      transform-origin: 50% 100%;
-      transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s ease;
-    }
-
-    .gift-ribbon-v {
-      position: absolute;
-      left: 50%; top: 26px; bottom: 0;
-      width: 10px;
-      margin-left: -5px;
-      background: var(--gold);
-      opacity: 0.9;
-    }
-
-    .gift-ribbon-h {
-      position: absolute;
-      left: 0; right: 0; top: 32px;
-      height: 10px;
-      background: var(--gold);
-      opacity: 0.9;
-    }
-
-    .gift-bow {
-      position: absolute;
-      left: 50%; top: 6px;
-      width: 30px; height: 18px;
-      margin-left: -15px;
-    }
-    .gift-bow::before,
-    .gift-bow::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      width: 15px; height: 15px;
-      background: var(--gold);
+      width: 6px;
+      height: 12px;
+      background: rgba(179, 18, 46, 0.25);
       border-radius: 50% 50% 50% 0;
-    }
-    .gift-bow::before { left: 0; transform: rotate(-45deg); }
-    .gift-bow::after { right: 0; transform: rotate(45deg) scaleX(-1); }
-
-    .gift-box:hover .gift-base,
-    .gift-box:focus-visible .gift-base { transform: translateY(-3px); }
-
-    .gift-box:hover .gift-lid,
-    .gift-box:focus-visible .gift-lid { transform: translateY(-4px) rotate(-6deg); }
-
-    .gift-box.opened .gift-lid {
-      transform: translateY(-50px) rotate(-38deg);
-      opacity: 0;
+      animation: fall linear infinite;
     }
 
-    .gift-box.opened .gift-base {
-      animation: giftPop 0.5s ease;
+    @keyframes fall {
+      0%   { transform: translateY(-20px) rotate(0deg) translateX(0); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.6; }
+      100% { transform: translateY(110vh) rotate(360deg) translateX(var(--drift)); opacity: 0; }
     }
 
-    @keyframes giftPop {
-      0%   { transform: scale(1); }
-      40%  { transform: scale(1.06); }
-      100% { transform: scale(1); }
-    }
-
-    .gift-hint {
-      font-size: 0.6rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-align: center;
-      animation: giftPulse 2.4s ease-in-out infinite;
-    }
-
-    @keyframes giftPulse {
-      0%, 100% { opacity: 0.55; }
-      50%      { opacity: 1; }
-    }
-
-    /* ── Gift video modal ── */
-    .gift-modal {
+    /* ══════════════ INTRO FLASH CARD (faster, with pause) ══════════════ */
+    .intro-overlay {
       position: fixed;
       inset: 0;
       z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.35s ease;
-      overflow-y: auto;
-    }
-
-    .gift-modal.open {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .gift-modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(10,4,4,0.82);
-      backdrop-filter: blur(4px);
-    }
-
-    .gift-modal-panel {
-      position: relative;
-      z-index: 2;
-      width: min(94vw, 900px);
-      max-height: calc(100vh - 48px);
-      overflow: auto;
-      margin: auto;
-      background: var(--dark);
-      border: 1px solid rgba(212,162,76,0.35);
-      border-radius: 12px;
-      padding: 18px;
+      background: #1a1010;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      transform: translateY(24px) scale(0.97);
-      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+      animation: introFade 3.9s ease forwards;
     }
 
-    /* new wrapper for the scrollable inner content */
-    .gift-modal-inner {
-      width: 100%;
-      max-height: calc(100vh - 48px);
-      overflow: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .gift-modal.open .gift-modal-panel {
-      transform: translateY(0) scale(1);
+    .intro-monogram {
+      width: 140px;
+      height: 140px;
+      position: relative;
+      animation: introZoom 1.9s cubic-bezier(0.45, 0, 0.4, 1) forwards;
     }
 
-    .gift-modal-close {
+    .intro-monogram svg {
+      width: 140px;
+      height: 140px;
+      animation: rotateSlow 20s linear infinite;
+    }
+
+    .intro-center {
       position: absolute;
-      top: -14px;
-      right: -14px;
-      width: 32px; height: 32px;
-      border-radius: 50%;
-      background: var(--dark);
-      border: 1px solid rgba(212,162,76,0.4);
-      color: var(--cream);
-      font-size: 0.8rem;
-      cursor: pointer;
+      inset: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: border-color 0.2s ease, color 0.2s ease;
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 46px;
+      font-weight: 300;
+      color: #D4A24C;
+      animation: rotateSlow 20s linear infinite reverse;
     }
 
-    .gift-modal-close:hover {
-      border-color: var(--gold);
-      color: var(--gold);
-    }
-
-    /* ── Gift video player wrapper ──
-         The YouTube IFrame API replaces the inner #giftVideo div with
-         its own <iframe>, and that generated iframe does NOT reliably
-         inherit any class we put on the original div. So instead of
-         styling the div directly, we size a stable wrapper around it
-         and target "any iframe inside it" — this way it doesn't matter
-         what attributes YouTube's own iframe ends up with. */
-    .gift-video-wrap {
-      position: relative;
-      width: min(860px, 100%);
-      height: min(60vh, calc(100vh - 210px));
-      margin: 0 auto;
-      border-radius: 8px;
-      overflow: hidden;
-      background: #000;
-    }
-
-    .gift-video-wrap video,
-    .gift-video-wrap iframe {
-      position: absolute;
-      inset: 0;
-      width: 100% !important;
-      height: 100% !important;
-      border: none;
-      display: block;
-      background: #000;
-    }
-
-    .sib-video-wrap {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: 16px;
-  overflow: hidden;
-  background: #000;
-  box-shadow: 0 30px 70px rgba(0,0,0,0.6);
-}
-.sib-video-wrap iframe {
-  position: absolute;
-  inset: 0;
-  width: 100% !important;
-  height: 100% !important;
-  border: none;
-}
-
-    .gift-video-wrap video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .gift-modal-caption {
-      margin-top: 14px;
+    .intro-line {
+      margin-top: 22px;
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: #FFF8F0;
+      letter-spacing: 0.03em;
       text-align: center;
-      font-size: 0.62rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    /* ── Shared mute-toggle button style (gift box, family envelope, siblings flip) ── */
-    .mute-toggle-btn {
-      margin-top: 10px;
-      background: rgba(212,162,76,0.12);
-      border: 1px solid rgba(212,162,76,0.35);
-      color: var(--gold);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      padding: 8px 16px;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-    }
-    .mute-toggle-btn:hover { background: rgba(212,162,76,0.22); }
-    .mute-toggle-btn.is-unmuted { color: var(--cream); border-color: rgba(255,248,240,0.4); }
-
-    /* ══════════════════════════════════════════════════
-       ── WhatsApp floating action button ──
-       ══════════════════════════════════════════════════ */
-    .wa-fab {
-      position: fixed;
-      right: 22px;
-      bottom: 22px;
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
-      background: #25D366;
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 90;
       opacity: 0;
-      transform: scale(0.4) translateY(20px);
-      pointer-events: none;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.45);
-      transition: opacity 0.5s cubic-bezier(0.16,1,0.3,1),
-                  transform 0.5s cubic-bezier(0.16,1,0.3,1);
+      animation: introLineFade 1.9s ease forwards;
     }
 
-    .wa-fab.show {
-      opacity: 1;
-      transform: scale(1) translateY(0);
-      pointer-events: auto;
-      animation: waFabPulse 2.4s ease-in-out infinite;
+    @keyframes introLineFade {
+      0%   { opacity: 0; transform: translateY(6px); }
+      30%  { opacity: 0; transform: translateY(6px); }
+      45%  { opacity: 1; transform: translateY(0); }
+      78%  { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(0); }
     }
 
-    @keyframes waFabPulse {
-      0%, 100% { box-shadow: 0 6px 20px rgba(0,0,0,0.45), 0 0 0 0 rgba(37,211,102,0.45); }
-      50%      { box-shadow: 0 6px 20px rgba(0,0,0,0.45), 0 0 0 12px rgba(37,211,102,0); }
+    /* zoom in -> brief pause (hold) -> zoom out */
+    @keyframes introZoom {
+      0%   { transform: scale(0.2); opacity: 0; }
+      28%  { transform: scale(1.12); opacity: 1; }
+      45%  { transform: scale(1); opacity: 1; }   /* pause begins */
+      68%  { transform: scale(1); opacity: 1; }   /* pause ends */
+      88%  { transform: scale(2.4); opacity: 0.35; }
+      100% { transform: scale(3.1); opacity: 0; }
     }
 
-    .wa-fab svg { width: 29px; height: 29px; }
-
-    .wa-fab-badge {
-      position: absolute;
-      top: -3px; right: -3px;
-      width: 17px; height: 17px;
-      background: #941d1d;
-      border: 2px solid var(--dark);
-      border-radius: 50%;
-      font-size: 0.5rem;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'JetBrains Mono', monospace;
+    @keyframes introFade {
+      0%   { opacity: 1; }
+      78%  { opacity: 1; }
+      100% { opacity: 0; visibility: hidden; pointer-events: none; }
     }
 
-    /* ══════════════════════════════════════════════════
-       ── Cinematic scroll-driven story section ──
-       ══════════════════════════════════════════════════ */
-    .story-section {
+    .intro-overlay.done {
+      display: none;
+    }
+
+    /* ══════════════ LOCK CARD ══════════════ */
+    .lock-card {
+      width: min(88vw, 460px);
       position: relative;
       z-index: 10;
-    }
-
-    .story-pin {
-      position: relative;
-      height: 860vh;
-    }
-
-    .story-sticky {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      width: 100%;
-      overflow: hidden;
-      background: radial-gradient(ellipse at 50% 30%, #14181d 0%, #0b141a 55%, var(--dark) 100%);
-    }
-
-    .story-layer {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .story-flash-group {
-      display: flex;
-      align-items: center;
-      gap: 22px;
-      opacity: 0;
-      transform: translateY(24px) scale(0.92);
-    }
-
-    .flash-card {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      background: #202c33;
-      border-radius: 16px;
-      padding: 16px 22px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .flash-icon {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      background: #25D366;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .flash-icon svg { width: 24px; height: 24px; fill: #fff; }
-
-    .flash-text .flash-title {
-      color: #fff;
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: 1.02rem;
-      font-weight: 600;
-      margin-bottom: 3px;
-      white-space: nowrap;
-    }
-
-    .flash-text .flash-sub {
-      color: #8696a0;
-      font-size: 0.72rem;
-      letter-spacing: 0.5px;
-    }
-
-    .volleyball-wrap {
-      width: 76px;
-      height: 76px;
-      position: relative;
-    }
-
-    .volleyball-cursor {
-      width: 100%;
-      height: 100%;
-      position: relative;
-    }
-
-    .volleyball {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.5));
-    }
-
-    .volleyball img,
-    .volleyball-img {
-      width: 100%;
-      height: 100%;
-      display: block;
-      object-fit: contain;
-      pointer-events: none;
-      user-select: none;
-      -webkit-user-drag: none;
-      will-change: transform;
-    }
-
-    .wa-chat-screen {
-      position: relative;
-      z-index: 1;
-      width: min(680px, 94vw);
-      max-height: min(88vh, 820px);
-      display: flex;
-      flex-direction: column;
-      border-radius: 16px;
-      overflow: hidden;
-      background: #0b141a;
-      box-shadow: 0 30px 90px rgba(0,0,0,0.6);
-      opacity: 0;
-      transform: translateY(30px) scale(0.96);
-    }
-
-    .wa-chat-header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      background: #202c33;
-      padding: 14px 18px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      flex-shrink: 0;
-    }
-
-    .wa-chat-back {
-      color: #8696a0;
-      font-size: 1.3rem;
-      line-height: 1;
-      flex-shrink: 0;
-    }
-
-    .wa-chat-avatar {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      overflow: hidden;
-      flex-shrink: 0;
-      background: linear-gradient(160deg, var(--crimson), #7a0c1f);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .wa-chat-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      padding: 7px;
-    }
-
-    .wa-chat-titles {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .wa-chat-title {
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: 1.02rem;
-      font-weight: 600;
-      color: #fff;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .wa-chat-sub {
-      font-size: 0.7rem;
-      color: #8696a0;
-      margin-top: 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .wa-chat-icons {
-      display: flex;
-      gap: 18px;
-      flex-shrink: 0;
-    }
-
-    .wa-chat-icons svg { width: 19px; height: 19px; fill: #8696a0; }
-
-    .wa-chat-body {
-      padding: 26px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 22px;
-      background:
-        linear-gradient(rgba(11,20,26,0.95), rgba(11,20,26,0.95)),
-        repeating-linear-gradient(135deg, rgba(255,255,255,0.012) 0 2px, transparent 2px 42px);
-      overflow-y: auto;
-      overflow-x: hidden;
-      overflow-anchor: none;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(212,162,76,0.4) transparent;
-    }
-
-    .wa-chat-body::-webkit-scrollbar { width: 6px; }
-    .wa-chat-body::-webkit-scrollbar-track { background: transparent; }
-    .wa-chat-body::-webkit-scrollbar-thumb {
-      background: rgba(212,162,76,0.35);
-      border-radius: 3px;
-    }
-
-    .story-cards {
-      display: flex;
-      flex-direction: column;
-      gap: 26px;
-    }
-
-    .story-card {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      opacity: 0;
-      transform: translateY(16px);
-    }
-
-    .story-dp {
-      width: 56px; height: 56px;
-      border-radius: 50%;
-      overflow: hidden;
-      flex-shrink: 0;
-      border: 2px solid rgba(212,162,76,0.35);
-      margin-top: 4px;
-    }
-
-    .story-dp img { width: 100%; height: 100%; object-fit: cover; }
-
-    .story-bubble {
-      position: relative;
-      background: #202c33;
-      border-radius: 14px;
-      padding: 14px 18px;
-      width: 74px;
-      max-width: 100%;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-
-    .story-bubble::before {
-      content: '';
-      position: absolute;
-      left: -8px; top: 18px;
-      border-top: 8px solid transparent;
-      border-bottom: 8px solid transparent;
-      border-right: 8px solid #202c33;
-    }
-
-    .story-bubble-name {
-      font-family: 'Fraunces', Georgia, serif;
-      font-weight: 600;
-      color: var(--gold);
-      font-size: 0.95rem;
-      white-space: nowrap;
-    }
-
-    .story-bubble-text {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.82rem;
-      line-height: 1.6;
-      color: #d1d7db;
-      opacity: 0;
-      margin-top: 6px;
-      white-space: normal;
-    }
-
-    .story-videos {
-      position: relative;
-      width: clamp(220px, 34vw, 420px);
-      height: clamp(320px, 58vw, 620px);
-    }
-
-    .story-video {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 16px;
-      box-shadow: 0 30px 70px rgba(0,0,0,0.6);
-      opacity: 0;
-      background: #000;
-      transform: scale(0.35);
-    }
-
-    .wa-bg-figure {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      opacity: 0;
-      overflow: hidden;
-    }
-
-    .wa-bg-figure img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    @media (max-width: 560px) {
-      .wa-chat-screen { width: 96vw; max-height: 82vh; }
-      .story-videos { width: 62vw; height: 44vh; }
-    }
-
-    /* ── Siblings to Friends: pinned vertical scroll section ── */
-    .siblings-section { position: relative; z-index: 10; }
-
-    .siblings-pin { position: relative; height: 480vh; }
-
-    .siblings-sticky {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      width: 100%;
-      overflow: hidden;
-      background: radial-gradient(ellipse at 50% 40%, #201313 0%, var(--dark) 70%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .siblings-title-wrap {
-      position: absolute;
-      top: 28px;
-      left: 0;
-      right: 0;
-      z-index: 3;
       text-align: center;
-      padding: 0 24px;
+      padding: 20px;
+      opacity: 0;
+      transform: scale(0.96);
+      animation: lockReveal 0.8s ease forwards;
+      animation-delay: 1.55s;
     }
 
-    .siblings-title {
+    @keyframes lockReveal {
+      0%   { opacity: 0; transform: scale(0.96); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* ── Monogram ring ── */
+    .monogram-ring {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 24px;
+      position: relative;
+    }
+
+    .monogram-ring svg {
+      width: 90px;
+      height: 90px;
+      animation: rotateSlow 20s linear infinite;
+    }
+
+    @keyframes rotateSlow {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    .monogram-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-family: 'Fraunces', Georgia, serif;
+      font-size: 28px;
       font-weight: 300;
-      font-size: clamp(2.1rem, 6vw, 3.6rem);
-      color: var(--cream);
+      color: #D4A24C;
+      animation: rotateSlow 20s linear infinite reverse;
+    }
+
+    /* ── Typography (enlarged) ── */
+    .lock-title {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 2.6rem;
+      font-weight: 300;
+      color: #FFF8F0;
+      letter-spacing: 0.02em;
+      margin-bottom: 10px;
       line-height: 1.1;
     }
 
-    .siblings-title em { font-style: italic; color: var(--gold); }
-
-    .siblings-subtitle {
-      margin-top: 12px;
-      font-size: 0.72rem;
-      letter-spacing: 3.5px;
+    .lock-subtitle {
+      font-size: 0.95rem;
+      letter-spacing: 2.5px;
       text-transform: uppercase;
-      color: var(--crimson);
-      opacity: 0.85;
-      transition: opacity 0.3s;
-      background: rgba(26,16,16,0.55);
-      display: inline-block;
-      padding: 4px 14px;
-      border-radius: 20px;
+      color: #b29309;
+      margin-bottom: 32px;
     }
 
-    .siblings-columns {
-      position: relative;
-      z-index: 2;
+    .lock-divider {
+      width: 70px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, #D4A24C, transparent);
+      margin: 0 auto 30px;
+    }
+
+    .lock-prompt {
+      font-size: 0.9rem;
+      color: #9a7a7a;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    /* ── Input ── */
+    .lock-input-row {
       display: flex;
-      gap: 20px;
-      width: min(1000px, 92vw);
-      height: 68vh;
-      margin-top: 110px;
-      overflow: hidden;
-      mask-image: linear-gradient(to bottom, transparent, black 8%, black 94%, transparent);
-      -webkit-mask-image: linear-gradient(to bottom, transparent, black 8%, black 94%, transparent);
-    }
-
-    .sib-col { flex: 1; display: flex; flex-direction: column; gap: 20px; will-change: transform; }
-    .sib-col-mid { margin-top: -130px; }
-    .sib-photo {
-      flex-shrink: 0;
-      width: 100%;
-      aspect-ratio: 3/4;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid rgba(179,18,46,0.25);
-      background: linear-gradient(160deg, rgba(179,18,46,0.2), rgba(26,16,16,0.9));
-    }
-
-    .sib-photo img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.85) contrast(1.05); }
-
-    .siblings-video-stage {
-      position: absolute;
-      inset: 0;
-      z-index: 4;
-      display: flex;
-      flex-direction: column;
+      gap: 8px;
       align-items: center;
-      justify-content: center;
-      gap: 22px;
-      opacity: 0;
-      pointer-events: none;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(179,18,46,0.3);
+      border-radius: 8px;
+      padding: 14px 18px;
+      transition: border-color 0.3s;
     }
 
-    .siblings-video-title {
-      font-family: 'Fraunces', Georgia, serif;
-      font-weight: 300;
-      font-size: clamp(1.8rem, 5vw, 3rem);
-      color: var(--cream);
-      text-align: center;
+    .lock-input-row:focus-within {
+      border-color: rgba(212,162,76,0.6);
+      background: rgba(255,255,255,0.06);
     }
 
-    .siblings-video-title em { font-style: italic; color: var(--gold); }
-
-    /* ── Siblings flip-card: video 1 plays, then flips in 3D to video 2 ── */
-    .sib-flip {
-      width: min(820px, 94vw);
-      max-height: 78vh;
-      aspect-ratio: 16/9;
-      perspective: 1600px;
+    .lock-cursor {
+      color: #4F8F6A;
+      font-size: 1.1rem;
     }
 
-    .sib-flip-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-      transition: transform 1s cubic-bezier(0.65,0,0.35,1);
-      border-radius: 16px;
-      box-shadow: 0 30px 70px rgba(0,0,0,0.6);
+    #demo-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #FFF8F0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.3rem;
+      letter-spacing: 3px;
+      outline: none;
+      caret-color: #D4A24C;
     }
 
-    .sib-flip-inner.flipped { transform: rotateY(180deg); }
+    #demo-input::placeholder {
+      color: rgba(255,248,240,0.15);
+      letter-spacing: 6px;
+    }
 
-    .sib-flip-face {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 16px;
-      border: 1px solid rgba(212,162,76,0.3);
-      background: #000;
-      backface-visibility: hidden;
+    #unlock-btn {
+      background: none;
+      border: none;
       cursor: pointer;
-    }
-
-    .sib-flip-back { transform: rotateY(180deg); }
-
-    .siblings-video-hint {
-      font-size: 0.6rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    @media (max-width: 640px) {
-      .siblings-columns { gap: 12px; height: 60vh; width: 94vw; margin-top: 96px; }
-      .sib-col { gap: 12px; }
-      .sib-col-mid { margin-top: -75px; }
-      .siblings-title-wrap { top: 20px; }
-    }
-
-    .final-video-section {
-      position: relative;
-      z-index: 10;
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #000;
-      overflow: hidden;
+      color: rgba(255,248,240,0.25);
+      font-size: 20px;
+      transition: color 0.3s;
       padding: 0;
+      line-height: 1;
+      font-family: 'JetBrains Mono', monospace;
     }
 
-   .final-video-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
+    #unlock-btn:hover { color: #D4A24C; }
+
+    /* ── Error ── */
+    .error-msg {
+      margin-top: 14px;
+      font-size: 0.9rem;
+      color: #e0605a;
+      letter-spacing: 1px;
+      min-height: 1.2em;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .error-msg.show { opacity: 1; }
+
+    /* ── Bottom tag ── */
+    .bottom-tag {
+      position: fixed;
+      bottom: 18px;
+      left: 0; right: 0;
+      text-align: center;
+      font-size: 0.7rem;
+      color: rgba(122,90,90,0.4);
+      letter-spacing: 2px;
+      z-index: 10;
+      opacity: 0;
+      animation: lockReveal 0.8s ease forwards;
+      animation-delay: 1.65s;
+    }
+
+    /* ── Unlocked state ── */
+    .lock-input-row.unlocked {
+      border-color: rgba(79,143,106,0.6);
+    }
+
+    .lock-input-row.unlocked .lock-cursor {
+      color: #4F8F6A;
+    }
+
+    /* ══════════════ DOLL WELCOME OVERLAY ══════════════ */
+    .doll-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 290;
+      background: #1a1010;
+      display: none;
       align-items: center;
       justify-content: center;
-      gap: 20px;
-      opacity: 0;
-      transform: translateY(140px);
-      transition: opacity 1.1s cubic-bezier(0.16,1,0.3,1),
-                  transform 1.1s cubic-bezier(0.16,1,0.3,1);
+      overflow: hidden;
     }
 
-    .final-video-section.in-view .final-video-inner {
-      opacity: 1;
-      transform: translateY(0);
+    .doll-overlay.active {
+      display: flex;
+      animation: doodleBgFade 0.5s ease forwards;
     }
 
-    .final-video-label {
-      position: absolute;
-      top: 5px;
-      left: 0;
-      right: 0;
+    .doll-card {
+      position: relative;
       z-index: 2;
       text-align: center;
-      font-family: 'Fraunces', Georgia, serif;
-      font-style: italic;
-      font-size: clamp(1.1rem, 3vw, 1.8rem);
-      letter-spacing: 3.5px;
-      text-transform: uppercase;
-      color: var(--gold);
+      padding: 20px 32px;
+      max-width: 640px;
+      width: 90%;
+      opacity: 0;
+      animation: doodleTextIn 0.8s ease forwards;
+      animation-delay: 0.25s;
     }
 
-    .final-video-box {
+    .doll-wrap {
       position: relative;
-      width: min(1000px, 95vw);
-      max-height: 78vh;
-      aspect-ratio: 16 / 9;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 30px 80px rgba(0,0,0,0.6);
-      background: #000;
+      width: 200px;
+      height: 242px;
+      margin: 0 auto 22px;
     }
 
-    .final-video-wrap {
+    .doll-glow {
       position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
+      inset: -30px;
+      background: radial-gradient(circle, rgba(212,162,76,0.18) 0%, rgba(179,18,46,0.08) 45%, transparent 70%);
+      border-radius: 50%;
+      filter: blur(6px);
+      animation: glowPulse 3.5s ease-in-out infinite;
     }
 
-    .final-video-wrap video {
-      position: absolute;
-      inset: 0;
+    @keyframes glowPulse {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50%       { opacity: 1;   transform: scale(1.06); }
+    }
+
+    .doll-img {
+      position: relative;
+      z-index: 2;
       width: 100%;
       height: 100%;
       object-fit: contain;
-      display: block;
-      background: #000;
+      animation: dollFloat 3.2s ease-in-out infinite;
+      filter: drop-shadow(0 12px 24px rgba(0,0,0,0.45));
     }
 
-    #finalMuteToggle {
+    .doodle-doll-wrap {
   position: relative;
-  z-index: 2;
+  width: 420px;
+  height: 468px;
+  margin: 0 auto 18px;
+  opacity: 0;
+  animation: doodleTextIn 0.8s ease forwards;
+  animation-delay: 0.15s;
 }
 
-    .final-replay-btn {
-      position: absolute;
-      inset: 0;
+.doodle-doll-glow {
+  position: absolute;
+  inset: -34px;   /* was -24px, scaled up to match */
+  background: radial-gradient(circle, rgba(212,162,76,0.22) 0%, rgba(179,18,46,0.1) 45%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(6px);
+  animation: glowPulse 3.5s ease-in-out infinite;
+}
+
+.doodle-doll-img {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  animation: dollFloat 3.2s ease-in-out infinite;
+  filter: drop-shadow(0 12px 24px rgba(0,0,0,0.45));
+}
+    @keyframes dollFloat {
+      0%, 100% { transform: translateY(0) rotate(-1deg); }
+      50%       { transform: translateY(-10px) rotate(1deg); }
+    }
+
+    .doll-eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: #B3122E;
+      margin-bottom: 16px;
+    }
+
+    .doll-greet {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(1.35rem, 4.6vw, 1.7rem);
+      font-weight: 300;
+      font-style: italic;
+      color: #FFF8F0;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .doll-greet .accent {
+      color: #D4A24C;
+      font-style: italic;
+    }
+
+    .doll-question {
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #9a7a7a;
+      margin: 22px 0 20px;
+    }
+
+    .doll-question::before,
+    .doll-question::after {
+      content: '·';
+      color: #D4A24C;
+      margin: 0 10px;
+    }
+
+    .doll-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .doll-input {
       width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.55);
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-
-    .final-replay-btn.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .final-replay-btn svg {
-      width: 56px;
-      height: 56px;
-      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
-      transition: transform 0.2s ease;
-    }
-
-    .final-replay-btn:hover svg {
-      transform: scale(1.1);
-    }
-
-
-    /* ── Family Constellation: envelope video trigger + modal ── */
-    .fc-envelope {
-      position: absolute;
-      width: 130px; height: 88px;
-      background: none; border: none; padding: 0; cursor: pointer;
-      transform: rotate(var(--r,0deg));
-      z-index: 3;
-      -webkit-tap-highlight-color: transparent;
-      animation: envelopeFloat 3.2s ease-in-out infinite;
-    }
-
-    @keyframes envelopeFloat {
-      0%, 100% { transform: rotate(var(--r,0deg)) translateY(0); }
-      50%      { transform: rotate(var(--r,0deg)) translateY(-10px); }
-    }
-
-    .fc-envelope:hover {
-      animation-play-state: paused;
-      transform: rotate(var(--r,0deg)) translateY(-14px);
-      transition: transform 0.3s ease;
-    }
-
-    .fc-envelope-back {
-      position: absolute; inset: 0;
-      background: linear-gradient(160deg, #f3e2c0, var(--cream));
-      border-radius: 4px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-    }
-    .fc-envelope-flap {
-      position: absolute; top: 0; left: 0; right: 0;
-      height: 60%;
-      background: linear-gradient(160deg, #e6cd9a, #f3e2c0);
-      clip-path: polygon(0 0, 100% 0, 50% 100%);
-      transform-origin: top center;
-      transition: transform 0.7s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    .fc-envelope.opened .fc-envelope-flap {
-      transform: rotateX(180deg);
-    }
-    .fc-envelope-seal {
-      position: absolute; top: 42%; left: 50%;
-      width: 34px; height: 34px;
-      margin: -17px 0 0 -17px;
-      background: var(--crimson);
-      border-radius: 50%;
-      color: #c8163a;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.9rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.35);
-      transition: opacity 0.4s ease, transform 0.4s ease;
-    }
-    .fc-envelope.opened .fc-envelope-seal {
-      opacity: 0; transform: scale(0.4);
-    }
-    .fc-envelope-label {
-      position: absolute; bottom: -30px; left: 0; right: 0;
-      text-align: center;
-      font-family: 'Fraunces', monospace;
-      font-size: 0.6rem; letter-spacing: 1.5px; text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .fc-modal {
-      position: fixed; inset: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: center;
-      padding: 24px; opacity: 0; pointer-events: none;
-      transition: opacity 0.35s ease;
-    }
-    .fc-modal.open { opacity: 1; pointer-events: auto; }
-    .fc-modal-backdrop {
-      position: fixed; inset: 0;
-      background: rgba(10,4,4,0.82); backdrop-filter: blur(4px);
-    }
-    .fc-modal-panel {
-      position: relative; z-index: 2;
-      width: min(94vw, 700px);
-      background: var(--dark);
-      border: 1px solid rgba(212,162,76,0.35);
-      border-radius: 12px; padding: 18px;
-      display: flex; flex-direction: column; align-items: center;
-      transform: translateY(24px) scale(0.97);
-      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
-    }
-    .fc-modal.open .fc-modal-panel { transform: translateY(0) scale(1); }
-    .fc-video-wrap {
-      position: relative;
-      width: auto;
-      max-width: 90%;
-      max-height: 85vh;
+      max-width: 300px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(212,162,76,0.3);
       border-radius: 8px;
-      overflow: hidden;
-      background: #000;
+      padding: 13px 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: #FFF8F0;
+      letter-spacing: 0.5px;
+      text-align: center;
+      transition: border-color 0.3s, background 0.3s;
+    }
+
+    .doll-input::placeholder {
+      color: rgba(255,248,240,0.28);
+    }
+
+    .doll-input:focus {
+      outline: none;
+      border-color: #D4A24C;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .doll-btn {
+      background: transparent;
+      border: 1px solid rgba(179,18,46,0.5);
+      color: #D4A24C;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 11px 28px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s, border-color 0.3s, transform 0.2s;
+    }
+
+    .doll-btn:hover {
+      background: #B3122E;
+      color: #FFF8F0;
+      border-color: #B3122E;
+      transform: translateY(-2px);
+    }
+
+    /* ══════════════ DOODLE CELEBRATION ══════════════ */
+    .doodle-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: #1a1010;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+    .doodle-overlay.active {
       display: flex;
-      align-items: center;
-      justify-content: center;
+      animation: doodleBgFade 0.5s ease forwards;
     }
 
-    .fc-video-wrap video {
-      width: auto;
-      height: auto;
-      max-width: 100%;
-      max-height: 85vh;
-      object-fit: contain;
-      display: block;
+    @keyframes doodleBgFade {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
     }
-    .fc-modal-caption {
-      margin-top: 10px; font-size: 0.62rem; letter-spacing: 2px;
-      text-transform: uppercase; color: var(--muted);
-    }
-    .fc-modal-close {
-      position: absolute; top: -14px; right: -14px;
-      width: 32px; height: 32px; border-radius: 50%;
-      background: var(--dark); border: 1px solid rgba(212,162,76,0.4);
-      color: var(--cream); cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: border-color 0.2s ease, color 0.2s ease;
-    }
-    .fc-modal-close:hover { border-color: var(--gold); color: var(--gold); }
 
-    @media (max-width: 860px) {
-      .fc-envelope { position: relative; margin: 0 auto 40px; top: 0 !important; left: 0 !important; }
+    .doodle-center-text {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 300;
+      color: #FFF8F0;
+      opacity: 0;
+      animation: doodleTextIn 0.8s ease forwards;
+      animation-delay: 0.3s;
     }
+
+    .doodle-center-text .big {
+      font-size: 2.2rem;
+      letter-spacing: 0.02em;
+      margin-bottom: 6px;
+    }
+
+    .doodle-center-text .small {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #D4A24C;
+    }
+
+    @keyframes doodleTextIn {
+      0%   { opacity: 0; transform: scale(0.85); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .doodle-icon {
+      position: absolute;
+      opacity: 0;
+      transform: scale(0.3) rotate(var(--rot, 0deg));
+      animation: doodlePop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+                 doodleFloat 3.5s ease-in-out infinite;
+      animation-delay: var(--delay, 0s), calc(var(--delay, 0s) + 0.6s);
+    }
+
+    @keyframes doodlePop {
+      0%   { opacity: 0; transform: scale(0.3) rotate(var(--rot, 0deg)); }
+      100% { opacity: 1; transform: scale(1) rotate(var(--rot, 0deg)); }
+    }
+
+    @keyframes doodleFloat {
+      0%, 100% { transform: scale(1) rotate(var(--rot, 0deg)) translateY(0); }
+      50%      { transform: scale(1) rotate(var(--rot, 0deg)) translateY(-10px); }
+    }
+
+    .doodle-icon svg { display: block; }
+
+    @media (max-width: 480px) {
+  .doll-card { padding: 16px 20px; }
+  .doll-wrap { width: 160px; height: 194px; }
+  .doodle-doll-wrap { width: 170px; height: 207px; }
+}
   </style>
 </head>
 <body>
 
-  <!-- Ambient background -->
-  <div class="bg-threads" id="bg-threads"></div>
+  <div class="stars" id="stars"></div>
+  <div class="threads" id="threads"></div>
+  <div class="petals" id="petals"></div>
 
-  <a class="back-link" href="lock_screen.html">← lock</a>
-
-  <!-- Header -->
-  <header id="site-header">
-
-    <canvas id="header-canvas"></canvas>
-
-    <div class="header-inner parallax" data-speed="0.06">
-      <div class="header-eyebrow">birthday special · 16 july 2009</div>
-      <h1 class="header-title">Happy <em>Seventeen,</em><br>Lakshmi Sri</h1>
-      <p class="header-sub">.......for kalizz · virat 07 . team captain 2026.......</p>
-      <div class="header-divider"></div>
+  <!-- ══════════════ INTRO FLASH CARD ══════════════ -->
+  <div class="intro-overlay" id="intro-overlay">
+    <div class="intro-monogram">
+      <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="40" cy="40" r="36" fill="none" stroke="#B3122E" stroke-width="0.5" stroke-dasharray="4 6" opacity="0.6"/>
+        <circle cx="40" cy="40" r="30" fill="none" stroke="#D4A24C" stroke-width="0.5" stroke-dasharray="2 8" opacity="0.4"/>
+        <defs>
+          <path id="ringpath-intro" d="M40,4 a36,36 0 1,1 -0.1,0" fill="none"/>
+        </defs>
+        <text font-family="JetBrains Mono" font-size="6" fill="#B3122E" opacity="0.7">
+          <textPath href="#ringpath-intro">✦  FOR  KALIZZ  ✦  16.07.2009  ✦  SEVENTEEN  ✦  VIRAT  ✦</textPath>
+        </text>
+      </svg>
+      <div class="intro-center">LS</div>
     </div>
-  </header>
+    <div class="intro-line">my little girl touches her seventeen</div>
+  </div>
 
-  <!-- ── Jackalope Narrator Section ── -->
-  <section class="narrator-section" id="narrator-section">
-    <div class="narrator-figure">
-      <img src="assets/doll-wave.png" alt="Jackalope waving">
+  <div class="lock-card">
+    <div class="monogram-ring">
+      <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="40" cy="40" r="36" fill="none" stroke="#B3122E" stroke-width="0.5" stroke-dasharray="4 6" opacity="0.6"/>
+        <circle cx="40" cy="40" r="30" fill="none" stroke="#D4A24C" stroke-width="0.5" stroke-dasharray="2 8" opacity="0.4"/>
+        <defs>
+          <path id="ringpath" d="M40,4 a36,36 0 1,1 -0.1,0" fill="none"/>
+        </defs>
+        <text font-family="JetBrains Mono" font-size="6.5" fill="#B3122E" opacity="0.7">
+          <textPath href="#ringpath">✦  FOR  KALIZZ  ✦  16.07.2009  ✦  SEVENTEEN  ✦  VIRAT  ✦</textPath>
+        </text>
+      </svg>
+      <div class="monogram-center">LS</div>
     </div>
-    <div class="narrator-bubble">
-      <div class="narrator-label">your narrator</div>
-      <p class="narrator-text">Hi Kalizzzz... Naa vanthuten. Hamsath inga ipo illala, atha ava enna anupi vecha... unnoda 17 years aah konjo rewind panni pakalamaaaa... unnaku silla surprise irruku ithula... Wait and watch....</p>
+
+    <div class="lock-title">Lakshmi Sri</div>
+    <div class="lock-subtitle">✦ ✦ ✦ a birthday special ✦ ✦ ✦ </div> 
+    <div class="lock-divider"></div>
+
+    <div class="lock-prompt">guess the right password</div>
+
+    <div class="lock-input-row" id="input-row">
+      <span class="lock-cursor" id="cursor">›</span>
+      <input type="password" id="demo-input" placeholder="· · · · · · ·" maxlength="12" autocomplete="off">
+      <button id="unlock-btn" title="unlock">→</button>
     </div>
-  </section>
 
-  <!-- ── Photo Gallery Section (pinned, scroll-driven reel) ── -->
-  <div class="section-label" style="max-width:1140px;margin:0 auto 28px;padding:0 40px;">Scroll through your 17 Years</div>
-  <div class="gallery-pin" id="galleryPin">
-    <div class="gallery-sticky" id="gallerySticky">
-      <div class="gallery-track" id="galleryTrack">
-        <div class="photo-card" data-role="photo">
-          <div class="photo-frame">
-            <img src="assets/0-5.jpeg" alt="Memory one">
-            <span class="photo-idx">01</span>
-            <span class="photo-year">2016</span>
-          </div>
-          <div class="photo-caption">
-            <span class="tag">First chapter</span>
-            <h3>The year everything started</h3>
-          </div>
-        </div>
+    <div class="error-msg" id="err-msg">incorrect — think: it's how you are called.</div>
+  </div>
 
-        <div class="photo-card" data-role="photo">
-          <div class="photo-frame">
-            <img src="assets/6-10.jpeg" alt="Memory two">
-            <span class="photo-idx">02</span>
-            <span class="photo-year">2019</span>
-          </div>
-          <div class="photo-caption">
-            <span class="tag">Friskiness</span>
-            <h3>Loud laughs, longer summers</h3>
-          </div>
-        </div>
+  <div class="bottom-tag">· · · specially made for kalizz · · ·</div>
 
-        <div class="photo-card" data-role="photo">
-          <div class="photo-frame">
-            <img src="assets/11-15.jpeg" alt="Memory three">
-            <span class="photo-idx">03</span>
-            <span class="photo-year">2022</span>
-          </div>
-          <div class="photo-caption">
-            <span class="tag">Becoming</span>
-            <h3>Finding out who she is</h3>
-          </div>
-        </div>
+  <!-- ══════════════ DOLL WELCOME OVERLAY ══════════════ -->
+  <div class="doll-overlay" id="doll-overlay">
+    <div class="doll-card">
+      <div class="doll-eyebrow">someone you know</div>
 
-        <div class="photo-card" data-role="photo">
-          <div class="photo-frame">
-            <img src="assets/16-now.jpeg" alt="Memory four">
-            <span class="photo-idx">04</span>
-            <span class="photo-year">2026</span>
-          </div>
-          <div class="photo-caption">
-            <span class="tag">Right now</span>
-            <h3>Seventeen, and just getting started</h3>
-          </div>
-        </div>
-
-        <!-- ── Gift box: the finale of the reel ── -->
-        <div class="gift-card" id="giftCard" data-role="gift">
-          <button class="gift-box" id="giftBox" aria-label="Open your birthday surprise">
-            <span class="gift-bow"></span>
-            <span class="gift-lid"></span>
-            <span class="gift-base"></span>
-            <span class="gift-ribbon-v"></span>
-            <span class="gift-ribbon-h"></span>
-          </button>
-          <p class="gift-hint">tap for a surprise</p>
-        </div>
+      <div class="doll-wrap">
+        <div class="doll-glow"></div>
+        <img class="doll-img" src="assets/doll-wave.png" alt="Your old doll, waving">
       </div>
 
-      <div class="gallery-hint">keep scrolling ↓</div>
+      <p class="doll-greet">Hi Sri, do you remember me?<br>I am your childhood <span class="accent">fav doll</span>.</p>
+
+      <p class="doll-question">do you know who i am...</p>
+
+      <form class="doll-form" id="doll-form">
+        <input
+          type="text"
+          class="doll-input"
+          id="doll-input"
+          placeholder="type anything to find out..."
+          autocomplete="off"
+        >
+        <button type="submit" class="doll-btn">continue</button>
+      </form>
     </div>
   </div>
 
-  <!-- ── Gift video modal ── -->
-  <div class="gift-modal" id="giftModal" aria-hidden="true">
-    <div class="gift-modal-backdrop" id="giftModalBackdrop"></div>
-    <div class="gift-modal-panel">
-      <button class="gift-modal-close" id="giftModalClose" aria-label="Close">✕</button>
-      <!-- The YouTube player is created here by JS via the IFrame API.
-           #giftVideo is just the mount point YT.Player replaces with its
-           own <iframe> — the surrounding .gift-video-wrap is what we
-           actually size, since the generated iframe won't reliably keep
-           any class we put on the original div. -->
-      <div class="gift-video-wrap">
-        <div id="giftVideo"></div>
-      </div>
-      <p class="gift-modal-caption" id="giftVideoCaption">wish 1 of 2</p>
+  <!-- ══════════════ DOODLE CELEBRATION OVERLAY ══════════════ -->
+  <div class="doodle-overlay" id="doodle-overlay">
+    <div class="doodle-doll-wrap">
+      <div class="doodle-doll-glow"></div>
+      <img class="doodle-doll-img" src="assets/happy.png" alt="Your doll, happy and celebrating">
     </div>
+    <div class="doodle-center-text">
+      <div class="big">Happy Seventeen!</div>
+      <div class="small">welcome, kalizz</div>
+    </div>
+    <!-- icons injected by JS -->
   </div>
-
-  <!-- ── Narrator scroll reveal ── -->
-  <script>
-  (function() {
-    const sections = ['narrator-section']
-      .map(id => document.getElementById(id))
-      .filter(Boolean);
-    if (!sections.length) return;
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.35 });
-
-    sections.forEach(section => observer.observe(section));
-  })();
-  </script>
-
-
-
-<!-- ══════════════════════════════════════════════════
-     ── School Days: narrator → mascot → ID cards → video ──
-     ══════════════════════════════════════════════════ -->
-<section class="school-section" id="schoolSection">
-  <div class="school-pin" id="schoolPin">
-    <div class="school-sticky" id="schoolSticky">
-
-      <!-- Part A: narrator reappears -->
-      <div class="school-narrator" id="schoolNarrator">
-        <div class="narrator-figure school-narrator-figure" id="schoolNarratorFigure">
-          <img src="assets/dolly.png" alt="Jackalope">
-        </div>
-        <div class="narrator-bubble school-narrator-bubble" id="schoolNarratorBubble">
-          <div class="narrator-label">Naa vanthuten </div>
-          <p class="narrator-text">First gift unnaku pudichi irrunthucha, ipo unnoda schoolssss ku polama</p>
-        </div>
-      </div>
-
-
-      <!-- Part C + D: ID card + GIF, cycled by Part E -->
-      <div class="school-id-inner" id="schoolIdInner">
-        <div class="school-id-stage" id="schoolIdStage">
-  <div class="school-id-inner" id="schoolIdInner">
-    <div class="school-id-card" id="schoolIdCard">
-      <img class="school-id-art" src="assets/mockup.png" alt="">
-      <div class="school-id-photo-wrap">
-        <img id="schoolIdPhoto" src="" alt="">
-      </div>
-      <div class="school-id-name" id="schoolIdName"></div>
-      <div class="school-id-funny" id="schoolIdFunny"></div>
-      <div class="school-id-rows">
-        <div class="school-id-row"><span>Classes</span><span id="schoolIdClass"></span></div>
-        <div class="school-id-row"><span>Years</span><span id="schoolIdYears"></span></div>
-      </div>
-      <div class="school-gif-slot" id="schoolGifSlot">
-        <img id="schoolGifImg" src="" alt="">
-      </div>
-    </div>
-  </div>
-</div>
-      </div>
-
-      <!-- Part F: full-screen video finale -->
-     <!-- Part F: vertical "shorts style" video finale -->
- <div class="school-video-stage" id="schoolVideoStage">
-  <div class="school-video-box">
-    <div class="school-video-wrap">
-      <div id="schoolVideo"></div>
-    </div>
-  </div>
-  <button class="mute-toggle-btn" id="schoolMuteToggle" style="position:absolute; bottom:28px; left:50%; transform:translateX(-50%);">🔇 tap to unmute</button>
- </div>
-
-    </div>
-  </div>
-</section>
-
-<style>
-  /* ── School section ── */
-  .school-section { position: relative; z-index: 10; }
-  .school-pin { position: relative; height: 600vh; }
-  .school-sticky {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    width: 100%;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: radial-gradient(ellipse at 50% 30%, #1c1212 0%, var(--dark) 65%);
-  }
-
-  /* Part A: narrator (positioned absolute so it can share the sticky stage) */
-  .school-narrator {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 4px;
-  padding: 0 1.5vw 0 40px;
-  pointer-events: none;
-}
-  
-  
-  .school-narrator-bubble {
-    opacity: 0; /* driven by GSAP, not the .in-view class */
-    transform: none;
-    transition: none;
-  }
-
- .school-narrator-figure {
-  width: min(580px, 42vw);   /* was min(500px, 38vw) — slightly bigger */
-  height: min(460px, 40vh);  /* was min(400px, 36vh) */
-  flex-shrink: 0;
-  order: 2;
-}
-
-  @media (max-width: 700px) {
-    .school-narrator {
-      flex-direction: column-reverse;
-      justify-content: center;
-      padding: 0 20px;
-      gap: 12px;
-    }
-    .school-narrator-figure {
-  width: min(680px, 48vw);   /* bumped up further */
-  height: min(540px, 46vh);
-  flex-shrink: 0;
-  order: 2;
-}
-
-.school-narrator-figure img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
-  animation: narratorBob 3.4s ease-in-out infinite;
-}
-
-    .school-narrator-bubble {
-      max-width: 90vw;
-    }
-    .school-narrator-bubble::before {
-      display: none; /* the side-pointer arrow doesn't make sense once stacked */
-    }
-  }
-.school-narrator-bubble {
-  max-width: 380px;
-  order: 1;
-}
-
-.school-narrator-bubble::before {
-  left: auto;
-  right: -9px;
-  border-left: none;
-  border-bottom: none;
-  border-right: 1px solid rgba(212,162,76,0.3);
-  border-top: 1px solid rgba(212,162,76,0.3);
-}
-
-  
-
- /* Part C + D: ID card + GIF */
-  .school-id-stage {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-  }
-  .school-id-inner {
-    display: flex;
-    align-items: center;
-    gap: 34px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .school-id-inner {
-    flex-direction: column;
-    gap: 0;
-    align-items: center;
-  }
-
-  .school-id-card {
-    position: relative;
-    width: 320px;
-    aspect-ratio: 328 / 702;
-  }
-
-  .school-id-art {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .school-id-photo-wrap {
-    position: absolute;   /* ← this was missing — without it, left/top/margin do nothing */
-    left: 50%;
-    top: 40.46%;
-    width: 33.23%;
-    height: 20.80%;
-    margin-left: -16.615%;
-    overflow: hidden;
-  }
-  .school-id-photo-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .school-id-name {
-    position: absolute;
-    left: 10%;
-    right: 10%;
-    top: 62%;
-    text-align: center;
-    font-family: 'Fraunces', Georgia, serif;
-    font-size: 1rem;
-    line-height: 1.3;
-    color: #1d4e89;
-  }
-
-  .school-id-funny {
-    position: absolute;
-    left: 22.87%;
-    right: 24.1%;
-    top: 70%;
-    text-align: center;
-    font-family: 'Fraunces', Georgia, serif;
-    font-style: italic;
-    font-size: 1.05rem;
-    color: var(--crimson);
-    padding-bottom: 6px;
-    border-bottom: 1px solid rgba(26,16,16,0.25);
-  }
-
-  .school-id-rows {
-    position: absolute;
-    left: 15%;
-    right: 15%;
-    top: 76%;   /* nudged down slightly to clear the new divider line above */
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.82rem;
-  }
-  .school-id-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  padding: 3px 0;
-  gap: 8px;
-}
-  .school-id-row span:first-child {
-    color: rgba(26,16,16,0.55);
-    letter-spacing: 0.4px;
-    text-transform: uppercase;
-    font-size: 0.74rem;
-  }
-  .school-id-row span:last-child {
-    color: #1a1010;
-    font-weight: 600;
-    font-size: 0.82rem;
-  }
-
-  .school-gif-slot {
-    position: absolute;
-    left: 50%;
-    top: 84%;
-    width: 20%;
-    aspect-ratio: 1 / 1;
-    transform: translateX(-50%);
-  }
-  .school-gif-slot img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-
-  @media (max-width: 560px) {
-    .school-id-card { width: 74vw; max-width: 300px; }
-  }
-
-  /* Part F: vertical "shorts style" video finale */
-  .school-video-stage {
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.9);
-    opacity: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-  }
-
-  .school-video-box {
-    position: relative;
-    width: min(400px, 82vw);
-    height: min(86vh, 712px);
-    aspect-ratio: 9 / 16;
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
-    background: #000;
-    transform: scale(0.85);
-    transition: transform 0.3s ease;
-  }
-
-  .school-video-wrap {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-  }
-  .school-video-wrap iframe {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100% !important;
-    height: 100% !important;
-    min-width: 100%;
-    min-height: 100%;
-    /* Slight overscale + center-crop, since the source video's real
-       aspect ratio may not exactly match this 9:16 box */
-    transform: translate(-50%, -50%) scale(1.02);
-    border: none;
-    display: block;
-  }
-
-  @media (max-width: 560px) {
-    .school-video-box { width: 88vw; height: min(80vh, 640px); }
-  }
-
-</style>
-
-
-  <!-- ── Cinematic scroll-driven story section ── -->
-  <section class="story-section" id="storySection">
-    <div class="story-pin" id="storyPin">
-      <div class="story-sticky" id="storySticky">
-
-        <!-- Stage 1: WhatsApp flash card + volleyball -->
-        <div class="story-layer">
-          <div class="story-flash-group" id="storyFlashGroup">
-            <div class="flash-card" id="flashCard">
-              <div class="flash-icon">
-                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.5c0 2.42.687 4.68 1.878 6.6L3 29l7.086-2.318a12.42 12.42 0 0 0 5.915 1.507h.005c6.893 0 12.499-5.607 12.499-12.5C28.505 8.607 22.898 3 16.001 3zm0 22.79h-.004a10.31 10.31 0 0 1-5.253-1.438l-.377-.224-3.902 1.276 1.293-3.804-.246-.39a10.28 10.28 0 0 1-1.583-5.51c0-5.696 4.637-10.333 10.336-10.333 2.76 0 5.353 1.077 7.305 3.031a10.26 10.26 0 0 1 3.026 7.306c0 5.697-4.637 10.334-10.335 10.334z"/>
-                </svg>
-              </div>
-
-              <div class="flash-text">
-                <div class="flash-title">Wishes From Your Team</div>
-                <div class="flash-sub">3 New messages</div>
-              </div>
-            </div>
-
-            <div class="volleyball-wrap" id="volleyballWrap">
-              <div class="volleyball-cursor" id="volleyballCursor">
-                <div class="volleyball" id="volleyball">
-                  <img
-                    src="assets/beach-ball.png"
-                    alt="Volleyball"
-                    class="volleyball-img"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
- 
-
-        <!-- Stage 2 + 3: WhatsApp-style chat screen — a group chat -->
-        <div class="story-layer">
-          <div class="wa-bg-figure" id="waBgFigure" aria-hidden="true">
-            <img src="assets/bg-dark.png" alt="">
-          </div>
-
-          <div class="wa-chat-screen" id="waChatScreen">
-            <div class="wa-chat-header">
-              <div class="wa-chat-back">&#8592;</div>
-              <div class="wa-chat-avatar">
-                <img src="assets/block.png" alt="Volleyball Team">
-              </div>
-              <div class="wa-chat-titles">
-                <div class="wa-chat-title">Wishes From Volleyball Team</div>
-                <div class="wa-chat-sub">Dhivya Ma'am, Maha Akka, Kevin Sir</div>
-              </div>
-              <div class="wa-chat-icons">
-                <svg viewBox="0 0 24 24"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.3 2.2z"/></svg>
-              </div>
-            </div>
-            <div class="wa-chat-body" id="waChatBody">
-              <div class="story-cards" id="storyCards">
-                <div class="story-card" id="storyCard1">
-                  <div class="story-dp"><img src="assets/dhivya-ma'am-dp.png" alt="Dhivya Ma'am"></div>
-                  <div class="story-bubble" id="storyBubble1">
-                    <div class="story-bubble-name">Dhivya Ma'am</div>
-                    <div class="story-bubble-text" id="storyText1">Happy Birthday Lakshmi ♥️ Your dedication, curiosity, and hard work never go unnoticed. I have no doubt you have a brilliant future ahead of you." One of my best student♥️♥️♥️♥️</div>
-                  </div>
-                </div>
-                <div class="story-card" id="storyCard2">
-                  <div class="story-dp"><img src="assets/maha-dp-1.png" alt="Maha Akka"></div>
-                  <div class="story-bubble" id="storyBubble2">
-                    <div class="story-bubble-name">Maha Akka</div>
-                    <div class="story-bubble-text" id="storyText2">Happiee birthday Lakshmiiii✨ 
-                      Stay blessed and be happy always 💫 May all your wishes and dreams comes true ❣️</div>
-                  </div>
-                </div>
-                <div class="story-card" id="storyCard3">
-                  <div class="story-dp"><img src="assets/kevin-sir-dp.png" alt="Kevin Sir"></div>
-                  <div class="story-bubble" id="storyBubble3">
-                    <div class="story-bubble-name">Kevin Sir</div>
-                    <div class="story-bubble-text" id="storyText3">Many more happy returns of the born day Lakshmi <br>
-                      <br>Your efforts will achieve your goal. Keep on aiming high. 
-                      My heartfelt wishes for your upcoming success in your life.<br> 
-                      <br>Take care
-                      God will bless you for your efforts.</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Stage 4: video reveal — four videos, one after another. -->
-        <div class="story-layer">
-          <div class="story-videos" id="storyVideos">
-            <video class="story-video" id="storyVideo1" src="assets/sandy-sir.mp4" muted playsinline></video>
-            <video class="story-video" id="storyVideo2" src="assets/grana.mp4" muted playsinline></video>
-            <video class="story-video" id="storyVideo3" src="assets/sherine.mp4" muted playsinline></video>
-          </div>
-           <button class="mute-toggle-btn" id="storyMuteToggle" style="position:absolute; bottom:24px; left:50%; transform:translateX(-50%); 
-           opacity:0; pointer-events:none; transition:opacity 0.4s ease;">🔇 tap to unmute</button>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-
-
-  <!-- ── Main content -->
-  <main>
-
-<!-- ============================================================
-     FAMILY CONSTELLATION SECTION
- -->
-
-<section class="fc-section" id="family" aria-label="Family photo constellation">
-  <header class="fc-header">
     
-    <h2 class="fc-title">A little <em>Constellation</em> of us.</h2>
-    <p class="fc-sub">
-      Scroll slowly. Every photo drifts at its own paces.
-    </p>
-  </header>
-
-  <!-- Desktop scattered stage -->
-  <div class="fc-stage">
-   
-
-    <figure class="fc-card fc-portrait"  data-speed="1.2" style="top:4%;  left:6%;  --r:-6deg;">
-      <span class="fc-tape"></span>
-      <div class="fc-photo"><img src="assets/fam4.jpeg" alt="Selvan Sujathan" loading="lazy"></div>
-      <figcaption class="fc-cap"><span class="fc-label">Selvan Sujatha</span><span class="fc-caption">her light</span></figcaption>
-    </figure>
-
-    <figure class="fc-card fc-landscape" data-speed="0.6" style="top:2%;  left:36%; --r:3deg;">
-      <span class="fc-tape"></span>
-      <div class="fc-photo"><img src="assets/fam1.jpeg" alt="Dad and us" loading="lazy"></div>
-      <figcaption class="fc-cap"><span class="fc-label">Dad &amp; us</span><span class="fc-caption">sunday, funday</span></figcaption>
-    </figure>
-
-    <figure class="fc-card fc-portrait"  data-speed="1.6" style="top:10%; left:74%; --r:5deg;">
-      <span class="fc-tape"></span>
-      <div class="fc-photo"><img src="assets/fam5.jpeg" alt="The birthday girl" loading="lazy"></div>
-      <figcaption class="fc-cap"><span class="fc-label"> Trio</span><span class="fc-caption">Mom & Daughters</span></figcaption>
-    </figure>
-
-    <figure class="fc-card fc-landscape" data-speed="0.9" style="top:36%; left:2%;  --r:-4deg;">
-      <span class="fc-tape"></span>
-      <div class="fc-photo"><img src="assets/fam11.jpeg" alt="Diwali 2019" loading="lazy"></div>
-      <figcaption class="fc-cap"><span class="fc-label">Evergreen Couples</span>
-        </figcaption>
-    </figure>
-
-    <figure class="fc-card fc-landscape" data-speed="1.3" style="top:44%; left:34%; --r:2deg;">
-      <span class="fc-tape"></span>
-      <div class="fc-photo"><img src="assets/fam8.jpeg" alt="All of us" loading="lazy"></div>
-      <figcaption class="fc-cap"><span class="fc-label">All of us</span><span class="fc-caption">the whole crew</span></figcaption>
-    </figure>
-
-    <figure class="fc-card fc-portrait" data-speed="1.4" style="top:38%; left:74%; --r:-5deg;">
-      <span class="fc-tape"></span>
-      <div class="fc-photo"><img src="assets/fam7.jpeg" alt="New memory" loading="lazy"></div>
-      <figcaption class="fc-cap"><span class="fc-label">Our Boss</span><span class="fc-caption">Master the Blaster </span></figcaption>
-    </figure>
-
-    
-    <figure class="fc-card fc-landscape" data-speed="1.1" style="top:72%; left:calc(50% - 380px); width:760px; --r:-3deg;">
-  <span class="fc-tape"></span>
-  <div class="fc-photo" style="aspect-ratio:1600/732;"><img src="assets/fam9.jpeg" alt="Today" loading="lazy"></div>
-  <figcaption class="fc-cap"><span class="fc-label">All of us</span><span class="fc-caption">still the same, only louder</span></figcaption>
-</figure>
-
-    <!-- ── Envelope: tap to reveal two videos from home, in sequence ── -->
-   <button class="fc-envelope" id="fcEnvelope" style="top:auto; bottom:4%; left:auto; right:4%;" aria-label="Open a video from home">
-      <span class="fc-envelope-back"></span>
-      <span class="fc-envelope-flap"></span>
-      <span class="fc-envelope-seal">❤</span>
-      <span class="fc-envelope-label">a little gift<br>for you is awaiting here</span>
-    </button>
-
+    <!-- icons injected by JS -->
   </div>
-
-  <!-- Mobile stacked fallback (auto-shown under 860px) -->
-  <div class="fc-stack" aria-hidden="true">
-    <figure class="fc-card fc-portrait  fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">Mom</span><span class="fc-caption">her light</span></figcaption></figure>
-    <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?w=900&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">Dad &amp; us</span><span class="fc-caption">sunday, everywhere</span></figcaption></figure>
-    <figure class="fc-card fc-portrait  fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">The birthday girl</span><span class="fc-caption">always been the sun</span></figcaption></figure>
-    <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1604423043492-41303370a171?w=900&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">Diwali '19</span><span class="fc-caption">diyas &amp; mischief</span></figcaption></figure>
-    <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1000&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">All of us</span><span class="fc-caption">the whole crew</span></figcaption></figure>
-    <figure class="fc-card fc-portrait  fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?w=600&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">Little you</span><span class="fc-caption">same smile, smaller</span></figcaption></figure>
-    <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=1000&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">Today</span><span class="fc-caption">still the same, only louder</span></figcaption></figure>
-
-    <!-- Mobile: same envelope trigger, laid out inline via the media query above -->
-    <button class="fc-envelope" id="fcEnvelopeMobile" aria-label="Open a video from home">
-      <span class="fc-envelope-back"></span>
-      <span class="fc-envelope-flap"></span>
-      <span class="fc-envelope-seal">❤</span>
-      <span class="fc-envelope-label">a little something<br>from home</span>
-    </button>
-  </div>
-</section>
-
-
-<!-- ── Family video modal (the envelope opens this) ── -->
-<div class="fc-modal" id="fcModal" aria-hidden="true">
-  <div class="fc-modal-backdrop" id="fcModalBackdrop"></div>
-  <div class="fc-modal-panel">
-    <button class="fc-modal-close" id="fcModalClose" aria-label="Close">✕</button>
-    <div class="fc-video-wrap">
-      <video id="fcVideo1" src="assets/sudhan-sarooo.mp4" playsinline muted></video>
-    </div>
-    <button class="mute-toggle-btn fc-mute-btn" id="fcMuteToggle">🔇 tap to unmute</button>
-    
-  </div>
-</div>
-
-<style>
-  /* ── Family Constellation ── */
-  .fc-section {
-    position: relative;
-    background:
-      radial-gradient(1200px 600px at 80% -10%, rgba(212,162,76,0.18) 0%, transparent 60%),
-      radial-gradient(900px 500px at 0% 100%, rgba(179,18,46,0.18) 0%, transparent 55%),
-      var(--dark);
-    color: var(--cream);
-    padding: 120px 32px 160px;
-    overflow: hidden;
-    font-family: 'Fraunces', Georgia, serif;
-  }
-  .fc-header { max-width: 720px; margin: 0 auto 64px; text-align: center; position: relative; z-index: 2; }
-  .fc-eyebrow {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.78rem;
-    letter-spacing: 4px;
-    color: var(--crimson);
-    text-transform: uppercase;
-    margin: 0 0 20px;
-  }
-  .fc-title {
-    font-family: 'Fraunces', serif;
-    font-weight: 300;
-    font-size: clamp(36px, 5vw, 68px);
-    line-height: 1.05;
-    letter-spacing: -0.01em;
-    margin: 0 0 16px;
-    color: var(--cream);
-  }
-  .fc-title em { font-style: italic; color: var(--gold); font-weight: 300; }
-  .fc-sub { font-family: 'Fraunces', serif; font-size: 1rem; color: var(--muted, #a88); margin: 0; }
-
-  .fc-stage { position: relative; max-width: 1200px; margin: 0 auto; height: 1150px; }
-
-  .fc-card {
-    position: absolute;
-    background: var(--cream);
-    padding: 14px 14px 44px;
-    box-shadow:
-      0 2px 4px rgba(0,0,0,0.3),
-      0 24px 48px -20px rgba(0,0,0,0.55);
-    opacity: 0;
-    transform: rotate(var(--r, 0deg));
-    transition: box-shadow .4s ease, filter .4s ease;
-    will-change: transform;
-  }
-  .fc-card.is-in { animation: fcDrop .9s cubic-bezier(.2,.9,.2,1) forwards; }
-  @keyframes fcDrop {
-    0%   { opacity: 0; transform: translate3d(0, 30px, 0) rotate(var(--r,0deg)) scale(.96); }
-    100% { opacity: 1; }
-  }
-  .fc-card:hover {
-    box-shadow:
-      0 4px 6px rgba(0,0,0,0.4),
-      0 30px 60px -20px rgba(0,0,0,0.7),
-      0 0 0 1px rgba(212,162,76,0.5);
-    z-index: 5;
-  }
-
-  /* Two shapes */
-  .fc-portrait  { width: 220px; }
-  .fc-portrait  .fc-photo { aspect-ratio: 3 / 4; }
-  .fc-landscape { width: 340px; }
-  .fc-landscape .fc-photo { aspect-ratio: 4 / 3; }
-
-  .fc-photo { width: 100%; overflow: hidden; background: #2a1a1a; }
-  .fc-photo img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-    filter: sepia(0.15) saturate(1.05) contrast(0.98);
-  }
-
-  .fc-tape {
-    position: absolute; top: -10px; left: 50%;
-    transform: translateX(-50%) rotate(-3deg);
-    width: 78px; height: 20px;
-    background: linear-gradient(180deg, #f0cf7b 0%, var(--gold) 100%);
-    opacity: 0.85;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
-  }
-
-  .fc-cap {
-    display: flex; justify-content: space-between; align-items: baseline;
-    gap: 8px; margin-top: 10px; padding: 0 2px;
-  }
-  .fc-label   { font-family: 'Fraunces', serif; font-style: italic; font-size: 15px; color: var(--dark); }
-  .fc-caption { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--crimson); letter-spacing: 0.04em; }
-
-  .fc-stack { display: none; }
-
-  @media (max-width: 860px) {
-    .fc-section { padding: 80px 20px 100px; }
-    .fc-stage { display: none; }
-    .fc-stack {
-      display: flex; flex-direction: column; align-items: center;
-      gap: 40px; max-width: 420px; margin: 0 auto;
-    }
-    .fc-stack-card { position: relative; opacity: 1; animation: none; transform: rotate(var(--r,0deg)); }
-    .fc-stack-card.fc-portrait  { width: 240px; }
-    .fc-stack-card.fc-landscape { width: 320px; }
-  }
-</style>
-
-<script>
-  /* Family Constellation — parallax + entrance */
-  (function () {
-    const section = document.querySelector('.fc-section');
-    if (!section) return;
-    const cards = section.querySelectorAll('.fc-stage .fc-card');
-    let raf = 0;
-
-    function update() {
-      raf = 0;
-      const rect = section.getBoundingClientRect();
-      const vh = window.innerHeight || 1;
-      const progress = 1 - (rect.top + rect.height / 2) / vh;
-      cards.forEach((el) => {
-        const speed = Number(el.dataset.speed || 1);
-        const r = getComputedStyle(el).getPropertyValue('--r') || '0deg';
-        const y = progress * speed * -60;
-        el.style.transform = `translate3d(0, ${y}px, 0) rotate(${r.trim()})`;
-      });
-    }
-    function onScroll() { if (!raf) raf = requestAnimationFrame(update); }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    update();
-
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('is-in'); });
-    }, { threshold: 0.15 });
-    cards.forEach((el) => io.observe(el));
-  })();
-</script>
-
-<!-- ── Family video envelope: open → play two videos in sequence ── -->
-<script>
-(function() {
-  const envelopes = [document.getElementById('fcEnvelope'), document.getElementById('fcEnvelopeMobile')].filter(Boolean);
-  const modal = document.getElementById('fcModal');
-  const backdrop = document.getElementById('fcModalBackdrop');
-  const closeBtn = document.getElementById('fcModalClose');
-  const v1 = document.getElementById('fcVideo1');
-  const muteToggle = document.getElementById('fcMuteToggle');
-  const caption = document.getElementById('fcModalCaption');
-  if (!envelopes.length || !modal || !v1) return;
-  v1.addEventListener('error', () => console.error('LOAD ERROR on', v1.src, v1.error));
-
-
-  function syncToggle() {
-    muteToggle.textContent = v1.muted ? '🔇 tap to unmute' : '🔊 sound on';
-    muteToggle.classList.toggle('is-unmuted', !v1.muted);
-  }
-
-  function openModal() {
-  modal.classList.add('open');
-  modal.setAttribute('aria-hidden', 'false');
-  document.body.style.overflow = 'hidden';
-  v1.currentTime = 0;
-  v1.muted = true;
-  v1.loop = false;
-  v1.play().catch(err => console.error('Family video failed:', v1.src, err));
-  syncToggle();
-}
-
-  v1.addEventListener('ended', () => {
-    closeModal();
-  });
-
-  function closeModal() {
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-    v1.pause();
-    envelopes.forEach(e => e.classList.remove('opened'));
-  }
-
-  muteToggle.addEventListener('click', () => {
-    v1.muted = !v1.muted;
-    syncToggle();
-  });
-
-  envelopes.forEach(env => {
-    env.addEventListener('click', () => {
-      env.classList.add('opened');
-      setTimeout(openModal, 450);
-    });
-  });
-
-  closeBtn.addEventListener('click', closeModal);
-  backdrop.addEventListener('click', closeModal);
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
-  });
-})();
-</script>
-
-
-   <!-- Letter section -->
-    <div class="section-label" style="margin-top:48px;">a letter · for you</div>
-    <div class="letter-block parallax" data-speed="0.04" id="letterBlock">
-      <span class="letter-rod letter-rod-left" id="letterRodLeft"></span>
-      <div class="letter-scroll-mask" id="letterScrollMask">
-        <p class="letter-text">
-          Hi Kalizzz.... Wish you a many more Happy returns of the day.Actually, this is not going to be a formal letter, and you know that very well.
-          It's just a reminder for you from your die-heart fan, forever mentor, your crime partner, your friend, your sister.
-           I am happy about all your progress. I often say that, journey is the real success, and I have learnt that from you, my baby girland I am so proud of you
-          <br><br>
-          Here's to every chapter still unwritten,
-          every ridiculous midnight yet to come. Let's keep laughing, learning, and loving through it all. 
-          Happy birthday, Kalizzz. May this year be your best one yet!
-        </p>
-        <div class="letter-sig"> — with love · Hamsath</div>
-      </div>
-      <span class="letter-rod letter-rod-right" id="letterRodRight"></span>
-    </div>
-
-
-  </main>
-
-  <!-- ── Siblings to Friends: pinned scroll-driven photo columns + video ── -->
-  <section class="siblings-section" id="siblingsSection">
-    <div class="siblings-pin" id="siblingsPin">
-      <div class="siblings-sticky" id="siblingsSticky">
-
-        <div class="siblings-title-wrap" id="siblingsTitleWrap">
-          <h2 class="siblings-title">Siblings <em>to Friends</em></h2>
-          <p class="siblings-subtitle" id="siblingsLabel">every fight, every fix, every after</p>
-        </div>
-
-        <div class="siblings-columns" id="siblingsColumns">
-          <div class="sib-col" id="sibCol1">
-            <div class="sib-photo"><img src="assets/5.jpeg" alt=""></div>
-            <div class="sib-photo"><img src="assets/12.jpeg" alt=""></div>
-            <div class="sib-photo"><img src="assets/3.jpeg" alt=""></div>
-          </div>
-          <div class="sib-col sib-col-mid" id="sibCol2">
-            <div class="sib-photo"><img src="assets/8.jpeg" alt=""></div>
-            <div class="sib-photo"><img src="assets/16.jpeg" alt=""></div>
-            <div class="sib-photo"><img src="assets/4.jpeg" alt=""></div>
-            <div class="sib-photo"><img src="assets/8.jpeg" alt=""></div>
-          </div>
-          <div class="sib-col" id="sibCol3">
-  <div class="sib-photo"><img src="assets/9.jpeg" alt=""></div>
-  <div class="sib-photo"><img src="assets/10.jpeg" alt=""></div>
-  <div class="sib-photo"><img src="assets/15.jpeg" alt=""></div>
-</div>
-        </div>
-
-        <div class="siblings-video-stage" id="siblingsVideoStage">
-          <p class="siblings-video-title">Happy Birthday <em>Sri Maaaa</em></p>
-          <div class="sib-flip" id="sibFlip">
-                <div class="sib-video-wrap">
-                 <div id="siblingsVideo"></div>
-               </div>
-               </div>
-          <button class="mute-toggle-btn" id="siblingsMuteToggle">🔇 tap to unmute</button>
-          <p class="siblings-video-hint" id="siblingsHint">Wishes from Hamsath</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ── Final Video: closing birthday message ── -->
-  <section class="final-video-section" id="finalVideoSection">
-    <div class="final-video-inner">
-      <p class="final-video-label">surprise</p>
-      <div class="final-video-box">
-        <div class="final-video-wrap">
-          <video id="finalVideo" src="assets/surprise.mp4" playsinline muted></video>
-        </div>
-        <button class="final-replay-btn" id="finalReplayBtn" aria-label="Replay video">
-          <svg viewBox="0 0 24 24" width="28" height="28" fill="#fff">
-            <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>
-          </svg>
-        </button>
-      </div>
-      <button class="mute-toggle-btn" id="finalMuteToggle">🔇 tap to unmute</button>
-    </div>
-  </section>
-
-  <!-- Footer -->
-
-  <!-- Footer -->
-  <footer>
-    <div class="footer-text">with lots of love from · <span>kalizz · 2026</span> · turning seventeen</div>
-  </footer>
-
-  <!-- ── WhatsApp floating action button ── -->
-  <button class="wa-fab" id="waFab" aria-label="One more surprise waiting" title="One more surprise">
-    <svg viewBox="0 0 32 32" fill="#fff" xmlns="http://www.w3.org/2000/svg">
-      <path d="M16.001 3C9.107 3 3.5 8.607 3.5 15.5c0 2.42.687 4.68 1.878 6.6L3 29l7.086-2.318a12.42 12.42 0 0 0 5.915 1.507h.005c6.893 0 12.499-5.607 12.499-12.5C28.505 8.607 22.898 3 16.001 3zm0 22.79h-.004a10.31 10.31 0 0 1-5.253-1.438l-.377-.224-3.902 1.276 1.293-3.804-.246-.39a10.28 10.28 0 0 1-1.583-5.51c0-5.696 4.637-10.333 10.336-10.333 2.76 0 5.353 1.077 7.305 3.031a10.26 10.26 0 0 1 3.026 7.306c0 5.697-4.637 10.334-10.335 10.334zm5.66-7.74c-.31-.155-1.834-.905-2.118-1.01-.284-.104-.492-.155-.7.156-.207.31-.804 1.01-.985 1.217-.181.207-.362.233-.673.078-.31-.155-1.309-.483-2.494-1.54-.922-.822-1.545-1.838-1.726-2.148-.181-.31-.02-.478.136-.633.14-.14.31-.362.465-.543.155-.181.207-.31.31-.518.104-.207.052-.388-.026-.543-.078-.155-.7-1.687-.959-2.311-.253-.607-.51-.525-.7-.535-.181-.008-.388-.01-.596-.01-.207 0-.543.078-.828.388-.284.31-1.086 1.061-1.086 2.588 0 1.528 1.112 3.004 1.267 3.211.155.207 2.19 3.345 5.306 4.69.742.32 1.32.512 1.771.655.744.237 1.421.204 1.956.124.597-.089 1.834-.75 2.093-1.474.259-.724.259-1.345.181-1.474-.078-.13-.284-.207-.596-.362z"/>
-    </svg>
-    <span class="wa-fab-badge">1</span>
-  </button>
-
-  <!-- GSAP + ScrollTrigger, used for the cinematic story section below -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-
 
   <script>
-    // Generate ambient thread lines
-    const bgThreads = document.getElementById('bg-threads');
-    [6, 18, 32, 50, 64, 78, 90].forEach((p, i) => {
+    // ── Generate stars ──
+    const starsEl = document.getElementById('stars');
+    for (let i = 0; i < 40; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;animation-duration:${2+Math.random()*4}s;animation-delay:${Math.random()*4}s`;
+      starsEl.appendChild(s);
+    }
+
+    // ── Generate thread lines ──
+    const threadsEl = document.getElementById('threads');
+    [8, 22, 38, 55, 68, 82].forEach((p, i) => {
       const t = document.createElement('div');
       t.className = 'thread-line';
-      t.style.cssText = `left:${p}%;top:0;height:100%;animation-delay:${i*0.6}s;animation-duration:${3.5+i*0.5}s`;
-      bgThreads.appendChild(t);
-    });
-  </script>
-
-<script>
-(function() {
-  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-  gsap.registerPlugin(ScrollTrigger);
-
-  const pin        = document.getElementById('schoolPin');
-  const narrator    = document.getElementById('schoolNarrator');
-  const narFigure    = document.getElementById('schoolNarratorFigure');
-  const narBubble     = document.getElementById('schoolNarratorBubble');
-  const idStage      = document.getElementById('schoolIdStage');
-  const idInner       = document.getElementById('schoolIdInner');
-  const idPhoto        = document.getElementById('schoolIdPhoto');
-  const idName          = document.getElementById('schoolIdName');
-  const idFunny          = document.getElementById('schoolIdFunny');
-  const idClass            = document.getElementById('schoolIdClass');
-  const idYears                = document.getElementById('schoolIdYears');
-  const gifImg      = document.getElementById('schoolGifImg');
-  const videoStage  = document.getElementById('schoolVideoStage');
-if (!pin || !narrator ||  !idStage || !videoStage) return;
-
-// 👉 Paste your friend's birthday wish YouTube link here
-const SCHOOL_VIDEO_LINK = 'https://youtu.be/NLXBpxhrddo';
-
-function extractYouTubeId(url) {
-  const match = url.match(
-    /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/
-  );
-  return match ? match[1] : null;
-}
-const SCHOOL_VIDEO_ID = extractYouTubeId(SCHOOL_VIDEO_LINK);
-
-let schoolPlayer = null;
-let schoolApiReady = false;
-let schoolVideoStarted = false;
-
-// Reuses the same global callback name the gift box uses. If this
-// script runs after the gift box's <script src="...iframe_api">
-// already fired onYouTubeIframeAPIReady, this line still catches it.
-const existingCallback = window.onYouTubeIframeAPIReady;
-window.onYouTubeIframeAPIReady = function() {
-  if (typeof existingCallback === 'function') existingCallback();
-  schoolApiReady = true;
-};
-// In case the API already finished loading before this ran:
-if (window.YT && window.YT.Player) schoolApiReady = true;
-
-let schoolPlayerReady = false;
-
-function startSchoolVideo() {
-  if (schoolVideoStarted || !SCHOOL_VIDEO_ID) return;
-  schoolVideoStarted = true;
-
-  function create() {
-    schoolPlayer = new YT.Player('schoolVideo', {
-      width: '100%',
-      height: '100%',
-      videoId: SCHOOL_VIDEO_ID,
-      playerVars: { autoplay: 1, mute: 1, rel: 0, modestbranding: 1, playsinline: 1 },
-      events: {
-        onReady: () => {
-          schoolPlayerReady = true;
-          // The mute-toggle button lives in a separate <script> block
-          // below and can't see this function's local variables — so
-          // hand the player off via window once it's actually ready.
-          window.schoolPlayer = schoolPlayer;
-          window.schoolPlayerReady = true;
-        },
-        onStateChange: (event) => {
-          if (event.data === YT.PlayerState.ENDED) {
-            if (typeof window.__revealWaFab === 'function') {
-              window.__revealWaFab();
-            }
-          }
-        }
-      }
-    });
-  }
-
-  if (schoolApiReady) {
-    create();
-  } else {
-    let attempts = 0;
-    const check = setInterval(() => {
-      attempts++;
-      if (schoolApiReady) { clearInterval(check); create(); }
-      else if (attempts > 40) { clearInterval(check); console.error('YouTube API never loaded for school video.'); }
-    }, 100);
-  }
-}
-
-
-  // ── Part E data: extends the SCHOOLS pattern — EDIT THESE 3 ──
-  const SCHOOLS = [
-    {
-      name: 'BMC Matriculation Higher Secondary School',
-      funnyTitle: 'The Cheeky Charmer',
-      className: 'Pre KG to V',
-      years: '2013 - 2017',
-      photo: 'assets/BMC.png',
-      gif: 'assets/pencil.gif'
-    },
-    {
-      name: 'Sakthi Vinayakar Hindu Vidyalaya Senior Secondary School',
-      funnyTitle: 'Olympiad Champion',
-      className: 'VI - VII',
-      years: '2018 - 2021',
-      photo: 'assets/SVHV1.jpeg',
-      gif: 'assets/pen.gif'
-    },
-    {
-      name: 'Subbiah Vidyalayam Girls Higher Secondary School',
-      funnyTitle: 'Volleyball Captain ',
-      className: 'VIII - XII',
-       years: '2022 - 2026',
-      photo: 'assets/Subbiah.jpeg',
-      gif: 'assets/volleyball.gif'
-    }
-  ];
-
-  // ── Part E: single function that swaps card + photo + gif together ──
-  function setSchool(i) {
-    const s = SCHOOLS[i];
-    if (!s) return;
-    idPhoto.src   = s.photo;
-    idName.textContent   = s.name;
-    idFunny.textContent  = s.funnyTitle;
-    idClass.textContent  = s.className;
-    idYears.textContent  = s.years;
-    gifImg.src    = s.gif;
-  }
-
-
-  // ── Part G: master timeline sequencing A → B → C/D/E → F ──
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: pin,
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 1
-    }
-  });
-
-// A — narrator reappears
-  tl.to(narFigure,  { opacity: 1, duration: 1, ease: 'power2.out' }, 0)
-    .to(narBubble,   { opacity: 1, duration: 1, ease: 'power2.out' }, 0.15)
-    .to(narrator,      { opacity: 0, duration: 0.6, ease: 'power1.in' }, 1.4);
-
-// C/D/E — ID card + gif, cycling through the 3 schools
-  tl.to(idStage,   { opacity: 1, duration: 0.7, ease: 'power2.out' }, 1.6)
-
-    .to(idInner,     { opacity: 0.15, duration: 0.4, ease: 'power1.in' }, 3.2)
-    .to(idInner,      { opacity: 1, duration: 0.4, ease: 'power1.out' }, 3.6)
-
-    .to(idInner,       { opacity: 0.15, duration: 0.4, ease: 'power1.in' }, 5.3)
-    .to(idInner,        { opacity: 1, duration: 0.4, ease: 'power1.out' }, 5.7)
-
-    .to(idStage,     { opacity: 0, duration: 0.6, ease: 'power1.in' }, 7.3);
-
-  // School swap is driven from continuous timeline progress rather than
-  // discrete .call() positions — .call() can get skipped entirely if the
-  // playhead jumps past it (fast scroll, or scrolling backward quickly),
-  // which is why school 1 sometimes failed to reappear on scroll-up.
-  // Checking on every update guarantees the right school is always shown,
-  // in either scroll direction.
-  let currentSchoolShown = -1;
-  const SCHOOL_SWITCH_TIMES = [1.6, 3.5, 5.6]; // matches the fade timings above
-
-  tl.eventCallback('onUpdate', () => {
-    const t = tl.time();
-    let idx = -1;
-    for (let i = 0; i < SCHOOL_SWITCH_TIMES.length; i++) {
-      if (t >= SCHOOL_SWITCH_TIMES[i]) idx = i;
-    }
-    if (idx !== currentSchoolShown && idx >= 0) {
-      currentSchoolShown = idx;
-      setSchool(idx);
-    }
-  });
-
-
- // F — vertical video finale (pop-in, not slide)
-  const videoBox = document.querySelector('.school-video-box');
-  tl.to(videoStage, {
-      opacity: 1,
-      duration: 0.8,
-      ease: 'power2.out',
-      onStart: () => { startSchoolVideo(); }
-    }, 8.6)
-    .to(videoBox, {
-      scale: 1,
-      duration: 0.8,
-      ease: 'back.out(1.4)'
-    }, 8.6)
-    .call(() => {
-      // The stage has pointer-events:none by default so it doesn't
-      // block clicks earlier in the scroll — now that the video is
-      // actually visible, both the box (so YouTube's own play/pause/
-      // rewind controls work) and the mute button need it turned on.
-      videoStage.style.pointerEvents = 'auto';
-      const btn = document.getElementById('schoolMuteToggle');
-      if (btn) { btn.style.pointerEvents = 'auto'; }
-    }, null, 8.7);
-})();
-
-// ── Video finale: mute/unmute toggle ──
-(function() {
-  const btn = document.getElementById('schoolMuteToggle');
-  if (!btn) return;
-  btn.addEventListener('click', () => {
-    if (!window.schoolPlayer || !window.schoolPlayerReady) return;
-    const currentlyMuted = window.schoolPlayer.isMuted();
-    if (currentlyMuted) {
-      window.schoolPlayer.unMute();
-      btn.textContent = '🔊 sound on';
-      btn.classList.add('is-unmuted');
-    } else {
-      window.schoolPlayer.mute();
-      btn.textContent = '🔇 tap to unmute';
-      btn.classList.remove('is-unmuted');
-    }
-  });
-})();
-</script>
-
-
-  <!-- ── Site-wide parallax ── -->
-  <script>
-  (function() {
-    const layers = Array.from(document.querySelectorAll('.parallax'));
-    if (!layers.length) return;
-
-    let ticking = false;
-
-    function updateParallax() {
-      const vh = window.innerHeight;
-      const vCenter = vh / 2;
-
-      layers.forEach((layer) => {
-        const speed = parseFloat(layer.dataset.speed) || 0;
-        const rect = layer.getBoundingClientRect();
-        const elCenter = rect.top + rect.height / 2;
-        const offset = (vCenter - elCenter) * speed;
-        layer.style.transform = `translateY(${offset}px)`;
-      });
-
-      ticking = false;
-    }
-
-    function onScroll() {
-      if (!ticking) {
-        requestAnimationFrame(updateParallax);
-        ticking = true;
-      }
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    updateParallax();
-  })();
-  </script>
-
-  <!-- ── Photo gallery: pinned, scroll-driven horizontal reel  ── -->
-  <script>
-  (function() {
-    const pin      = document.getElementById('galleryPin');
-    const sticky   = document.getElementById('gallerySticky');
-    const track    = document.getElementById('galleryTrack');
-    if (!pin || !sticky || !track) return;
-
-    const allCards = Array.from(track.children);
-    const SCROLL_PER_CARD = 420;
-
-    let maxX = 0;
-    let awake = false;
-
-    function sizePin() {
-      const extra = allCards.length * SCROLL_PER_CARD;
-      pin.style.height = `${window.innerHeight + extra}px`;
-    }
-
-    const ro = new ResizeObserver(() => {
-      maxX = Math.max(0, track.scrollWidth - sticky.clientWidth);
-    });
-    ro.observe(track);
-
-    function update() {
-      const rect = pin.getBoundingClientRect();
-      const scrollable = pin.offsetHeight - window.innerHeight;
-      let progress = scrollable > 0 ? -rect.top / scrollable : 0;
-      progress = Math.min(1, Math.max(0, progress));
-
-      const inView = rect.top < window.innerHeight && rect.bottom > 0;
-      if (inView !== awake) {
-        awake = inView;
-        sticky.classList.toggle('awake', awake);
-      }
-
-      const activeIdx = Math.min(
-        allCards.length - 1,
-        Math.floor(progress * allCards.length)
-      );
-      allCards.forEach((card, i) => {
-        card.classList.toggle('active', i === activeIdx);
-      });
-
-      track.style.transform = `translateX(-${progress * maxX}px)`;
-    }
-
-    let ticking = false;
-    function onScroll() {
-      if (!ticking) {
-        requestAnimationFrame(() => { update(); ticking = false; });
-        ticking = true;
-      }
-    }
-
-    function onResize() {
-      sizePin();
-      maxX = Math.max(0, track.scrollWidth - sticky.clientWidth);
-      update();
-    }
-
-    sizePin();
-    requestAnimationFrame(() => {
-      maxX = Math.max(0, track.scrollWidth - sticky.clientWidth);
-      update();
+      t.style.cssText = `left:${p}%;top:0;height:100%;animation-delay:${i*0.5}s;animation-duration:${3+i*0.4}s`;
+      threadsEl.appendChild(t);
     });
 
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onResize);
-  })();
-  </script>
-
-  <!-- ── Gift box: tap to open, plays birthday wish video(s) centered
-       in a wide modal over the page, via the YouTube IFrame API. Once
-       ALL videos finish playing naturally (not on manual close), it
-       reveals the WhatsApp fab. ── -->
-  <script src="https://www.youtube.com/iframe_api"></script>
-  <script>
-(function() {
-  const giftBox   = document.getElementById('giftBox');
-  const modal     = document.getElementById('giftModal');
-  const backdrop  = document.getElementById('giftModalBackdrop');
-  const closeBtn  = document.getElementById('giftModalClose');
-  const caption   = document.getElementById('giftVideoCaption');
-  if (!giftBox || !modal) return;
-
-  // 👉 Paste your full YouTube links here — any normal format works
-  // (watch?v=, youtu.be/, embed/, with or without extra query params).
-  const VIDEO_LINKS = [
-    'https://youtu.be/enJjEIZwAv8',
-    'https://youtu.be/cl9uQiTu94o'
-  ];
-
-  // Extracts the 11-character video ID from any common YouTube URL shape.
-  function extractYouTubeId(url) {
-    const match = url.match(
-      /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/
-    );
-    return match ? match[1] : null;
-  }
-
-  const VIDEO_IDS = VIDEO_LINKS.map(extractYouTubeId).filter(Boolean);
-
-  let player = null;
-  let apiReady = false;
-  let queueIndex = 0;
-
-  // Chain to any existing callback instead of overwriting it outright —
-  // the school-video script also hooks this global, and whichever script
-  // runs last would otherwise silently erase the other's callback.
-  const existingYTCallback = window.onYouTubeIframeAPIReady;
-  window.onYouTubeIframeAPIReady = function() {
-    if (typeof existingYTCallback === 'function') existingYTCallback();
-    apiReady = true;
-  };
-
-  function createOrLoad(index) {
-    queueIndex = index;
-    caption.textContent = VIDEO_IDS.length > 1
-      ? `wish ${index + 1} of ${VIDEO_IDS.length}`
-      : 'a birthday wish';
-
-    if (!player) {
-      // width/height set here matter — the API sizes the iframe it
-      // generates using these values *before* our CSS ever touches it,
-      // so '100%' here plus the wrapper CSS keeps it filling the panel.
-      player = new YT.Player('giftVideo', {
-        width: '100%',
-        height: '100%',
-        videoId: VIDEO_IDS[index],
-        playerVars: {
-          autoplay: 1,
-          rel: 0,
-          modestbranding: 1,
-          playsinline: 1
-        },
-        events: {
-          onStateChange: onPlayerStateChange
-        }
-      });
-    } else {
-      player.loadVideoById(VIDEO_IDS[index]);
+    // ── Generate petals ──
+    const petalsEl = document.getElementById('petals');
+    const drifts = ['-30px','20px','-15px','35px','-25px','10px','40px','-20px'];
+    for (let i = 0; i < 8; i++) {
+      const p = document.createElement('div');
+      p.className = 'petal';
+      p.style.cssText = `left:${10+Math.random()*80}%;animation-duration:${6+Math.random()*6}s;animation-delay:${Math.random()*8}s;--drift:${drifts[i]};transform:rotate(${Math.random()*180}deg)`;
+      petalsEl.appendChild(p);
     }
-  }
 
-  function onPlayerStateChange(event) {
-    if (event.data === YT.PlayerState.ENDED) {
-      if (queueIndex < VIDEO_IDS.length - 1) {
-        createOrLoad(queueIndex + 1);
+    // ── Remove intro overlay from DOM once its fade-out finishes ──
+    const introOverlay = document.getElementById('intro-overlay');
+    setTimeout(() => {
+      introOverlay.classList.add('done');
+    }, 1950);
+
+    // ── Unlock logic ──
+    const inp      = document.getElementById('demo-input');
+    const btn      = document.getElementById('unlock-btn');
+    const err      = document.getElementById('err-msg');
+    const inputRow = document.getElementById('input-row');
+
+    const PASSCODE = 'Virat07';
+
+    function tryUnlock() {
+      if (inp.value === PASSCODE) {
+        inputRow.classList.add('unlocked');
+        inp.value = '';
+        inp.placeholder = '✓  unlocked';
+        inp.disabled = true;
+        btn.disabled = true;
+        err.textContent = '';
+        launchDollWelcome();
       } else {
-        // All videos finished — just close, the WhatsApp fab now
-        // appears later, after the school section's finale video.
-        closeModal();
+        err.classList.add('show');
+        inp.value = '';
+        setTimeout(() => err.classList.remove('show'), 2500);
       }
     }
-  }
 
-  function openModal() {
-    modal.classList.add('open');
-    modal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
+    btn.addEventListener('click', tryUnlock);
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
 
-    if (!VIDEO_IDS.length) {
-      console.error('No valid YouTube IDs found in VIDEO_LINKS.');
-      return;
-    }
+    // ══════════════ DOLL WELCOME ══════════════
+    function launchDollWelcome() {
+      const dollOverlay = document.getElementById('doll-overlay');
+      dollOverlay.classList.add('active');
 
-    if (apiReady) {
-      createOrLoad(0);
-    } else {
-      // API script hasn't finished loading yet — wait for it, then start.
-      let attempts = 0;
-      const check = setInterval(() => {
-        attempts++;
-        if (apiReady) {
-          clearInterval(check);
-          createOrLoad(0);
-        } else if (attempts > 40) { // ~4 seconds
-          clearInterval(check);
-          console.error(
-            'YouTube IFrame API never loaded — likely blocked by an ad blocker, ' +
-            'privacy extension, or offline connection. Check the Network tab for ' +
-            'a request to youtube.com/iframe_api and see if it was blocked.'
-          );
-        }
-      }, 100);
-    }
-  }
+      const dollForm  = document.getElementById('doll-form');
+      const dollInput = document.getElementById('doll-input');
 
-  function closeModal() {
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-    if (player && typeof player.stopVideo === 'function') {
-      player.stopVideo();
-    }
-    giftBox.classList.remove('opened');
-  }
-
-  giftBox.addEventListener('click', () => {
-    giftBox.classList.add('opened');
-    openModal();
-  });
-
-  closeBtn.addEventListener('click', closeModal);
-  backdrop.addEventListener('click', closeModal);
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
-  });
-})();
-</script>
-  <!-- ── WhatsApp fab: reveal after gift videos, scroll to the story
-       section, and hide itself once the story section is reached ── -->
-  <script>
-
-  (function() {
-  const fab    = document.getElementById('waFab');
-  const target = document.getElementById('storySection');
-  if (!fab || !target) return;
-
-  let revealed = false;
-  let passedStory = false;
-
-  window.__revealWaFab = function() {
-    revealed = true;
-    updateFab();
-  };
-
-  function updateFab() {
-    fab.classList.toggle('show', revealed && !passedStory);
-  }
-
-  fab.addEventListener('click', () => {
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-
-  function checkScroll() {
-    const rect = target.getBoundingClientRect();
-    if (rect.bottom <= 0) passedStory = true; // fully scrolled past — lock it off for good
-    updateFab();
-  }
-
-  window.addEventListener('scroll', checkScroll, { passive: true });
-  checkScroll();
-})();
-  </script>
-
-  <!-- ══════════════════════════════════════════════════
-       ── Cinematic story sequence (GSAP ScrollTrigger) ──
-       ══════════════════════════════════════════════════ -->
-  <script>
-  (function() {
-    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-    gsap.registerPlugin(ScrollTrigger);
-
-    const pin         = document.getElementById('storyPin');
-    const flashGroup  = document.getElementById('storyFlashGroup');
-    const ballWrap     = document.getElementById('volleyballWrap');
-    const ballCursor   = document.getElementById('volleyballCursor');
-    const ball         = document.getElementById('volleyball');
-    const ballImg      = ball ? ball.querySelector('img') : null;
-    const chatScreen   = document.getElementById('waChatScreen');
-    const chatBody     = document.getElementById('waChatBody');
-    const bgFigure     = document.getElementById('waBgFigure');
-    const card1        = document.getElementById('storyCard1');
-    const card2        = document.getElementById('storyCard2');
-    const card3        = document.getElementById('storyCard3');
-    const bubble1      = document.getElementById('storyBubble1');
-    const bubble2      = document.getElementById('storyBubble2');
-    const bubble3      = document.getElementById('storyBubble3');
-    const text1        = document.getElementById('storyText1');
-    const text2        = document.getElementById('storyText2');
-    const text3        = document.getElementById('storyText3');
-
-    const videos = ['storyVideo1', 'storyVideo2', 'storyVideo3', 'storyVideo4']
-      .map(id => document.getElementById(id))
-      .filter(Boolean);
-
-    if (!pin || !flashGroup || !ball) return;
-
-    gsap.to(ball, {
-      y: -12,
-      rotate: 10,
-      duration: 2.6,
-      ease: 'sine.inOut',
-      yoyo: true,
-      repeat: -1
-    });
-
-    const quickX = gsap.quickTo(ballCursor, 'x', { duration: 0.55, ease: 'power3.out' });
-    const quickY = gsap.quickTo(ballCursor, 'y', { duration: 0.55, ease: 'power3.out' });
-    const quickRotate = ballImg
-      ? gsap.quickTo(ballImg, 'rotation', { duration: 0.35, ease: 'power2.out' })
-      : null;
-
-    let cursorParallaxActive = true;
-    let lastMouseX = null;
-    let rollRotation = 0;
-
-    window.addEventListener('mousemove', (e) => {
-      if (!cursorParallaxActive) return;
-
-      const relX = (e.clientX / window.innerWidth  - 0.5) * 46;
-      const relY = (e.clientY / window.innerHeight - 0.5) * 46;
-      quickX(relX);
-      quickY(relY);
-
-      if (quickRotate) {
-        if (lastMouseX !== null) {
-          const deltaX = e.clientX - lastMouseX;
-          rollRotation += deltaX * 1.4;
-          quickRotate(rollRotation);
-        }
-        lastMouseX = e.clientX;
-      }
-    }, { passive: true });
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: pin,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 1,
-        onLeave: () => {
-          cursorParallaxActive = true;
-          videoStageActive = false;
-          resetAllVideos();
-        },
-        onLeaveBack: () => {
-          cursorParallaxActive = true;
-          videoStageActive = false;
-          resetAllVideos();
-        },
-      }
-    });
-
-    // ── Guard: videos may only be visible/advancing while the scrubbed
-    // timeline is actually in the video-stage range (>= VIDEO_STAGE_START).
-    // The per-video 'ended' listeners below fire in real time (whenever
-    // that particular <video> naturally finishes playing) and are NOT
-    // tracked by the scrubbed tl — so without this guard, a video that
-    // finishes while you're scrolled elsewhere (or one that keeps
-    // playing/looping in the background) can still trigger the "reveal
-    // next video" tween, and once revealed it has no way to hide again
-    // on scroll-back. This forces every video to hard-reset (paused,
-    // rewound, hidden) the instant you scroll out of the video stage,
-    // and blocks the 'ended' handler from doing anything while outside it.
-    const VIDEO_STAGE_START = 9.3;
-    let videoStageActive = false;
-
-    const storyMuteBtn = document.getElementById('storyMuteToggle');
-
-function resetAllVideos() {
-  videos.forEach(v => {
-    v.pause();
-    v.currentTime = 0;
-    gsap.set(v, { opacity: 0, scale: 0.35 });
-  });
-  if (storyMuteBtn) {
-    storyMuteBtn.style.opacity = '0';
-    storyMuteBtn.style.pointerEvents = 'none';
-  }
-}
-
-tl.eventCallback('onUpdate', () => {
-  const inStage = tl.time() >= VIDEO_STAGE_START;
-  if (!inStage && videoStageActive) {
-    videoStageActive = false;
-    resetAllVideos();
-  } else if (inStage && !videoStageActive) {
-    videoStageActive = true;
-    if (storyMuteBtn) {
-      storyMuteBtn.style.opacity = '1';
-      storyMuteBtn.style.pointerEvents = 'auto';
-    }
-  }
-});
-
-    tl.to(flashGroup, { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power2.out' }, 0);
-
-    tl.to(flashGroup, { opacity: 0, y: -30, scale: 0.94, duration: 0.8, ease: 'power2.in' }, 1.6)
-      .call(() => { if (chatBody) chatBody.scrollTop = 0; }, null, 1.85)
-      .to(chatScreen, { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power2.out' }, 1.9)
-      .to(bgFigure, { opacity: 0.55, duration: 1.2, ease: 'power2.out' }, 1.9);
-
-    tl.to(card1, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 3.0)
-      .to(bubble1, { width: 400, duration: 1.1, ease: 'power2.inOut' }, 3.1)
-      .to(text1, { opacity: 1, duration: 0.6, ease: 'power1.out' }, 3.9)
-      .to(card2, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 4.6)
-      .to(bubble2, { width: 400, duration: 1.1, ease: 'power2.inOut' }, 4.7)
-      .to(text2, { opacity: 1, duration: 0.6, ease: 'power1.out' }, 5.5)
-      .to(card3, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 6.2)
-      .to(bubble3, { width: 400, duration: 1.1, ease: 'power2.inOut' }, 6.3)
-      .to(text3, { opacity: 1, duration: 0.6, ease: 'power1.out' }, 7.1);
-
-    tl.call(() => { cursorParallaxActive = false; }, null, 7.9)
-      .to(chatScreen, { opacity: 0, y: -20, scale: 0.94, duration: 0.7, ease: 'power1.in' }, 7.9)
-      .call(() => { if (chatBody) chatBody.scrollTop = 0; }, null, 8.05)
-      .to(bgFigure, { opacity: 0, duration: 0.7, ease: 'power1.in' }, 7.9)
-      .to(ballCursor, { x: 0, y: 0, duration: 0.6, ease: 'power2.inOut' }, 7.9)
-      .to(ballWrap, {
-        x: () => -1 * (flashGroup.querySelector('.flash-card').offsetWidth / 2 + 11),
-        scale: 1.6,
-        duration: 1.2,
-        ease: 'power2.inOut'
-      }, 8.1);
-
-    tl.to(ballWrap, { opacity: 0, scale: 2.1, duration: 0.7, ease: 'power2.in' }, 9.3)
-      .to(videos[0], { opacity: 1, scale: 1, duration: 1, ease: 'power3.out' }, 9.5)
-      .call(() => {
-        if (!videos[0]) return;
-        videos[0].currentTime = 0;
-        videos[0].play().catch(() => {});
-      }, null, 9.5)
-    
-
-    videos.forEach((current, i) => {
-      const next = videos[i + 1];
-      if (!next) return;
-      current.addEventListener('ended', () => {
-        if (!videoStageActive) return; // scrolled away — don't advance/reveal
-        gsap.to(current, { opacity: 0, scale: 0.9, duration: 0.5, ease: 'power2.in' });
-        gsap.to(next, {
-          opacity: 1,
-          scale: 1,
-          duration: 0.8,
-          ease: 'power3.out',
-          onStart: () => {
-            next.currentTime = 0;
-            next.play().catch(() => {});
-          }
-        });
-      });
-    });
-  })();
-  </script>
-
-
-  <!-- ── Header canvas particle animation ── -->
-  <script>
-  (function() {
-
-    const canvas  = document.getElementById('header-canvas');
-    const header  = document.getElementById('site-header');
-    const ctx     = canvas.getContext('2d');
-
-    const C = {
-      crimson : 'rgba(179,18,46,',
-      gold    : 'rgba(212,162,76,',
-      cream   : 'rgba(255,248,240,',
-      sage    : 'rgba(79,143,106,'
-    };
-
-    const SYMBOLS = [
-      { text: '</>',  cat: 'code',   color: C.gold    },
-      { text: '{ }',  cat: 'code',   color: C.gold    },
-      { text: '( )',  cat: 'code',   color: C.cream   },
-      { text: 'fn',   cat: 'code',   color: C.crimson },
-      { text: '[ ]',  cat: 'code',   color: C.gold    },
-      { text: '//',   cat: 'code',   color: C.cream   },
-      { text: '=>',   cat: 'code',   color: C.crimson },
-      { text: '<>',   cat: 'code',   color: C.gold    },
-      { text: '&&',   cat: 'code',   color: C.cream   },
-      { text: '01',   cat: 'code',   color: C.crimson },
-      { text: '#!',   cat: 'code',   color: C.gold    },
-      { text: '::',   cat: 'code',   color: C.cream   },
-
-      { text: '▶▶',  cat: 'edit',   color: C.gold    },
-      { text: '▌▌',  cat: 'edit',   color: C.cream   },
-      { text: '✂',   cat: 'edit',   color: C.crimson },
-      { text: '◼◻', cat: 'edit',   color: C.gold    },
-      { text: '⬡',   cat: 'edit',   color: C.cream   },
-      { text: '◐',   cat: 'edit',   color: C.crimson },
-      { text: '▲▼',  cat: 'edit',   color: C.gold    },
-      { text: '⧉',   cat: 'edit',   color: C.cream   },
-      { text: '◈',   cat: 'edit',   color: C.crimson },
-
-      { text: '♨',   cat: 'food',   color: C.crimson },
-      { text: '⬟',   cat: 'food',   color: C.gold    },
-      { text: '∿∿',  cat: 'food',   color: C.cream   },
-      { text: '◉',   cat: 'food',   color: C.crimson },
-      { text: '☕',   cat: 'food',   color: C.gold    },
-      { text: '🍴',   cat: 'food',   color: C.cream   },
-      { text: '❋',   cat: 'food',   color: C.crimson },
-      { text: '⊙',   cat: 'food',   color: C.gold    },
-      { text: '⌘',   cat: 'food',   color: C.cream   },
-      { text: '✦',   cat: 'food',   color: C.crimson },
-
-      { text: '⚈',   cat: 'volleyball', color: C.gold    },
-      { text: '⬤',   cat: 'volleyball', color: C.cream   },
-      { text: '⤴',   cat: 'volleyball', color: C.crimson },
-      { text: '⌇',   cat: 'volleyball', color: C.gold    },
-      { text: '⛹',   cat: 'volleyball', color: C.cream   },
-      { text: '✹',   cat: 'volleyball', color: C.crimson },
-
-      { text: '〰',  cat: 'crochet', color: C.crimson },
-      { text: '⌒⌒', cat: 'crochet', color: C.gold    },
-      { text: '∞',   cat: 'crochet', color: C.cream   },
-      { text: '⟳',   cat: 'crochet', color: C.gold    },
-      { text: '⊛',   cat: 'crochet', color: C.crimson },
-      { text: '⟲',   cat: 'crochet', color: C.gold    },
-      { text: '≋',   cat: 'crochet', color: C.cream   },
-      { text: '❀',   cat: 'crochet', color: C.crimson },
-    ];
-
-    class Particle {
-      constructor() { this.reset(true); }
-
-      reset(init) {
-        const W = canvas.width, H = canvas.height;
-        this.sym    = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
-        this.x      = Math.random() * W;
-        this.y      = init ? Math.random() * H : -20;
-        this.ox     = this.x;
-        this.oy     = this.y;
-        this.vx     = (Math.random() - 0.5) * 0.18;
-        this.vy     = (Math.random() - 0.5) * 0.18;
-        this.size   = 10 + Math.random() * 8;
-        this.alpha  = 0.08 + Math.random() * 0.12;
-        this.baseA  = this.alpha;
-        this.angle  = Math.random() * Math.PI * 2;
-        this.spin   = (Math.random() - 0.5) * 0.003;
-        this.phase  = Math.random() * Math.PI * 2;
-        this.speed  = 0.002 + Math.random() * 0.003;
-
-        this.rx = 0;
-        this.ry = 0;
-        this.lit = 0;
-      }
-
-      update(mouse, W, H) {
-        this.phase += this.speed;
-        this.x = this.ox + Math.sin(this.phase) * 18;
-        this.y = this.oy + Math.cos(this.phase * 0.7) * 10;
-
-        this.ox += this.vx;
-        this.oy += this.vy;
-
-        if (this.ox < -40)  this.ox = W + 40;
-        if (this.ox > W+40) this.ox = -40;
-        if (this.oy < -40)  this.oy = H + 40;
-        if (this.oy > H+40) this.oy = -40;
-
-        const dx  = this.x - mouse.x;
-        const dy  = this.y - mouse.y;
-        const dist = Math.sqrt(dx*dx + dy*dy);
-        const RADIUS = 110;
-
-        if (dist < RADIUS && mouse.active) {
-          const force = (1 - dist / RADIUS);
-          this.rx += (dx / dist) * force * 2.2;
-          this.ry += (dy / dist) * force * 2.2;
-          this.lit = Math.min(1, this.lit + force * 0.18);
+      dollForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (dollInput.value.trim().length > 0) {
+          dollOverlay.classList.remove('active');
+          launchDoodleCelebration();
         } else {
-          this.lit *= 0.92;
-        }
-
-        this.ox += this.rx;
-        this.oy += this.ry;
-        this.rx *= 0.82;
-        this.ry *= 0.82;
-
-        this.angle += this.spin;
-
-        this.alpha = this.baseA + this.lit * 0.55;
-      }
-
-      draw(ctx) {
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.rotate(this.angle);
-
-        if (this.lit > 0.05) {
-          ctx.shadowColor = this.sym.color + '0.9)';
-          ctx.shadowBlur  = 10 * this.lit;
-        }
-
-        ctx.font        = `300 ${this.size}px 'JetBrains Mono', monospace`;
-        ctx.fillStyle   = this.sym.color + this.alpha.toFixed(2) + ')';
-        ctx.textAlign   = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(this.sym.text, 0, 0);
-
-        ctx.restore();
-      }
-    }
-
-    let particles = [];
-    let mouse     = { x: -999, y: -999, active: false };
-    let raf;
-
-    function resize() {
-      const rect = header.getBoundingClientRect();
-      canvas.width  = rect.width;
-      canvas.height = rect.height;
-      init();
-    }
-
-    function init() {
-      const count = Math.floor((canvas.width * canvas.height) / 8000);
-      particles   = Array.from({ length: Math.max(22, Math.min(count, 55)) },
-                               () => new Particle());
-    }
-
-    header.addEventListener('mousemove', e => {
-      const r     = canvas.getBoundingClientRect();
-      mouse.x     = e.clientX - r.left;
-      mouse.y     = e.clientY - r.top;
-      mouse.active = true;
-    }, { passive: true });
-
-    header.addEventListener('mouseleave', () => {
-      mouse.active = false;
-    });
-
-    header.addEventListener('touchmove', e => {
-      const r       = canvas.getBoundingClientRect();
-      const t       = e.touches[0];
-      mouse.x       = t.clientX - r.left;
-      mouse.y       = t.clientY - r.top;
-      mouse.active  = true;
-    }, { passive: true });
-
-    header.addEventListener('touchend', () => {
-      mouse.active = false;
-    });
-
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      const cx  = canvas.width  / 2;
-      const cy  = canvas.height / 2;
-      const r   = Math.max(cx, cy) * 1.1;
-      const grd = ctx.createRadialGradient(cx, cy, r * 0.3, cx, cy, r);
-      grd.addColorStop(0, 'rgba(26,16,16,0)');
-      grd.addColorStop(1, 'rgba(26,16,16,0.35)');
-      ctx.fillStyle = grd;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      if (mouse.active) {
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(mouse.x, mouse.y, 70, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(179,18,46,0.08)';
-        ctx.lineWidth   = 1;
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.arc(mouse.x, mouse.y, 110, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(179,18,46,0.04)';
-        ctx.lineWidth   = 1;
-        ctx.stroke();
-        ctx.restore();
-      }
-
-      particles.forEach(p => {
-        p.update(mouse, canvas.width, canvas.height);
-        p.draw(ctx);
-      });
-
-      raf = requestAnimationFrame(draw);
-    }
-
-    resize();
-    draw();
-
-    const ro = new ResizeObserver(resize);
-    ro.observe(header);
-
-  })();
-  </script>
-
-  <!-- ── Jackalope narrator scroll reveal ── -->
-  <script>
-  (function() {
-    const section = document.getElementById('narrator-section');
-    if (!section) return;
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          section.classList.add('in-view');
-          observer.unobserve(section);
+          dollInput.focus();
         }
       });
-    }, { threshold: 0.35 });
+    }
 
-    observer.observe(section);
-  })();
-  </script>
+    // ══════════════ DOODLE CELEBRATION ══════════════
+    function launchDoodleCelebration() {
+      const overlay = document.getElementById('doodle-overlay');
 
-<!-- ── Letter section: ancient scroll unroll ── -->
-  <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const block = document.getElementById('letterBlock');
-    if (!block) return;
+      // Themed doodle icons: volleyball, drawing, coding, crochet, editing, snacks
+      const icons = [
+        // Volleyball
+        `<svg width="54" height="54" viewBox="0 0 64 64" fill="none">
+          <circle cx="32" cy="32" r="26" stroke="#FFF8F0" stroke-width="2"/>
+          <path d="M32 6c8 8 8 18 0 26s-8 18 0 26" stroke="#D4A24C" stroke-width="2"/>
+          <path d="M8 24c10 4 18 4 28-2" stroke="#B3122E" stroke-width="2"/>
+          <path d="M10 44c10-6 22-6 32 2" stroke="#4F8F6A" stroke-width="2"/>
+        </svg>`,
+        // Drawing (pencil)
+        `<svg width="50" height="50" viewBox="0 0 64 64" fill="none">
+          <path d="M12 52l4-14L42 12l10 10L26 48z" stroke="#FFF8F0" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M36 18l10 10" stroke="#D4A24C" stroke-width="2"/>
+          <path d="M12 52l14-4" stroke="#B3122E" stroke-width="2"/>
+        </svg>`,
+        // Coding
+        `<svg width="54" height="54" viewBox="0 0 64 64" fill="none">
+          <path d="M22 18L8 32l14 14" stroke="#4F8F6A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M42 18l14 14-14 14" stroke="#D4A24C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M36 12l-8 40" stroke="#FFF8F0" stroke-width="2" stroke-linecap="round"/>
+        </svg>`,
+        // Crochet (yarn ball + hook)
+        `<svg width="52" height="52" viewBox="0 0 64 64" fill="none">
+          <circle cx="28" cy="34" r="18" stroke="#B3122E" stroke-width="2"/>
+          <path d="M14 26c10 4 16 14 14 24" stroke="#FFF8F0" stroke-width="1.5"/>
+          <path d="M16 40c8-2 16 2 20 10" stroke="#FFF8F0" stroke-width="1.5"/>
+          <path d="M44 16c4 0 6 4 4 8l-10 8" stroke="#D4A24C" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>`,
+        // Editing (wand + sparkle)
+        `<svg width="50" height="50" viewBox="0 0 64 64" fill="none">
+          <path d="M14 50l28-28" stroke="#FFF8F0" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M44 10l3 6 6 3-6 3-3 6-3-6-6-3 6-3z" fill="#D4A24C"/>
+          <path d="M18 46l3 5 5 3-5 3-3 5-3-5-5-3 5-3z" fill="#B3122E"/>
+        </svg>`,
+        // Snacks (popcorn cup)
+        `<svg width="50" height="50" viewBox="0 0 64 64" fill="none">
+          <path d="M18 24h28l-4 30a4 4 0 01-4 4H26a4 4 0 01-4-4z" stroke="#FFF8F0" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M18 24l3-10h22l3 10" stroke="#B3122E" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="26" cy="18" r="3" fill="#D4A24C"/>
+          <circle cx="34" cy="14" r="3" fill="#D4A24C"/>
+          <circle cx="42" cy="18" r="3" fill="#D4A24C"/>
+        </svg>`
+      ];
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          block.classList.add('unrolled');
-          observer.unobserve(block);
-        }
+      const positions = [
+        { top: '12%', left: '10%', rot: -12 },
+        { top: '18%', left: '78%', rot: 14 },
+        { top: '72%', left: '12%', rot: 10 },
+        { top: '76%', left: '76%', rot: -10 },
+        { top: '46%', left: '5%', rot: 6 },
+        { top: '44%', left: '88%', rot: -6 }
+      ];
+
+      icons.forEach((svg, i) => {
+        const wrap = document.createElement('div');
+        wrap.className = 'doodle-icon';
+        const pos = positions[i % positions.length];
+        wrap.style.top = pos.top;
+        wrap.style.left = pos.left;
+        wrap.style.setProperty('--rot', pos.rot + 'deg');
+        wrap.style.setProperty('--delay', (i * 0.12) + 's');
+        wrap.innerHTML = svg;
+        overlay.appendChild(wrap);
       });
-    }, { threshold: 0.25 });
 
-    observer.observe(block);
-  });
-  </script>  
+      overlay.classList.add('active');
 
-  <!-- ── Siblings to Friends: pinned columns + flip-card video reveal (GSAP) ── -->
-  <script>
-  (function() {
-    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-    gsap.registerPlugin(ScrollTrigger);
-
-    const pin        = document.getElementById('siblingsPin');
-    const col1       = document.getElementById('sibCol1');
-    const col2       = document.getElementById('sibCol2');
-    const col3       = document.getElementById('sibCol3');
-    const columns    = document.getElementById('siblingsColumns');
-    const titleWrap  = document.getElementById('siblingsTitleWrap');
-    const label      = document.getElementById('siblingsLabel');
-    const videoStage = document.getElementById('siblingsVideoStage');
-    if (!pin || !col1 || !col2 || !col3) return;
-
-    const D1 = 420, D2 = 640, D3 = 360;
-
-    const tl = gsap.timeline({
-      scrollTrigger: { trigger: pin, start: 'top top', end: 'bottom bottom', scrub: 1 }
-    });
-
-    tl.to(col1, { y: -D1, ease: 'none', duration: 3 }, 0)
-      .to(col2, { y: -D2, ease: 'none', duration: 3 }, 0)
-      .to(col3, { y: -D3, ease: 'none', duration: 3 }, 0)
-      .to(titleWrap, { opacity: 0, duration: 0.6 }, 2.2);
-
-    tl.to(columns, { opacity: 0, scale: 0.92, duration: 0.8, ease: 'power2.in' }, 3.0)
-      .to(label,   { opacity: 0, duration: 0.5 }, 3.0)
-      .to(videoStage, {
-        opacity: 1,
-        pointerEvents: 'auto',
-        duration: 0.9,
-        ease: 'power2.out',
-        onStart: () => { if (typeof window.__startSiblingsVideos === 'function') window.__startSiblingsVideos(); }
-      }, 3.3);
-  })();
+      // Hold the celebration for a few seconds, then move to index
+      setTimeout(() => {
+        window.location.href = 'story.html';
+      }, 3600);
+    }
   </script>
-
-  <!-- ── Siblings flip-card video pair: video1 plays, flips in 3D to video2 ── -->
-  <script>
-(function() {
-  const muteToggle = document.getElementById('siblingsMuteToggle');
-  if (!muteToggle) return;
-
-  // 👉 Paste your YouTube link here
-  const SIBLINGS_VIDEO_LINK = 'https://youtu.be/3iI2DA5foDc';
-
-  function extractYouTubeId(url) {
-    const match = url.match(
-      /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/
-    );
-    return match ? match[1] : null;
-  }
-  const SIBLINGS_VIDEO_ID = extractYouTubeId(SIBLINGS_VIDEO_LINK);
-
-  let siblingsApiReady = false;
-  let started = false;
-
-  // Chain onto the same global callback the gift box / school video use
-  const existingCallback = window.onYouTubeIframeAPIReady;
-  window.onYouTubeIframeAPIReady = function() {
-    if (typeof existingCallback === 'function') existingCallback();
-    siblingsApiReady = true;
-  };
-  if (window.YT && window.YT.Player) siblingsApiReady = true;
-
-  function createPlayer() {
-    window.siblingsPlayer = new YT.Player('siblingsVideo', {
-      width: '100%',
-      height: '100%',
-      videoId: SIBLINGS_VIDEO_ID,
-      playerVars: { autoplay: 1, mute: 1, rel: 0, modestbranding: 1, playsinline: 1 },
-      events: {
-        onReady: () => {
-          window.siblingsPlayerReady = true;
-          syncToggle();
-        }
-      }
-    });
-  }
-
-  window.__startSiblingsVideos = function() {
-    if (started || !SIBLINGS_VIDEO_ID) return;
-    started = true;
-    if (siblingsApiReady) {
-      createPlayer();
-    } else {
-      let attempts = 0;
-      const check = setInterval(() => {
-        attempts++;
-        if (siblingsApiReady) { clearInterval(check); createPlayer(); }
-        else if (attempts > 40) { clearInterval(check); console.error('YouTube API never loaded for siblings video.'); }
-      }, 100);
-    }
-  };
-
-  function syncToggle() {
-    if (!window.siblingsPlayer || !window.siblingsPlayerReady) return;
-    const muted = window.siblingsPlayer.isMuted();
-    muteToggle.textContent = muted ? '🔇 tap to unmute' : '🔊 sound on';
-    muteToggle.classList.toggle('is-unmuted', !muted);
-  }
-
-muteToggle.addEventListener('click', () => {
-    if (!window.siblingsPlayer || !window.siblingsPlayerReady) return;
-    const currentlyMuted = window.siblingsPlayer.isMuted();
-    if (currentlyMuted) {
-      window.siblingsPlayer.unMute();
-      muteToggle.textContent = '🔊 sound on';
-      muteToggle.classList.add('is-unmuted');
-    } else {
-      window.siblingsPlayer.mute();
-      muteToggle.textContent = '🔇 tap to unmute';
-      muteToggle.classList.remove('is-unmuted');
-    }
-  });
-})();
-</script>
-
-
-<!-- ── Story videos: mute/unmute toggle ── -->
-  <script>
-  (function() {
-    const muteToggle = document.getElementById('storyMuteToggle');
-    const videos = ['storyVideo1', 'storyVideo2','storyVideo3', 'storyVideo4']
-      .map(id => document.getElementById(id))
-      .filter(Boolean);
-    if (!muteToggle || !videos.length) return;
-
-    function syncToggle() {
-      const anyUnmuted = videos.some(v => !v.muted);
-      muteToggle.textContent = anyUnmuted ? '🔊 sound on' : '🔇 tap to unmute';
-      muteToggle.classList.toggle('is-unmuted', anyUnmuted);
-    }
-
-    muteToggle.addEventListener('click', () => {
-      videos.forEach(v => { v.muted = !v.muted; });
-      syncToggle();
-    });
-
-    syncToggle();
-  })();
-  </script>
-
-
-  <!-- ── Final video: plays once fully scrolled into view; replay button on end ── -->
-  <script>
-  (function() {
-    const section   = document.getElementById('finalVideoSection');
-    const video     = document.getElementById('finalVideo');
-    const muteBtn   = document.getElementById('finalMuteToggle');
-    const replayBtn = document.getElementById('finalReplayBtn');
-    if (!section || !video || !muteBtn || !replayBtn) return;
-
-    function syncToggle() {
-      muteBtn.textContent = video.muted ? '🔇 tap to unmute' : '🔊 sound on';
-      muteBtn.classList.toggle('is-unmuted', !video.muted);
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          section.classList.add('in-view');
-          video.currentTime = 0;
-          video.volume = 1;
-          video.play().catch(() => {});
-          observer.unobserve(section);
-        }
-      });
-    }, { threshold: 0.98 });
-
-    observer.observe(section);
-
-    muteBtn.addEventListener('click', () => {
-      video.muted = !video.muted;
-      video.volume = 1;
-      syncToggle();
-    });
-
-    video.addEventListener('ended', () => {
-      replayBtn.classList.add('show');
-    });
-
-    replayBtn.addEventListener('click', () => {
-      replayBtn.classList.remove('show');
-      video.currentTime = 0;
-      video.volume = 1;
-      video.play().catch(() => {});
-    });
-  })();
-  </script>
-
-
 </body>
 </html>
