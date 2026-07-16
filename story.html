@@ -1698,17 +1698,17 @@
       transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
     }
     .fc-modal.open .fc-modal-panel { transform: translateY(0) scale(1); }
+    
     .fc-video-wrap {
   position: relative;
-  width: auto;
-  max-width: 90%;
+  width: min(90vw, 500px);
   max-height: 85vh;
   border-radius: 8px;
   overflow: hidden;
-  background: #000;
   display: flex;
   align-items: center;
   justify-content: center;
+  aspect-ratio: var(--vid-ratio, 9 / 16);
 }
 
 .fc-wish-photo {
@@ -1716,7 +1716,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   opacity: 0;
   transform: scale(0.96);
   transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1),
@@ -1730,6 +1730,9 @@
 }
 
 .fc-video-wrap video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
   transition: opacity 0.5s ease;
 }
 
@@ -2429,7 +2432,7 @@
   <div class="fc-modal-panel">
     <button class="fc-modal-close" id="fcModalClose" aria-label="Close">✕</button>
   <div class="fc-video-wrap" id="fcVideoWrap">
-  <video id="fcVideo1" src="assets/sudhan-sarooo.mp4" playsinline muted></video>
+  <video id="fcVideo1" src="assets/sudhan-saroo.mp4" playsinline muted></video>
   <img id="fcWishPhoto" class="fc-wish-photo" src="assets/wish-gift.jpeg" alt="">
 </div>
 <button class="mute-toggle-btn fc-mute-btn" id="fcMuteToggle">🔇 tap to unmute</button>
@@ -2590,6 +2593,11 @@
   if (!envelopes.length || !modal || !v1) return;
   v1.addEventListener('error', () => console.error('LOAD ERROR on', v1.src, v1.error));
 
+v1.addEventListener('loadedmetadata', () => {
+  if (v1.videoWidth && v1.videoHeight) {
+    videoWrap.style.setProperty('--vid-ratio', `${v1.videoWidth} / ${v1.videoHeight}`);
+  }
+});
 
   function syncToggle() {
     muteToggle.textContent = v1.muted ? '🔇 tap to unmute' : '🔊 sound on';
