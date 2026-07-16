@@ -1338,10 +1338,18 @@
     }
 
     @media (max-width: 560px) {
-      .wa-chat-screen { width: 96vw; max-height: 82vh; }
-      .story-videos { width: 62vw; height: 44vh; }
-    }
+  .wa-chat-screen { width: 96vw; max-height: 82vh; }
+  .story-videos { width: 62vw; height: 44vh; }
 
+  .story-flash-group {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .volleyball-wrap {
+    order: -1;
+  }
+}
     /* ── Siblings to Friends: pinned vertical scroll section ── */
     .siblings-section { position: relative; z-index: 10; }
 
@@ -1895,20 +1903,22 @@
         <div class="school-id-stage" id="schoolIdStage">
   <div class="school-id-inner" id="schoolIdInner">
     <div class="school-id-card" id="schoolIdCard">
-      <img class="school-id-art" src="assets/mockup.png" alt="">
-      <div class="school-id-photo-wrap">
-        <img id="schoolIdPhoto" src="" alt="">
-      </div>
-      <div class="school-id-name" id="schoolIdName"></div>
-      <div class="school-id-funny" id="schoolIdFunny"></div>
-      <div class="school-id-rows">
-        <div class="school-id-row"><span>Classes</span><span id="schoolIdClass"></span></div>
-        <div class="school-id-row"><span>Years</span><span id="schoolIdYears"></span></div>
-      </div>
-      <div class="school-gif-slot" id="schoolGifSlot">
-        <img id="schoolGifImg" src="" alt="">
-      </div>
+  <img class="school-id-art" src="assets/mockup.png" alt="">
+  <div class="school-id-photo-wrap">
+    <img id="schoolIdPhoto" src="" alt="">
+  </div>
+  <div class="school-id-text">
+    <div class="school-id-name" id="schoolIdName"></div>
+    <div class="school-id-funny" id="schoolIdFunny"></div>
+    <div class="school-id-rows">
+      <div class="school-id-row"><span>Classes</span><span id="schoolIdClass"></span></div>
+      <div class="school-id-row"><span>Years</span><span id="schoolIdYears"></span></div>
     </div>
+  </div>
+  <div class="school-gif-slot" id="schoolGifSlot">
+    <img id="schoolGifImg" src="" alt="">
+  </div>
+</div>
   </div>
 </div>
       </div>
@@ -2068,40 +2078,41 @@
     display: block;
   }
 
-  .school-id-name {
-    position: absolute;
-    left: 10%;
-    right: 10%;
-    top: 62%;
-    text-align: center;
-    font-family: 'Fraunces', Georgia, serif;
-    font-size: 1rem;
-    line-height: 1.3;
-    color: #1d4e89;
-  }
+  .school-id-text {
+  position: absolute;
+  left: 10%; right: 10%;
+  top: 61%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
 
-  .school-id-funny {
-    position: absolute;
-    left: 22.87%;
-    right: 24.1%;
-    top: 70%;
-    text-align: center;
-    font-family: 'Fraunces', Georgia, serif;
-    font-style: italic;
-    font-size: 1.05rem;
-    color: var(--crimson);
-    padding-bottom: 6px;
-    border-bottom: 1px solid rgba(26,16,16,0.25);
-  }
+.school-id-name {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 0.92rem;
+  line-height: 1.25;
+  color: #1d4e89;
+  text-align: center;
+}
 
-  .school-id-rows {
-    position: absolute;
-    left: 15%;
-    right: 15%;
-    top: 76%;   /* nudged down slightly to clear the new divider line above */
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.82rem;
-  }
+.school-id-funny {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.2;
+  color: var(--crimson);
+  text-align: center;
+  width: 76%;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(26,16,16,0.25);
+}
+
+.school-id-rows {
+  width: 70%;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+}
   .school-id-row {
   display: flex;
   justify-content: space-between;
@@ -2374,23 +2385,24 @@
   </div>
 
   <!-- Mobile stacked fallback (auto-shown under 860px) -->
-  <div class="fc-stack" aria-hidden="true">
-    <figure class="fc-card fc-portrait  fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">Mom</span><span class="fc-caption">her light</span></figcaption></figure>
-    <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?w=900&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">Dad &amp; us</span><span class="fc-caption">sunday, everywhere</span></figcaption></figure>
-    <figure class="fc-card fc-portrait  fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">The birthday girl</span><span class="fc-caption">always been the sun</span></figcaption></figure>
-    <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1604423043492-41303370a171?w=900&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">Diwali '19</span><span class="fc-caption">diyas &amp; mischief</span></figcaption></figure>
-    <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1000&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">All of us</span><span class="fc-caption">the whole crew</span></figcaption></figure>
-    <figure class="fc-card fc-portrait  fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?w=600&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">Little you</span><span class="fc-caption">same smile, smaller</span></figcaption></figure>
-    <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=1000&q=70" alt=""></div><figcaption class="fc-cap"><span class="fc-label">Today</span><span class="fc-caption">still the same, only louder</span></figcaption></figure>
+err
+<div class="fc-stack" aria-hidden="true">
+  <figure class="fc-card fc-portrait fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="assets/fam4.jpeg" alt="Selvan Sujatha"></div><figcaption class="fc-cap"><span class="fc-label">Selvan Sujatha</span><span class="fc-caption">her light</span></figcaption></figure>
+  <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="assets/fam1.jpeg" alt="Dad and us"></div><figcaption class="fc-cap"><span class="fc-label">Dad &amp; us</span><span class="fc-caption">sunday, funday</span></figcaption></figure>
+  <figure class="fc-card fc-portrait fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="assets/fam5.jpeg" alt="The birthday girl"></div><figcaption class="fc-cap"><span class="fc-label">Trio</span><span class="fc-caption">Mom & Daughters</span></figcaption></figure>
+  <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="assets/fam11.jpeg" alt="Diwali 2019"></div><figcaption class="fc-cap"><span class="fc-label">Evergreen Couples</span></figcaption></figure>
+  <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="assets/fam8.jpeg" alt="All of us"></div><figcaption class="fc-cap"><span class="fc-label">All of us</span><span class="fc-caption">the whole crew</span></figcaption></figure>
+  <figure class="fc-card fc-portrait fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="assets/fam7.jpeg" alt="Our Boss"></div><figcaption class="fc-cap"><span class="fc-label">Our Boss</span><span class="fc-caption">Master the Blaster</span></figcaption></figure>
+  <figure class="fc-card fc-landscape fc-stack-card"><span class="fc-tape"></span><div class="fc-photo"><img src="assets/fam9.jpeg" alt="Today"></div><figcaption class="fc-cap"><span class="fc-label">All of us</span><span class="fc-caption">still the same, only louder</span></figcaption></figure>
 
-    <!-- Mobile: same envelope trigger, laid out inline via the media query above -->
-    <button class="fc-envelope" id="fcEnvelopeMobile" aria-label="Open a video from home">
-      <span class="fc-envelope-back"></span>
-      <span class="fc-envelope-flap"></span>
-      <span class="fc-envelope-seal">❤</span>
-      <span class="fc-envelope-label">a little something<br>from home</span>
-    </button>
-  </div>
+  <!-- Mobile: same envelope trigger, laid out inline via the media query above -->
+  <button class="fc-envelope" id="fcEnvelopeMobile" aria-label="Open a video from home">
+    <span class="fc-envelope-back"></span>
+    <span class="fc-envelope-flap"></span>
+    <span class="fc-envelope-seal">❤</span>
+    <span class="fc-envelope-label">a little something<br>from home</span>
+  </button>
+</div>
 </section>
 
 
@@ -2494,7 +2506,7 @@
     gap: 8px; margin-top: 10px; padding: 0 2px;
   }
   .fc-label   { font-family: 'Fraunces', serif; font-style: italic; font-size: 15px; color: var(--dark); }
-  .fc-caption { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--crimson); letter-spacing: 0.04em; }
+  .fc-caption { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #7a0c1f; letter-spacing: 0.04em; }
 
   .fc-stack { display: none; }
 
