@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lakshmi Sri · Seventeen · Archive</title>
+  <title>Lakshmi Sri · Virat</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
@@ -568,8 +568,9 @@
   width: 100%;
   overflow: hidden;
   display: flex;
-  align-items: flex-start;
-  padding-top: 14vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   opacity: 0;
   transition: opacity 0.6s ease;
 }
@@ -668,18 +669,15 @@
     }
 
     .gallery-hint {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 22px;
-      text-align: center;
-      font-size: 0.58rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-      animation: hintPulse 2.4s ease-in-out infinite;
-      pointer-events: none;
-    }
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.58rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  animation: hintPulse 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
 
     @keyframes hintPulse {
       0%, 100% { opacity: 0.4; }
@@ -2082,7 +2080,7 @@
   .school-id-text {
   position: absolute;
   left: 10%; right: 10%;
-  top: 61%;
+  top: 63%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2356,11 +2354,12 @@
         </figcaption>
     </figure>
 
-    <figure class="fc-card fc-landscape" data-speed="1.3" style="top:44%; left:34%; --r:2deg;">
+    <figure class="fc-card fc-landscape fc-stack-card fc-wide">
       <span class="fc-tape"></span>
-      <div class="fc-photo"><img src="assets/fam8.jpeg" alt="All of us" loading="lazy"></div>
-      <figcaption class="fc-cap"><span class="fc-label">All of us</span><span class="fc-caption">the whole crew</span></figcaption>
-    </figure>
+      <div class="fc-photo">
+        <img src="assets/fam8.jpeg" alt="All of us"></div>
+        <figcaption class="fc-cap"><span class="fc-label">All of us</span>
+      <span class="fc-caption">the whole crew</span></figcaption></figure>
 
     <figure class="fc-card fc-portrait" data-speed="1.4" style="top:38%; left:74%; --r:-5deg;">
       <span class="fc-tape"></span>
@@ -2521,6 +2520,10 @@
     .fc-stack-card.fc-portrait  { width: 240px; }
     .fc-stack-card.fc-landscape { width: 320px; }
   }
+  .fc-wide .fc-photo img {
+  object-fit: contain;
+  background: #000;
+}
 </style>
 
 <script>
